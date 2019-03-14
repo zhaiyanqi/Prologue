@@ -86,7 +86,7 @@
         android:layout_height="100dp"
         android:layout_marginTop="10dp"
         app:cardBackgroundColor="@color/colorPrimary"
-        app:layout_constraintBottom_toTopOf="@id/btn_rules"
+        app:layout_constraintBottom_toTopOf="@id/btn_hero_maker"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_hero_info">
@@ -117,7 +117,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/btn_rules"
+        android:id="@+id/btn_hero_maker"
         android:layout_width="300dp"
         android:layout_height="100dp"
         android:layout_marginTop="10dp"
@@ -132,12 +132,13 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/btn_bg_hero_maker"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/empty"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_launcher_background"
-                android:transitionName="@string/transition_start_game_img" />
+                android:src="@drawable/btn_hero_maker_bg"
+                android:transitionName="@string/transition_hero_maker_img" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -145,7 +146,8 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="0dp"
-                android:text="@string/start_game"
+                android:text="@string/hero_maker"
+                android:textColor="@color/colorWhite"
                 android:textSize="30sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -161,7 +163,7 @@
         app:layout_constraintBottom_toTopOf="@id/btn_about"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_rules">
+        app:layout_constraintTop_toBottomOf="@id/btn_hero_maker">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
