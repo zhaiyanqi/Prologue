@@ -9,6 +9,13 @@
     <string name="card_version">卡牌版本</string>
     <string name="hero_group">卡牌版本</string>
     <string name="max_hp">卡牌版本</string>
+    <string name="show_or_hide">隐藏/显示</string>
+
+    <string name="hero_base_board">底板</string>
+    <string name="hero_frame">边框</string>
+    <string name="hero_logo">势力</string>
+    <string name="hero_skill">技能</string>
+    <string name="hero_hp">勾玉</string>
 
 
     <!--transition动画字符串-->
