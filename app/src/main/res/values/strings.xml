@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Prologue</string>
+    <string name="empty">""</string>
+    <string name="start_game">一二三四</string>
+
+    <!--transition动画字符串-->
+    <string name="transition_start_game_img">transition_start_game_img</string>
+
+</resources>
