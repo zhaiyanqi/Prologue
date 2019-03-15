@@ -21,5 +21,8 @@
     <!--transition动画字符串-->
     <string name="transition_start_game_img">transition_start_game_img</string>
     <string name="transition_hero_maker_img">transition_hero_maker_img</string>
+    <string name="add_skill">添加技能</string>
+    <string name="import_pic">导入图片</string>
+    <string name="skill">技能:</string>
 
 </resources>

@@ -1,18 +1,35 @@
 package cn.zhaiyanqi.prologue.activities;
 
+import android.Manifest;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Date;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -21,20 +38,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import cn.zhaiyanqi.prologue.R;
+import cn.zhaiyanqi.prologue.view.HeroMakerSkillButton;
 
 public class HeroMakerActivity extends AppCompatActivity
         implements View.OnClickListener {
 
     private static final int REQUEST_IMAGE_CODE = 1;
+    private RxPermissions rxPermissions;
+    private Typeface titleFont, nameFont;
+    private int yourChoice = 0;
 
     private ImageView imgHeroGroup, imgHeroFrame,
             imgHeroBaseBoard, imgHeroSkillBase, imgHeroSkillBar, imgRightCloud,
             imgHeroImg, imgHeroOutImg;
     private ConstraintLayout layout;
     private TextView tvHeroTitle, tvHeroName;
-    private Typeface titleFont, nameFont;
     private CheckBox checkBoxBaseBoard, checkBoxFrame, checkBoxLogo, checkBoxSkill;
-    private int yourChoice = 0;
+    private Button btnAddSkill;
+    private LinearLayout llSKills;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +67,7 @@ public class HeroMakerActivity extends AppCompatActivity
         initListener();
         loadWei();
         initFonts();
+        rxPermissions = new RxPermissions(this);
     }
 
     private void initFonts() {
@@ -80,6 +103,8 @@ public class HeroMakerActivity extends AppCompatActivity
         checkBoxLogo = findViewById(R.id.checkbox_hero_logo);
         checkBoxSkill = findViewById(R.id.checkbox_hero_skill);
 
+        btnAddSkill = findViewById(R.id.hero_maker_add_skill);
+        llSKills = findViewById(R.id.hero_maker_skills);
     }
 
     private void initListener() {
@@ -95,16 +120,19 @@ public class HeroMakerActivity extends AppCompatActivity
                 imgHeroFrame.setVisibility(isChecked ? View.VISIBLE : View.GONE));
         checkBoxLogo.setOnCheckedChangeListener((buttonView, isChecked) ->
                 imgHeroGroup.setVisibility(isChecked ? View.VISIBLE : View.GONE));
+        checkBoxSkill.setOnCheckedChangeListener((a, b) ->
+                rxPermissions
+                        .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        .subscribe(granted -> {
+                            if (granted) {
+                                saveToGallery(String.valueOf(new Date().getTime()), Bitmap.CompressFormat.PNG, 100);
+                                Toast.makeText(this, R.string.app_name, Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(this, R.string.hero_maker, Toast.LENGTH_SHORT).show();
+                            }
+                        }));
 
-        checkBoxSkill.setOnCheckedChangeListener((buttonView, isChecked) ->
-        {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/*");
-            intent.putExtra("crop", true);
-            intent.putExtra("return-data", true);
-            startActivityForResult(intent, REQUEST_IMAGE_CODE);
-        });
-
+        btnAddSkill.setOnClickListener(this);
     }
 
     @Override
@@ -142,6 +170,11 @@ public class HeroMakerActivity extends AppCompatActivity
                 showNameInputDialog();
                 break;
             }
+
+            case R.id.hero_maker_add_skill: {
+                addSkillButton();
+                break;
+            }
             case R.id.hero_maker_import_pic: {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
@@ -151,6 +184,13 @@ public class HeroMakerActivity extends AppCompatActivity
                 break;
             }
         }
+    }
+
+    private void addSkillButton() {
+        if (llSKills.getChildCount() > 4) return;
+        HeroMakerSkillButton button = new HeroMakerSkillButton(this);
+        button.setText("技能");
+        llSKills.addView(button);
     }
 
     private void showSingleChoiceDialog() {
@@ -233,7 +273,6 @@ public class HeroMakerActivity extends AppCompatActivity
     }
 
     private void loadGod() {
-//        Glide.with(this).load(R.drawable.god_base_board).into(imgHeroBaseBoard);
         imgHeroBaseBoard.setVisibility(View.GONE);
         imgRightCloud.setVisibility(View.GONE);
         Glide.with(this).load(R.drawable.god).into(imgHeroFrame);
@@ -274,6 +313,89 @@ public class HeroMakerActivity extends AppCompatActivity
                 Glide.with(this).load(uri).into(imgHeroImg);
             }
         }
+    }
 
+
+    private boolean saveToGallery(String fileName, Bitmap.CompressFormat
+            format, int quality) {
+        String subFolderPath = "prologue";
+        String fileDescription = "PROLOGUE Save";
+        if (quality < 0 || quality > 100)
+            quality = 50;
+
+        long currentTime = System.currentTimeMillis();
+
+        File extBaseDir = Environment.getExternalStorageDirectory();
+        File file = new File(extBaseDir.getAbsolutePath() + "/DCIM/" + subFolderPath);
+        if (!file.exists()) {
+            if (!file.mkdirs()) {
+                return false;
+            }
+        }
+
+        String mimeType;
+        switch (format) {
+            case PNG:
+                mimeType = "image/png";
+                if (!fileName.endsWith(".png"))
+                    fileName += ".png";
+                break;
+            case WEBP:
+                mimeType = "image/webp";
+                if (!fileName.endsWith(".webp"))
+                    fileName += ".webp";
+                break;
+            case JPEG:
+            default:
+                mimeType = "image/jpeg";
+                if (!(fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")))
+                    fileName += ".jpg";
+                break;
+        }
+
+        String filePath = file.getAbsolutePath() + "/" + fileName;
+        FileOutputStream out;
+        try {
+            out = new FileOutputStream(filePath);
+
+            Bitmap b = getChartBitmap();
+            b.compress(format, quality, out);
+
+            out.flush();
+            out.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            return false;
+        }
+
+        long size = new File(filePath).length();
+
+        ContentValues values = new ContentValues(8);
+
+        // store the details
+        values.put(MediaStore.Images.Media.TITLE, fileName);
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
+        values.put(MediaStore.Images.Media.DATE_ADDED, currentTime);
+        values.put(MediaStore.Images.Media.MIME_TYPE, mimeType);
+        values.put(MediaStore.Images.Media.DESCRIPTION, fileDescription);
+        values.put(MediaStore.Images.Media.ORIENTATION, 0);
+        values.put(MediaStore.Images.Media.DATA, filePath);
+        values.put(MediaStore.Images.Media.SIZE, size);
+
+        return this.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values) != null;
+    }
+
+    public Bitmap getChartBitmap() {
+        Bitmap returnedBitmap = Bitmap.createBitmap(layout.getWidth(), layout.getHeight(), Bitmap.Config.RGB_565);
+        Canvas canvas = new Canvas(returnedBitmap);
+        Drawable bgDrawable = layout.getBackground();
+        if (bgDrawable != null)
+            bgDrawable.draw(canvas);
+        else
+            canvas.drawColor(Color.WHITE);
+        layout.draw(canvas);
+        return returnedBitmap;
     }
 }
