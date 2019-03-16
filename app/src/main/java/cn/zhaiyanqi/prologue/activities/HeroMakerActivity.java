@@ -1,6 +1,7 @@
 package cn.zhaiyanqi.prologue.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,7 +13,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -20,6 +20,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,10 +33,10 @@ import java.io.IOException;
 import java.util.Date;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import cn.zhaiyanqi.prologue.R;
 import cn.zhaiyanqi.prologue.view.HeroMakerSkillButton;
@@ -46,17 +47,17 @@ public class HeroMakerActivity extends AppCompatActivity
     private static final int REQUEST_IMAGE_CODE = 1;
     private RxPermissions rxPermissions;
     private Typeface titleFont, nameFont;
-    private int yourChoice = 0;
 
     private ImageView imgHeroGroup, imgHeroFrame,
             imgHeroBaseBoard, imgHeroSkillBase, imgHeroSkillBar, imgRightCloud,
             imgHeroImg, imgHeroOutImg;
-    private ConstraintLayout layout;
+    private CardView layout;
     private TextView tvHeroTitle, tvHeroName;
     private CheckBox checkBoxBaseBoard, checkBoxFrame, checkBoxLogo, checkBoxSkill;
-    private Button btnAddSkill;
-    private LinearLayout llSKills;
-
+    private Button btnAddSkill, btnHeroName, btnHeroTitle, btnExportPhoto;
+    private LinearLayout llSKills, llSkillsAll, llSkillBoardText;
+    private ConstraintLayout skillBoardLayout;
+    private Bitmap.CompressFormat exportFormat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +66,23 @@ public class HeroMakerActivity extends AppCompatActivity
         initTitle();
         initView();
         initListener();
-        loadWei();
+        loadDefaultGroup();
+        loadDefaultFormat();
         initFonts();
+        initDialog();
         rxPermissions = new RxPermissions(this);
+    }
+
+    private void loadDefaultFormat() {
+        RadioGroup radioGroup = findViewById(R.id.hero_maker_rg_select_format);
+        radioGroup.check(R.id.hero_maker_rb_format_png);
+        exportFormat = Bitmap.CompressFormat.PNG;
+    }
+
+    private void loadDefaultGroup() {
+        RadioGroup radioGroup = findViewById(R.id.hero_maker_group_radio_group);
+        radioGroup.check(R.id.hero_maker_radio_btn_wei);
+        loadWei(null);
     }
 
     private void initFonts() {
@@ -105,12 +120,21 @@ public class HeroMakerActivity extends AppCompatActivity
 
         btnAddSkill = findViewById(R.id.hero_maker_add_skill);
         llSKills = findViewById(R.id.hero_maker_skills);
+        llSkillsAll = findViewById(R.id.hero_maker_skills_ll);
+
+        btnHeroName = findViewById(R.id.hero_maker_btn_name);
+        btnHeroTitle = findViewById(R.id.hero_maker_btn_title);
+        btnExportPhoto = findViewById(R.id.hero_maker_export_photo);
+        llSkillBoardText = findViewById(R.id.hero_maker_skill_board_texts);
+        skillBoardLayout = findViewById(R.id.hero_maker_skill_board_layout);
+
+
     }
 
     private void initListener() {
-        imgHeroGroup.setOnClickListener(this);
-        tvHeroTitle.setOnClickListener(this);
-        tvHeroName.setOnClickListener(this);
+        btnHeroName.setOnClickListener(this);
+        btnHeroTitle.setOnClickListener(this);
+        btnExportPhoto.setOnClickListener(this);
 
         findViewById(R.id.hero_maker_import_pic).setOnClickListener(this);
 
@@ -120,53 +144,45 @@ public class HeroMakerActivity extends AppCompatActivity
                 imgHeroFrame.setVisibility(isChecked ? View.VISIBLE : View.GONE));
         checkBoxLogo.setOnCheckedChangeListener((buttonView, isChecked) ->
                 imgHeroGroup.setVisibility(isChecked ? View.VISIBLE : View.GONE));
-        checkBoxSkill.setOnCheckedChangeListener((a, b) ->
-                rxPermissions
-                        .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        .subscribe(granted -> {
-                            if (granted) {
-                                saveToGallery(String.valueOf(new Date().getTime()), Bitmap.CompressFormat.PNG, 100);
-                                Toast.makeText(this, R.string.app_name, Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(this, R.string.hero_maker, Toast.LENGTH_SHORT).show();
-                            }
-                        }));
+        checkBoxSkill.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    imgHeroSkillBar.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+                    imgHeroSkillBase.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+
+                }
+        );
 
         btnAddSkill.setOnClickListener(this);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        if (item.getItemId() == android.R.id.home) {
+//            onBackPressed();
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     private void initTitle() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+//        ActionBar actionBar = getSupportActionBar();
+//        if (actionBar != null) {
+//            actionBar.setDisplayHomeAsUpEnabled(true);
+//        }
         Glide.with(this).load(R.drawable.btn_hero_maker_bg).into((ImageView) findViewById(R.id.hero_maker_img));
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.hero_maker_group: {
-                showSingleChoiceDialog();
-                break;
-            }
-            case R.id.hero_maker_title: {
+            case R.id.hero_maker_btn_title: {
                 showTitleInputDialog();
                 break;
             }
-            case R.id.hero_maker_name: {
+            case R.id.hero_maker_btn_name: {
                 showNameInputDialog();
                 break;
             }
@@ -183,52 +199,43 @@ public class HeroMakerActivity extends AppCompatActivity
                 startActivityForResult(intent, REQUEST_IMAGE_CODE);
                 break;
             }
+
+            case R.id.hero_maker_export_photo: {
+                rxPermissions
+                        .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        .subscribe(granted -> {
+                            if (granted) {
+                                saveToGallery(String.valueOf(new Date().getTime()), exportFormat, 100);
+                                Toast.makeText(this, R.string.app_name, Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(this, R.string.hero_maker, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                break;
+            }
         }
     }
 
     private void addSkillButton() {
-        if (llSKills.getChildCount() > 4) return;
+        if (llSKills.getChildCount() >= 4) {
+            Toast.makeText(this, "不能再多了", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        llSkillsAll.setVisibility(View.VISIBLE);
         HeroMakerSkillButton button = new HeroMakerSkillButton(this);
         button.setText("技能");
         llSKills.addView(button);
     }
 
-    private void showSingleChoiceDialog() {
-        final String[] items = {"魏", "蜀", "吴", "群", "神"};
-        AlertDialog.Builder singleChoiceDialog =
-                new AlertDialog.Builder(this);
-        singleChoiceDialog.setTitle("选择一个势力");
-        singleChoiceDialog.setSingleChoiceItems(items, yourChoice,
-                (dialog, which) -> yourChoice = which);
-        singleChoiceDialog.setPositiveButton("确定", (dialog, which) -> {
-            switch (yourChoice) {
-                case 0: {
-                    loadWei();
-                    break;
-                }
-                case 1: {
-                    loadShu();
-                    break;
-                }
-                case 2: {
-                    loadWu();
-                    break;
-                }
-                case 3: {
-                    loadQun();
-                    break;
-                }
-                case 4: {
-                    loadGod();
-                    break;
-                }
-            }
-        });
-        singleChoiceDialog.show();
+    private void initDialog() {
+        initTitleDialog();
     }
 
+    private void initTitleDialog() {
 
-    private void loadWei() {
+    }
+
+    public void loadWei(View view) {
         imgHeroBaseBoard.setVisibility(View.VISIBLE);
         imgRightCloud.setVisibility(View.VISIBLE);
         Glide.with(this).load(R.drawable.wei_base_board).into(imgHeroBaseBoard);
@@ -239,7 +246,7 @@ public class HeroMakerActivity extends AppCompatActivity
         Glide.with(this).load(R.drawable.wei_skill_bar).into(imgHeroSkillBar);
     }
 
-    private void loadShu() {
+    public void loadShu(View view) {
         imgHeroBaseBoard.setVisibility(View.VISIBLE);
         imgRightCloud.setVisibility(View.VISIBLE);
         Glide.with(this).load(R.drawable.shu_base_board).into(imgHeroBaseBoard);
@@ -250,7 +257,7 @@ public class HeroMakerActivity extends AppCompatActivity
         Glide.with(this).load(R.drawable.shu_skill_bar).into(imgHeroSkillBar);
     }
 
-    private void loadWu() {
+    public void loadWu(View view) {
         imgHeroBaseBoard.setVisibility(View.VISIBLE);
         imgRightCloud.setVisibility(View.VISIBLE);
         Glide.with(this).load(R.drawable.wu_base_board).into(imgHeroBaseBoard);
@@ -261,7 +268,7 @@ public class HeroMakerActivity extends AppCompatActivity
         Glide.with(this).load(R.drawable.wu_skill_bar).into(imgHeroSkillBar);
     }
 
-    private void loadQun() {
+    public void loadQun(View view) {
         imgHeroBaseBoard.setVisibility(View.VISIBLE);
         imgRightCloud.setVisibility(View.VISIBLE);
         Glide.with(this).load(R.drawable.qun_base_board).into(imgHeroBaseBoard);
@@ -272,7 +279,7 @@ public class HeroMakerActivity extends AppCompatActivity
         Glide.with(this).load(R.drawable.qun_skill_bar).into(imgHeroSkillBar);
     }
 
-    private void loadGod() {
+    public void loadGod(View view) {
         imgHeroBaseBoard.setVisibility(View.GONE);
         imgRightCloud.setVisibility(View.GONE);
         Glide.with(this).load(R.drawable.god).into(imgHeroFrame);
@@ -398,4 +405,17 @@ public class HeroMakerActivity extends AppCompatActivity
         layout.draw(canvas);
         return returnedBitmap;
     }
+
+    public void setExportFormatPNG(View view) {
+        exportFormat = Bitmap.CompressFormat.PNG;
+    }
+
+    public void setExportFormatJPG(View view) {
+        exportFormat = Bitmap.CompressFormat.JPEG;
+    }
+
+    public void setExportFormatWEBP(View view) {
+        exportFormat = Bitmap.CompressFormat.WEBP;
+    }
+
 }

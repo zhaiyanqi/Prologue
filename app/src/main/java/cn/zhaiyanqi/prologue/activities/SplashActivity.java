@@ -13,11 +13,11 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        new Handler().postDelayed(this::delayAction, 800);
+        new Handler().postDelayed(this::delayAction, 500);
     }
 
     private void delayAction() {
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, HeroMakerActivity.class));
         overridePendingTransition(R.anim.screen_zoom_in, R.anim.screen_zoom_out);
         finish();
     }

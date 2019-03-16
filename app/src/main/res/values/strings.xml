@@ -7,7 +7,8 @@
     <string name="title_activity_hero_maker">武将制图</string>
     <string name="action_settings">Settings</string>
     <string name="card_version">卡牌版本</string>
-    <string name="hero_group">卡牌版本</string>
+    <string name="hero_group">武将势力</string>
+    <string name="hero_group_with_dot">武将势力:</string>
     <string name="max_hp">卡牌版本</string>
     <string name="show_or_hide">隐藏/显示</string>
 
@@ -24,5 +25,18 @@
     <string name="add_skill">添加技能</string>
     <string name="import_pic">导入图片</string>
     <string name="skill">技能:</string>
+    <string name="hero_title">称号</string>
+    <string name="hero_name">名字</string>
+
+    <string name="hero_group_wei">魏</string>
+    <string name="hero_group_shu">蜀</string>
+    <string name="hero_group_wu">吴</string>
+    <string name="hero_group_qun">群</string>
+    <string name="hero_group_god">神</string>
+    <string name="export_format">导出格式</string>
+    <string name="format_png">PNG</string>
+    <string name="format_jpg">JPG</string>
+    <string name="export">导出</string>
+    <string name="format_webp">WEBP</string>
 
 </resources>

@@ -13,215 +13,384 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.cardview.widget.CardView
             android:id="@+id/hero_maker_main_card"
             android:layout_width="250dp"
             android:layout_height="351dp"
             android:layout_marginTop="30dp"
+            app:cardCornerRadius="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/hero_maker_hero_img"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/empty" />
+                android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/hero_maker_base_board"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/empty"
-                android:src="@drawable/wei_base_board" />
+                <ImageView
+                    android:id="@+id/hero_maker_hero_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/empty" />
 
-            <ImageView
-                android:id="@+id/hero_maker_frame"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/empty"
-                android:src="@drawable/wei" />
+                <ImageView
+                    android:id="@+id/hero_maker_base_board"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/empty" />
 
-            <ImageView
-                android:id="@+id/hero_maker_hero_out_img"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/empty"
-                android:visibility="gone" />
+                <ImageView
+                    android:id="@+id/hero_maker_frame"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/empty"
+                    android:scaleType="fitXY" />
 
-            <ImageView
-                android:id="@+id/hero_maker_group"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/empty" />
+                <ImageView
+                    android:id="@+id/hero_maker_hero_out_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/empty"
+                    android:visibility="gone" />
 
-            <ImageView
-                android:id="@+id/hero_maker_right_cloud"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/empty" />
+                <ImageView
+                    android:id="@+id/hero_maker_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/empty" />
 
-            <TextView
-                android:id="@+id/hero_maker_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="75dp"
-                android:ems="1"
-                android:maxLength="5"
-                android:textColor="@color/colorWhite"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/hero_maker_right_cloud"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/empty" />
 
-            <cn.zhaiyanqi.prologue.view.StrokeTextView
-                android:id="@+id/hero_maker_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="22dp"
-                android:layout_marginTop="5dp"
-                android:elevation="8dp"
-                android:ems="1"
-                android:lineSpacingExtra="8dp"
-                android:maxLength="4"
-                android:textColor="@color/colorWhite"
-                android:textSize="28sp"
-                app:innerColor="#ffffff"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/hero_maker_title"
-                app:outerColor="#000000" />
+                <TextView
+                    android:id="@+id/hero_maker_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="75dp"
+                    android:ems="1"
+                    android:maxLength="5"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/hero_maker_skill_board"
-                android:layout_width="175dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="25dp"
-                android:layout_marginBottom="25dp"
-                android:contentDescription="@string/empty"
-                android:minHeight="50dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/wei_skill_board"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                <cn.zhaiyanqi.prologue.view.StrokeTextView
+                    android:id="@+id/hero_maker_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginTop="5dp"
+                    android:elevation="8dp"
+                    android:ems="1"
+                    android:lineSpacingExtra="8dp"
+                    android:maxLength="4"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="28sp"
+                    app:innerColor="#ffffff"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/hero_maker_title"
+                    app:outerColor="#000000" />
 
-            <ImageView
-                android:id="@+id/hero_maker_skill_bar"
-                android:layout_width="40dp"
-                android:layout_height="15dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:contentDescription="@string/empty"
-                android:scaleType="fitXY"
-                android:src="@drawable/wei_skill_bar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_board" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/hero_maker_skill_board_layout"
+                    android:layout_width="175dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginBottom="25dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <LinearLayout
+                        android:id="@+id/hero_maker_skill_board_texts"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:orientation="vertical"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="你可以使用无限张杀"
+
+                            />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="你可以使用无限张杀" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/hero_maker_skill_board"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:contentDescription="@string/empty"
+                        android:scaleType="fitXY"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_board_layout">
+
+                    <ImageView
+                        android:id="@+id/hero_maker_skill_bar"
+                        android:layout_width="40dp"
+                        android:layout_height="15dp"
+
+                        android:contentDescription="@string/empty"
+                        android:scaleType="fitXY" />
 
 
-        <TextView
-            android:id="@+id/tv_show_or_hide"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginStart="5dp"
             android:layout_marginTop="15dp"
-            android:text="@string/show_or_hide"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/hero_maker_main_card" />
+            android:layout_marginEnd="5dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/hero_maker_main_card">
 
-        <View
-            android:id="@+id/view_line"
-            android:layout_width="80dp"
-            android:layout_height="1dp"
-            android:layout_marginStart="5dp"
-
-            android:background="@color/colorPrimary"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_show_or_hide" />
-
-        <LinearLayout
-            android:id="@+id/show_hide_checkbox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view_line">
-
-            <CheckBox
-                android:id="@+id/checkbox_hero_base_board"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:checked="true"
-                android:text="@string/hero_base_board" />
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <CheckBox
-                android:id="@+id/checkbox_hero_frame"
-                android:layout_width="0dp"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hero_group_with_dot" />
+
+                <RadioGroup
+                    android:id="@+id/hero_maker_group_radio_group"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/hero_maker_radio_btn_wei"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="loadWei"
+                        android:text="@string/hero_group_wei" />
+
+                    <RadioButton
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="loadShu"
+                        android:text="@string/hero_group_shu" />
+
+                    <RadioButton
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="loadWu"
+                        android:text="@string/hero_group_wu" />
+
+                    <RadioButton
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="loadQun"
+                        android:text="@string/hero_group_qun" />
+
+                    <RadioButton
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="loadGod"
+                        android:text="@string/hero_group_god" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:checked="true"
-                android:text="@string/hero_frame" />
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <CheckBox
-                android:id="@+id/checkbox_hero_logo"
-                android:layout_width="0dp"
+                <Button
+                    android:id="@+id/hero_maker_btn_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hero_title" />
+
+                <Button
+                    android:id="@+id/hero_maker_btn_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hero_name" />
+
+                <Button
+                    android:id="@+id/hero_maker_add_skill"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_skill" />
+
+                <Button
+                    android:id="@+id/hero_maker_import_pic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/import_pic" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/hero_maker_skills_ll"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:checked="true"
-                android:text="@string/hero_logo" />
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
-            <CheckBox
-                android:id="@+id/checkbox_hero_skill"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:checked="true"
-                android:text="@string/hero_skill" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/skill" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/hero_maker_button_groups"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/show_hide_checkbox">
-
-            <Button
-                android:id="@+id/hero_maker_add_skill"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/add_skill" />
-
-            <Button
-                android:id="@+id/hero_maker_import_pic"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/import_pic" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/hero_maker_skills"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/hero_maker_button_groups">
+                <LinearLayout
+                    android:id="@+id/hero_maker_skills"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal" />
+            </LinearLayout>
 
             <TextView
+                android:id="@+id/tv_show_or_hide"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/skill" />
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/show_or_hide" />
+
+            <View
+                android:id="@+id/view_line"
+                android:layout_width="65dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="5dp"
+                android:background="@color/colorPrimary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_show_or_hide" />
+
+            <LinearLayout
+                android:id="@+id/show_hide_checkbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/checkbox_hero_base_board"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="@string/hero_base_board" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_hero_frame"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="@string/hero_frame" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_hero_logo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="@string/hero_logo" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_hero_skill"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="@string/hero_skill" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/export_format" />
+
+                <RadioGroup
+                    android:id="@+id/hero_maker_rg_select_format"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/hero_maker_rb_format_png"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="setExportFormatPNG"
+                        android:text="@string/format_png" />
+
+                    <RadioButton
+                        android:id="@+id/hero_maker_rb_format_jpg"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="setExportFormatJPG"
+                        android:text="@string/format_jpg" />
+
+                    <RadioButton
+                        android:id="@+id/hero_maker_rb_format_webp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="setExportFormatWEBP"
+                        android:text="@string/format_webp" />
+                </RadioGroup>
+
+                <Button
+                    android:id="@+id/hero_maker_export_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/export" />
+            </LinearLayout>
+
         </LinearLayout>
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </androidx.core.widget.NestedScrollView>
