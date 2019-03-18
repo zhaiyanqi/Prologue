@@ -13,7 +13,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -37,27 +39,31 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import cn.zhaiyanqi.prologue.R;
-import cn.zhaiyanqi.prologue.view.HeroMakerSkillButton;
 
 public class HeroMakerActivity extends AppCompatActivity
         implements View.OnClickListener {
 
     private static final int REQUEST_IMAGE_CODE = 1;
     private RxPermissions rxPermissions;
-    private Typeface titleFont, nameFont;
+    private Typeface titleFont, nameFont, skillNameFont;
 
     private ImageView imgHeroGroup, imgHeroFrame,
-            imgHeroBaseBoard, imgHeroSkillBase, imgHeroSkillBar, imgRightCloud,
+            imgHeroBaseBoard, imgHeroSkillBase, imgRightCloud,
             imgHeroImg, imgHeroOutImg;
     private CardView layout;
     private TextView tvHeroTitle, tvHeroName;
     private CheckBox checkBoxBaseBoard, checkBoxFrame, checkBoxLogo, checkBoxSkill;
     private Button btnAddSkill, btnHeroName, btnHeroTitle, btnExportPhoto;
-    private LinearLayout llSKills, llSkillsAll, llSkillBoardText;
-    private ConstraintLayout skillBoardLayout;
+    private LinearLayout llSKills, llSkillsAll;
+    //    private ConstraintLayout skillBoardLayout;
     private Bitmap.CompressFormat exportFormat;
+
+    private TextView tvSkill1Name, tvSkill1Info;
+    private TextView tvSkill2Name, tvSkill2Info;
+    private TextView tvSkill3Name, tvSkill3Info;
+    private ImageView ivSkill1Bar, ivSkill2Bar, ivSkill3Bar;
+    private Button skill1Button, skill2Button, skill3Button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,14 +91,27 @@ public class HeroMakerActivity extends AppCompatActivity
         loadWei(null);
     }
 
+    private int skillCount = 0;
+
     private void initFonts() {
         new Thread(() -> {
-            titleFont = Typeface.createFromAsset(getAssets(), "fonts/DFPNewChuan-B5.ttf");
-            nameFont = Typeface.createFromAsset(getAssets(), "fonts/jmmcsgsfix.ttf");
-            runOnUiThread(() -> {
-                tvHeroTitle.setTypeface(titleFont);
-                tvHeroName.setTypeface(nameFont);
-            });
+            try {
+                titleFont = Typeface.createFromAsset(getAssets(), "fonts/DFPNewChuan-B5.ttf");
+                nameFont = Typeface.createFromAsset(getAssets(), "fonts/jmmcsgsfix.ttf");
+                skillNameFont = Typeface.createFromAsset(getAssets(), "fonts/fzlsft.ttf");
+                runOnUiThread(() -> {
+                    tvHeroTitle.setTypeface(titleFont);
+                    tvHeroName.setTypeface(nameFont);
+                    tvSkill1Name.setTypeface(skillNameFont);
+                    tvSkill2Name.setTypeface(skillNameFont);
+                    tvSkill3Name.setTypeface(skillNameFont);
+                });
+            } catch (Exception e) {
+                runOnUiThread(() ->
+                        Toast.makeText(HeroMakerActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show()
+                );
+            }
+
         }).start();
 
     }
@@ -104,7 +123,6 @@ public class HeroMakerActivity extends AppCompatActivity
         imgHeroFrame = findViewById(R.id.hero_maker_frame);
         imgHeroBaseBoard = findViewById(R.id.hero_maker_base_board);
         imgHeroSkillBase = findViewById(R.id.hero_maker_skill_board);
-        imgHeroSkillBar = findViewById(R.id.hero_maker_skill_bar);
         imgRightCloud = findViewById(R.id.hero_maker_right_cloud);
 
         imgHeroImg = findViewById(R.id.hero_maker_hero_img);
@@ -125,33 +143,25 @@ public class HeroMakerActivity extends AppCompatActivity
         btnHeroName = findViewById(R.id.hero_maker_btn_name);
         btnHeroTitle = findViewById(R.id.hero_maker_btn_title);
         btnExportPhoto = findViewById(R.id.hero_maker_export_photo);
-        llSkillBoardText = findViewById(R.id.hero_maker_skill_board_texts);
-        skillBoardLayout = findViewById(R.id.hero_maker_skill_board_layout);
+//        llSkillBoardText = findViewById(R.id.hero_maker_skill_board_texts);
+//        skillBoardLayout = findViewById(R.id.hero_maker_skill_board_layout);
 
+        tvSkill1Name = findViewById(R.id.hero_maker_skill_1_name);
+        tvSkill2Name = findViewById(R.id.hero_maker_skill_2_name);
+        tvSkill3Name = findViewById(R.id.hero_maker_skill_3_name);
 
-    }
+        tvSkill1Info = findViewById(R.id.hero_maker_skill_1_text);
+        tvSkill2Info = findViewById(R.id.hero_maker_skill_2_text);
+        tvSkill3Info = findViewById(R.id.hero_maker_skill_3_text);
 
-    private void initListener() {
-        btnHeroName.setOnClickListener(this);
-        btnHeroTitle.setOnClickListener(this);
-        btnExportPhoto.setOnClickListener(this);
+        ivSkill1Bar = findViewById(R.id.hero_maker_skill_1_bar);
+        ivSkill2Bar = findViewById(R.id.hero_maker_skill_2_bar);
+        ivSkill3Bar = findViewById(R.id.hero_maker_skill_3_bar);
 
-        findViewById(R.id.hero_maker_import_pic).setOnClickListener(this);
+        skill1Button = findViewById(R.id.edit_skill_button_1);
+        skill2Button = findViewById(R.id.edit_skill_button_2);
+        skill3Button = findViewById(R.id.edit_skill_button_3);
 
-        checkBoxBaseBoard.setOnCheckedChangeListener((buttonView, isChecked) ->
-                imgHeroBaseBoard.setVisibility(isChecked ? View.VISIBLE : View.GONE));
-        checkBoxFrame.setOnCheckedChangeListener((buttonView, isChecked) ->
-                imgHeroFrame.setVisibility(isChecked ? View.VISIBLE : View.GONE));
-        checkBoxLogo.setOnCheckedChangeListener((buttonView, isChecked) ->
-                imgHeroGroup.setVisibility(isChecked ? View.VISIBLE : View.GONE));
-        checkBoxSkill.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                    imgHeroSkillBar.setVisibility(isChecked ? View.VISIBLE : View.GONE);
-                    imgHeroSkillBase.setVisibility(isChecked ? View.VISIBLE : View.GONE);
-
-                }
-        );
-
-        btnAddSkill.setOnClickListener(this);
     }
 
 //    @Override
@@ -216,15 +226,93 @@ public class HeroMakerActivity extends AppCompatActivity
         }
     }
 
+    private void initListener() {
+        btnHeroName.setOnClickListener(this);
+        btnHeroTitle.setOnClickListener(this);
+        btnExportPhoto.setOnClickListener(this);
+
+        findViewById(R.id.hero_maker_import_pic).setOnClickListener(this);
+
+        checkBoxBaseBoard.setOnCheckedChangeListener((buttonView, isChecked) ->
+                imgHeroBaseBoard.setVisibility(isChecked ? View.VISIBLE : View.GONE));
+        checkBoxFrame.setOnCheckedChangeListener((buttonView, isChecked) ->
+                imgHeroFrame.setVisibility(isChecked ? View.VISIBLE : View.GONE));
+        checkBoxLogo.setOnCheckedChangeListener((buttonView, isChecked) ->
+                imgHeroGroup.setVisibility(isChecked ? View.VISIBLE : View.GONE));
+        checkBoxSkill.setOnCheckedChangeListener((buttonView, isChecked) -> {
+//                    imgHeroSkillBar.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+                    imgHeroSkillBase.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+//                    ViewGroup.LayoutParams layoutParams = imgHeroSkillBase.getLayoutParams();
+//                    layoutParams.height += 10;
+//                    imgHeroSkillBase.setLayoutParams(layoutParams);
+                }
+        );
+
+        btnAddSkill.setOnClickListener(this);
+    }
+
     private void addSkillButton() {
-        if (llSKills.getChildCount() >= 4) {
+        if (skillCount >= 3) {
             Toast.makeText(this, "不能再多了", Toast.LENGTH_SHORT).show();
             return;
         }
+        skillCount++;
         llSkillsAll.setVisibility(View.VISIBLE);
-        HeroMakerSkillButton button = new HeroMakerSkillButton(this);
-        button.setText("技能");
-        llSKills.addView(button);
+        switch (skillCount) {
+            case 1: {
+                ivSkill1Bar.setVisibility(View.VISIBLE);
+                tvSkill1Info.setVisibility(View.VISIBLE);
+                tvSkill1Name.setVisibility(View.VISIBLE);
+                skill1Button.setVisibility(View.VISIBLE);
+                break;
+            }
+            case 2: {
+                ivSkill2Bar.setVisibility(View.VISIBLE);
+                tvSkill2Info.setVisibility(View.VISIBLE);
+                tvSkill2Name.setVisibility(View.VISIBLE);
+                skill2Button.setVisibility(View.VISIBLE);
+                break;
+            }
+            case 3: {
+                ivSkill3Bar.setVisibility(View.VISIBLE);
+                tvSkill3Info.setVisibility(View.VISIBLE);
+                tvSkill3Name.setVisibility(View.VISIBLE);
+                skill3Button.setVisibility(View.VISIBLE);
+                break;
+            }
+        }
+    }
+
+    public void removeSkillButton(View view) {
+        if (skillCount == 0) {
+            llSkillsAll.setVisibility(View.VISIBLE);
+            return;
+        }
+        skillCount--;
+        switch (skillCount) {
+            case 0: {
+                ivSkill1Bar.setVisibility(View.GONE);
+                tvSkill1Info.setVisibility(View.GONE);
+                tvSkill1Name.setVisibility(View.GONE);
+                skill1Button.setVisibility(View.GONE);
+                llSkillsAll.setVisibility(View.GONE);
+                break;
+            }
+            case 1: {
+                ivSkill2Bar.setVisibility(View.GONE);
+                tvSkill2Info.setVisibility(View.GONE);
+                tvSkill2Name.setVisibility(View.GONE);
+                skill2Button.setVisibility(View.GONE);
+                break;
+            }
+            case 2: {
+                ivSkill3Bar.setVisibility(View.GONE);
+                tvSkill3Info.setVisibility(View.GONE);
+                tvSkill3Name.setVisibility(View.GONE);
+                skill3Button.setVisibility(View.GONE);
+                break;
+            }
+        }
     }
 
     private void initDialog() {
@@ -243,7 +331,9 @@ public class HeroMakerActivity extends AppCompatActivity
         Glide.with(this).load(R.drawable.wei_logo).into(imgHeroGroup);
         Glide.with(this).load(R.drawable.wei_right_cloud).into(imgRightCloud);
         Glide.with(this).load(R.drawable.wei_skill_board).into(imgHeroSkillBase);
-        Glide.with(this).load(R.drawable.wei_skill_bar).into(imgHeroSkillBar);
+        Glide.with(this).load(R.drawable.wei_skill_bar).into(ivSkill1Bar);
+        Glide.with(this).load(R.drawable.wei_skill_bar).into(ivSkill2Bar);
+        Glide.with(this).load(R.drawable.wei_skill_bar).into(ivSkill3Bar);
     }
 
     public void loadShu(View view) {
@@ -254,7 +344,9 @@ public class HeroMakerActivity extends AppCompatActivity
         Glide.with(this).load(R.drawable.shu_logo).into(imgHeroGroup);
         Glide.with(this).load(R.drawable.shu_right_cloud).into(imgRightCloud);
         Glide.with(this).load(R.drawable.shu_skill_board).into(imgHeroSkillBase);
-        Glide.with(this).load(R.drawable.shu_skill_bar).into(imgHeroSkillBar);
+        Glide.with(this).load(R.drawable.shu_skill_bar).into(ivSkill1Bar);
+        Glide.with(this).load(R.drawable.shu_skill_bar).into(ivSkill2Bar);
+        Glide.with(this).load(R.drawable.shu_skill_bar).into(ivSkill3Bar);
     }
 
     public void loadWu(View view) {
@@ -265,7 +357,9 @@ public class HeroMakerActivity extends AppCompatActivity
         Glide.with(this).load(R.drawable.wu_logo).into(imgHeroGroup);
         Glide.with(this).load(R.drawable.wu_right_cloud).into(imgRightCloud);
         Glide.with(this).load(R.drawable.wu_skill_board).into(imgHeroSkillBase);
-        Glide.with(this).load(R.drawable.wu_skill_bar).into(imgHeroSkillBar);
+        Glide.with(this).load(R.drawable.wu_skill_bar).into(ivSkill1Bar);
+        Glide.with(this).load(R.drawable.wu_skill_bar).into(ivSkill2Bar);
+        Glide.with(this).load(R.drawable.wu_skill_bar).into(ivSkill3Bar);
     }
 
     public void loadQun(View view) {
@@ -276,7 +370,9 @@ public class HeroMakerActivity extends AppCompatActivity
         Glide.with(this).load(R.drawable.qun_logo).into(imgHeroGroup);
         Glide.with(this).load(R.drawable.qun_right_cloud).into(imgRightCloud);
         Glide.with(this).load(R.drawable.qun_skill_board).into(imgHeroSkillBase);
-        Glide.with(this).load(R.drawable.qun_skill_bar).into(imgHeroSkillBar);
+        Glide.with(this).load(R.drawable.qun_skill_bar).into(ivSkill1Bar);
+        Glide.with(this).load(R.drawable.qun_skill_bar).into(ivSkill2Bar);
+        Glide.with(this).load(R.drawable.qun_skill_bar).into(ivSkill3Bar);
     }
 
     public void loadGod(View view) {
@@ -285,7 +381,72 @@ public class HeroMakerActivity extends AppCompatActivity
         Glide.with(this).load(R.drawable.god).into(imgHeroFrame);
         Glide.with(this).load(R.drawable.god_logo).into(imgHeroGroup);
         Glide.with(this).load(R.drawable.god_skill_board).into(imgHeroSkillBase);
-        Glide.with(this).load(R.drawable.god_skill_bar).into(imgHeroSkillBar);
+        Glide.with(this).load(R.drawable.god_skill_bar).into(ivSkill1Bar);
+        Glide.with(this).load(R.drawable.god_skill_bar).into(ivSkill2Bar);
+        Glide.with(this).load(R.drawable.god_skill_bar).into(ivSkill3Bar);
+    }
+
+    public void upSkillBoard(View view) {
+        ViewGroup.LayoutParams layoutParams = imgHeroSkillBase.getLayoutParams();
+        layoutParams.height += 1;
+        imgHeroSkillBase.setLayoutParams(layoutParams);
+    }
+
+    public void downSkillBoard(View view) {
+        ViewGroup.LayoutParams layoutParams = imgHeroSkillBase.getLayoutParams();
+        layoutParams.height -= 1;
+        imgHeroSkillBase.setLayoutParams(layoutParams);
+    }
+
+    public void editSkill1Button(View view) {
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.layout_edit_skill_info, null);
+        AlertDialog.Builder addSkillDialog = new AlertDialog.Builder(this);
+        addSkillDialog.setTitle("请输入技能信息").setView(dialogView);
+        EditText addSkillDialogInfo = dialogView.findViewById(R.id.edit_skill_info);
+        EditText addSkillDialogName = dialogView.findViewById(R.id.edit_skill_name);
+        addSkillDialogInfo.setText(tvSkill1Info.getText().toString());
+        addSkillDialogName.setText(tvSkill1Name.getText().toString());
+        addSkillDialog.setPositiveButton("确定", (dialog, which) -> {
+            tvSkill1Name.setText(addSkillDialogName.getText().toString());
+            skill1Button.setText(addSkillDialogName.getText().toString());
+            tvSkill1Info.setText(addSkillDialogInfo.getText().toString());
+        });
+        addSkillDialog.show();
+    }
+
+    public void editSkill2Button(View view) {
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.layout_edit_skill_info, null);
+        AlertDialog.Builder addSkillDialog = new AlertDialog.Builder(this);
+        addSkillDialog.setTitle("请输入技能信息").setView(dialogView);
+        EditText addSkillDialogInfo = dialogView.findViewById(R.id.edit_skill_info);
+        EditText addSkillDialogName = dialogView.findViewById(R.id.edit_skill_name);
+        addSkillDialogInfo.setText(tvSkill2Info.getText().toString());
+        addSkillDialogName.setText(tvSkill2Name.getText().toString());
+        addSkillDialog.setPositiveButton("确定", (dialog, which) -> {
+            tvSkill2Name.setText(addSkillDialogName.getText().toString());
+            skill2Button.setText(addSkillDialogName.getText().toString());
+            tvSkill2Info.setText(addSkillDialogInfo.getText().toString());
+        });
+        addSkillDialog.show();
+    }
+
+    public void editSkill3Button(View view) {
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.layout_edit_skill_info, null);
+        AlertDialog.Builder addSkillDialog = new AlertDialog.Builder(this);
+        addSkillDialog.setTitle("请输入技能信息").setView(dialogView);
+        EditText addSkillDialogInfo = dialogView.findViewById(R.id.edit_skill_info);
+        EditText addSkillDialogName = dialogView.findViewById(R.id.edit_skill_name);
+        addSkillDialogInfo.setText(tvSkill3Info.getText().toString());
+        addSkillDialogName.setText(tvSkill3Name.getText().toString());
+        addSkillDialog.setPositiveButton("确定", (dialog, which) -> {
+            tvSkill3Name.setText(addSkillDialogName.getText().toString());
+            skill3Button.setText(addSkillDialogName.getText().toString());
+            tvSkill3Info.setText(addSkillDialogInfo.getText().toString());
+        });
+        addSkillDialog.show();
     }
 
     private void showTitleInputDialog() {
@@ -298,6 +459,7 @@ public class HeroMakerActivity extends AppCompatActivity
             tvHeroTitle.setText(editText.getText().toString());
         }).show();
     }
+
 
     private void showNameInputDialog() {
         final EditText editText = new EditText(this);

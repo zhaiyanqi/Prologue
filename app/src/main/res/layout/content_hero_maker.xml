@@ -95,72 +95,135 @@
                     app:layout_constraintTop_toBottomOf="@+id/hero_maker_title"
                     app:outerColor="#000000" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/hero_maker_skill_board_layout"
+                <ImageView
+                    android:id="@+id/hero_maker_skill_board"
                     android:layout_width="175dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="70dp"
                     android:layout_marginEnd="25dp"
                     android:layout_marginBottom="25dp"
+                    android:contentDescription="@string/empty"
+                    android:scaleType="fitXY"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent">
+                    app:layout_constraintEnd_toEndOf="parent" />
 
-                    <LinearLayout
-                        android:id="@+id/hero_maker_skill_board_texts"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:orientation="vertical"
-                        app:layout_constraintTop_toTopOf="parent">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="你可以使用无限张杀"
+                <!--skill1-->
+                <ImageView
+                    android:id="@+id/hero_maker_skill_1_bar"
+                    android:layout_width="40dp"
+                    android:layout_height="19dp"
+                    android:layout_marginStart="20dp"
+                    android:contentDescription="@string/empty"
+                    android:scaleType="fitXY"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_1_text" />
 
-                            />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="你可以使用无限张杀" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/hero_maker_skill_board"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:contentDescription="@string/empty"
-                        android:scaleType="fitXY"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <TextView
+                    android:id="@+id/hero_maker_skill_1_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/hero_maker_skill_1_bar"
+                    app:layout_constraintEnd_toEndOf="@+id/hero_maker_skill_1_bar"
+                    app:layout_constraintHorizontal_bias="0.45"
+                    app:layout_constraintStart_toStartOf="@+id/hero_maker_skill_1_bar"
+                    app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_1_bar"
+                    app:layout_constraintVertical_bias="0.42" />
+
+                <TextView
+                    android:id="@+id/hero_maker_skill_1_text"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="9sp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="@+id/hero_maker_skill_board"
+                    app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_board"
+                    tools:ignore="SmallSp" />
+
+                <!--skill2-->
+                <ImageView
+                    android:id="@+id/hero_maker_skill_2_bar"
+                    android:layout_width="40dp"
+                    android:layout_height="19dp"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="5dp"
+                    android:contentDescription="@string/empty"
+                    android:scaleType="fitXY"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_board_layout">
+                    app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_2_text" />
 
-                    <ImageView
-                        android:id="@+id/hero_maker_skill_bar"
-                        android:layout_width="40dp"
-                        android:layout_height="15dp"
+                <TextView
+                    android:id="@+id/hero_maker_skill_2_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/hero_maker_skill_2_bar"
+                    app:layout_constraintEnd_toEndOf="@+id/hero_maker_skill_2_bar"
+                    app:layout_constraintHorizontal_bias="0.45"
+                    app:layout_constraintStart_toStartOf="@+id/hero_maker_skill_2_bar"
+                    app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_2_bar"
+                    app:layout_constraintVertical_bias="0.42" />
 
-                        android:contentDescription="@string/empty"
-                        android:scaleType="fitXY" />
+                <TextView
+                    android:id="@+id/hero_maker_skill_2_text"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginTop="2dp"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="9sp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="@+id/hero_maker_skill_board"
+                    app:layout_constraintTop_toBottomOf="@+id/hero_maker_skill_1_text"
+                    tools:ignore="SmallSp" />
 
+                <!--skill3-->
+                <ImageView
+                    android:id="@+id/hero_maker_skill_3_bar"
+                    android:layout_width="40dp"
+                    android:layout_height="19dp"
+                    android:layout_marginStart="20dp"
+                    android:contentDescription="@string/empty"
+                    android:scaleType="fitXY"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_3_text" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/hero_maker_skill_3_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/hero_maker_skill_3_bar"
+                    app:layout_constraintEnd_toEndOf="@+id/hero_maker_skill_3_bar"
+                    app:layout_constraintHorizontal_bias="0.45"
+                    app:layout_constraintStart_toStartOf="@+id/hero_maker_skill_3_bar"
+                    app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_3_bar"
+                    app:layout_constraintVertical_bias="0.42" />
+
+                <TextView
+                    android:id="@+id/hero_maker_skill_3_text"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginTop="2dp"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="9sp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="@+id/hero_maker_skill_board"
+                    app:layout_constraintTop_toBottomOf="@+id/hero_maker_skill_2_text"
+                    tools:ignore="SmallSp" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
@@ -280,7 +343,62 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="horizontal" />
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/edit_skill_button_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="editSkill1Button"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/edit_skill_button_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="editSkill2Button"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/edit_skill_button_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="editSkill3Button"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/hero_maker_remove_skill"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="removeSkillButton"
+                    android:text="@string/remove_skill" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/skill_board" />
+
+                <Button
+                    android:id="@+id/hero_maker_btn_up_skill_board"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="upSkillBoard"
+                    android:text="@string/skill_board_up" />
+
+                <Button
+                    android:id="@+id/hero_maker_btn_down_skill_board"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="downSkillBoard"
+                    android:text="@string/skill_board_down" />
             </LinearLayout>
 
             <TextView
