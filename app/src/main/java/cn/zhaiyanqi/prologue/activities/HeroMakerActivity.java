@@ -33,42 +33,69 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.zhaiyanqi.prologue.R;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
-public class HeroMakerActivity extends AppCompatActivity
-        implements View.OnClickListener {
+public class HeroMakerActivity extends AppCompatActivity {
 
     private static final int REQUEST_IMAGE_CODE = 1;
     private RxPermissions rxPermissions;
     private Typeface titleFont, nameFont, skillNameFont;
-
-    private ImageView imgHeroGroup, imgHeroFrame,
-            imgHeroBaseBoard, imgHeroSkillBase, imgRightCloud,
-            imgHeroImg, imgHeroOutImg;
-    private CardView layout;
-    private TextView tvHeroTitle, tvHeroName;
-    private CheckBox checkBoxBaseBoard, checkBoxFrame, checkBoxLogo, checkBoxSkill;
-    private Button btnAddSkill, btnHeroName, btnHeroTitle, btnExportPhoto;
-    private LinearLayout llSKills, llSkillsAll;
-    //    private ConstraintLayout skillBoardLayout;
     private Bitmap.CompressFormat exportFormat;
+    private ExecutorService executorService;
 
-    private TextView tvSkill1Name, tvSkill1Info;
-    private TextView tvSkill2Name, tvSkill2Info;
-    private TextView tvSkill3Name, tvSkill3Info;
-    private ImageView ivSkill1Bar, ivSkill2Bar, ivSkill3Bar;
-    private Button skill1Button, skill2Button, skill3Button;
+    // hero view
+    private ImageView imgHeroGroup;
+    private ImageView imgHeroFrame;
+    private ImageView imgHeroBaseBoard;
+    private ImageView imgHeroSkillBase;
+    private ImageView imgRightCloud;
+    private ImageView imgHeroImg;
+    private ImageView imgHeroOutImg;
+    private CardView layout;
+    private TextView tvHeroTitle;
+    private TextView tvHeroName;
+    private CheckBox checkBoxBaseBoard;
+    private CheckBox checkBoxFrame;
+    private CheckBox checkBoxLogo;
+    private CheckBox checkBoxSkill;
+    private LinearLayout llSKills;
+    private LinearLayout llSkillsAll;
+
+    //others
+    private TextView tvSkill1Name;
+    private TextView tvSkill1Info;
+    private TextView tvSkill2Name;
+    private TextView tvSkill2Info;
+    private TextView tvSkill3Name;
+    private TextView tvSkill3Info;
+    private ImageView ivSkill1Bar;
+    private ImageView ivSkill2Bar;
+    private ImageView ivSkill3Bar;
+    private Button skill1Button;
+    private Button skill2Button;
+    private Button skill3Button;
+    private int skillCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hero_maker);
+        rxPermissions = new RxPermissions(this);
+        ButterKnife.bind(this);
+        executorService = Executors.newCachedThreadPool();
         initTitle();
         initView();
         initListener();
@@ -76,7 +103,6 @@ public class HeroMakerActivity extends AppCompatActivity
         loadDefaultFormat();
         initFonts();
         initDialog();
-        rxPermissions = new RxPermissions(this);
     }
 
     private void loadDefaultFormat() {
@@ -91,29 +117,21 @@ public class HeroMakerActivity extends AppCompatActivity
         loadWei(null);
     }
 
-    private int skillCount = 0;
-
+    @SuppressLint("CheckResult")
     private void initFonts() {
-        new Thread(() -> {
-            try {
-                titleFont = Typeface.createFromAsset(getAssets(), "fonts/DFPNewChuan-B5.ttf");
-                nameFont = Typeface.createFromAsset(getAssets(), "fonts/jmmcsgsfix.ttf");
-                skillNameFont = Typeface.createFromAsset(getAssets(), "fonts/fzlsft.ttf");
-                runOnUiThread(() -> {
+        Observable.just(
+                titleFont = Typeface.createFromAsset(getAssets(), "fonts/DFPNewChuan-B5.ttf"),
+                nameFont = Typeface.createFromAsset(getAssets(), "fonts/jmmcsgsfix.ttf"),
+                skillNameFont = Typeface.createFromAsset(getAssets(), "fonts/fzlsft.ttf")
+        ).observeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(o -> {
                     tvHeroTitle.setTypeface(titleFont);
                     tvHeroName.setTypeface(nameFont);
                     tvSkill1Name.setTypeface(skillNameFont);
                     tvSkill2Name.setTypeface(skillNameFont);
                     tvSkill3Name.setTypeface(skillNameFont);
-                });
-            } catch (Exception e) {
-                runOnUiThread(() ->
-                        Toast.makeText(HeroMakerActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show()
-                );
-            }
-
-        }).start();
-
+                }, e -> Toast.makeText(HeroMakerActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
     private void initView() {
@@ -136,13 +154,10 @@ public class HeroMakerActivity extends AppCompatActivity
         checkBoxLogo = findViewById(R.id.checkbox_hero_logo);
         checkBoxSkill = findViewById(R.id.checkbox_hero_skill);
 
-        btnAddSkill = findViewById(R.id.hero_maker_add_skill);
+
         llSKills = findViewById(R.id.hero_maker_skills);
         llSkillsAll = findViewById(R.id.hero_maker_skills_ll);
 
-        btnHeroName = findViewById(R.id.hero_maker_btn_name);
-        btnHeroTitle = findViewById(R.id.hero_maker_btn_title);
-        btnExportPhoto = findViewById(R.id.hero_maker_export_photo);
 //        llSkillBoardText = findViewById(R.id.hero_maker_skill_board_texts);
 //        skillBoardLayout = findViewById(R.id.hero_maker_skill_board_layout);
 
@@ -184,74 +199,49 @@ public class HeroMakerActivity extends AppCompatActivity
         Glide.with(this).load(R.drawable.btn_hero_maker_bg).into((ImageView) findViewById(R.id.hero_maker_img));
     }
 
-    @SuppressLint("CheckResult")
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.hero_maker_btn_title: {
-                showTitleInputDialog();
-                break;
-            }
-            case R.id.hero_maker_btn_name: {
-                showNameInputDialog();
-                break;
-            }
-
-            case R.id.hero_maker_add_skill: {
-                addSkillButton();
-                break;
-            }
-            case R.id.hero_maker_import_pic: {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/*");
-                intent.putExtra("crop", true);
-                intent.putExtra("return-data", true);
-                startActivityForResult(intent, REQUEST_IMAGE_CODE);
-                break;
-            }
-
-            case R.id.hero_maker_export_photo: {
-                rxPermissions
-                        .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        .subscribe(granted -> {
-                            if (granted) {
-                                saveToGallery(String.valueOf(new Date().getTime()), exportFormat, 100);
-                                Toast.makeText(this, R.string.app_name, Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(this, R.string.hero_maker, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                break;
-            }
-        }
-    }
-
     private void initListener() {
-        btnHeroName.setOnClickListener(this);
-        btnHeroTitle.setOnClickListener(this);
-        btnExportPhoto.setOnClickListener(this);
-
-        findViewById(R.id.hero_maker_import_pic).setOnClickListener(this);
-
         checkBoxBaseBoard.setOnCheckedChangeListener((buttonView, isChecked) ->
                 imgHeroBaseBoard.setVisibility(isChecked ? View.VISIBLE : View.GONE));
         checkBoxFrame.setOnCheckedChangeListener((buttonView, isChecked) ->
                 imgHeroFrame.setVisibility(isChecked ? View.VISIBLE : View.GONE));
         checkBoxLogo.setOnCheckedChangeListener((buttonView, isChecked) ->
                 imgHeroGroup.setVisibility(isChecked ? View.VISIBLE : View.GONE));
-        checkBoxSkill.setOnCheckedChangeListener((buttonView, isChecked) -> {
-//                    imgHeroSkillBar.setVisibility(isChecked ? View.VISIBLE : View.GONE);
-                    imgHeroSkillBase.setVisibility(isChecked ? View.VISIBLE : View.GONE);
-//                    ViewGroup.LayoutParams layoutParams = imgHeroSkillBase.getLayoutParams();
-//                    layoutParams.height += 10;
-//                    imgHeroSkillBase.setLayoutParams(layoutParams);
-                }
-        );
+        checkBoxSkill.setOnCheckedChangeListener((buttonView, isChecked) ->
+                imgHeroSkillBase.setVisibility(isChecked ? View.VISIBLE : View.GONE));
 
-        btnAddSkill.setOnClickListener(this);
     }
 
-    private void addSkillButton() {
+    @SuppressLint("CheckResult")
+    @OnClick(R.id.hero_maker_export_photo)
+    void exportPhoto() {
+        rxPermissions
+                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(granted -> {
+                    if (granted) {
+                        executorService.execute(() -> {
+                            if (saveToGallery(String.valueOf(new Date().getTime()), exportFormat, 100)) {
+                                runOnUiThread(() -> Toast.makeText(this, R.string.export_done, Toast.LENGTH_SHORT).show());
+                            } else {
+                                runOnUiThread(() -> Toast.makeText(this, R.string.export_fail, Toast.LENGTH_SHORT).show());
+                            }
+                        });
+                    } else {
+                        Toast.makeText(this, R.string.no_permission, Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    @OnClick(R.id.hero_maker_import_pic)
+    void importPhoto() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        intent.putExtra("crop", true);
+        intent.putExtra("return-data", true);
+        startActivityForResult(intent, REQUEST_IMAGE_CODE);
+    }
+
+    @OnClick(R.id.hero_maker_add_skill)
+    void addSkillButton() {
         if (skillCount >= 3) {
             Toast.makeText(this, "不能再多了", Toast.LENGTH_SHORT).show();
             return;
@@ -400,7 +390,7 @@ public class HeroMakerActivity extends AppCompatActivity
 
     public void editSkill1Button(View view) {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
-        View dialogView = inflater.inflate(R.layout.layout_edit_skill_info, null);
+        View dialogView = inflater.inflate(R.layout.layout_edit_skill_info, null, false);
         AlertDialog.Builder addSkillDialog = new AlertDialog.Builder(this);
         addSkillDialog.setTitle("请输入技能信息").setView(dialogView);
         EditText addSkillDialogInfo = dialogView.findViewById(R.id.edit_skill_info);
@@ -449,27 +439,26 @@ public class HeroMakerActivity extends AppCompatActivity
         addSkillDialog.show();
     }
 
-    private void showTitleInputDialog() {
+    @OnClick(R.id.hero_maker_btn_title)
+    void showTitleInputDialog() {
         final EditText editText = new EditText(this);
         editText.setText(tvHeroTitle.getText().toString());
         AlertDialog.Builder inputDialog =
                 new AlertDialog.Builder(this);
         inputDialog.setTitle("请输入武将称号").setView(editText);
-        inputDialog.setPositiveButton("确定", (dialog, which) -> {
-            tvHeroTitle.setText(editText.getText().toString());
-        }).show();
+        inputDialog.setPositiveButton("确定", (dialog, which) ->
+                tvHeroTitle.setText(editText.getText().toString())).show();
     }
 
-
-    private void showNameInputDialog() {
+    @OnClick(R.id.hero_maker_btn_name)
+    void showNameInputDialog() {
         final EditText editText = new EditText(this);
         editText.setText(tvHeroName.getText().toString());
         AlertDialog.Builder inputDialog =
                 new AlertDialog.Builder(this);
         inputDialog.setTitle("请输入武将名").setView(editText);
-        inputDialog.setPositiveButton("确定", (dialog, which) -> {
-            tvHeroName.setText(editText.getText().toString());
-        }).show();
+        inputDialog.setPositiveButton("确定", (dialog, which) ->
+                tvHeroName.setText(editText.getText().toString())).show();
     }
 
     @Override
@@ -580,4 +569,11 @@ public class HeroMakerActivity extends AppCompatActivity
         exportFormat = Bitmap.CompressFormat.WEBP;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (executorService != null && !executorService.isShutdown()) {
+            executorService.shutdown();
+        }
+    }
 }

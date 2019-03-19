@@ -44,5 +44,8 @@
     <string name="skill_name">技能名</string>
     <string name="skill_info">技能描述</string>
     <string name="remove_skill">移除技能</string>
+    <string name="export_fail">导出失败</string>
+    <string name="export_done">导出成功</string>
+    <string name="no_permission">无法获得文件读写权限</string>
 
 </resources>
