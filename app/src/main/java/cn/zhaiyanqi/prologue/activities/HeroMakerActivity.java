@@ -1,7 +1,6 @@
 package cn.zhaiyanqi.prologue.activities;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -46,6 +46,7 @@ import butterknife.OnClick;
 import cn.zhaiyanqi.prologue.R;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class HeroMakerActivity extends AppCompatActivity {
@@ -117,13 +118,15 @@ public class HeroMakerActivity extends AppCompatActivity {
         loadWei(null);
     }
 
-    @SuppressLint("CheckResult")
+    private Disposable fontSubscribe;
+
     private void initFonts() {
-        Observable.just(
-                titleFont = Typeface.createFromAsset(getAssets(), "fonts/DFPNewChuan-B5.ttf"),
-                nameFont = Typeface.createFromAsset(getAssets(), "fonts/jmmcsgsfix.ttf"),
-                skillNameFont = Typeface.createFromAsset(getAssets(), "fonts/fzlsft.ttf")
-        ).observeOn(Schedulers.io())
+        fontSubscribe = Observable.create(emitter -> {
+            titleFont = Typeface.createFromAsset(getAssets(), "fonts/DFPNewChuan-B5.ttf");
+            nameFont = Typeface.createFromAsset(getAssets(), "fonts/jmmcsgsfix.ttf");
+            skillNameFont = Typeface.createFromAsset(getAssets(), "fonts/fzlsft.ttf");
+            emitter.onComplete();
+        }).observeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
                     tvHeroTitle.setTypeface(titleFont);
@@ -179,14 +182,14 @@ public class HeroMakerActivity extends AppCompatActivity {
 
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        if (item.getItemId() == android.R.id.home) {
-//            onBackPressed();
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     private void initTitle() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -211,10 +214,9 @@ public class HeroMakerActivity extends AppCompatActivity {
 
     }
 
-    @SuppressLint("CheckResult")
     @OnClick(R.id.hero_maker_export_photo)
     void exportPhoto() {
-        rxPermissions
+        Disposable subscribe = rxPermissions
                 .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .subscribe(granted -> {
                     if (granted) {
@@ -575,5 +577,10 @@ public class HeroMakerActivity extends AppCompatActivity {
         if (executorService != null && !executorService.isShutdown()) {
             executorService.shutdown();
         }
+
+        if (fontSubscribe != null && !fontSubscribe.isDisposed()) {
+            fontSubscribe.dispose();
+        }
     }
+
 }
