@@ -101,6 +101,9 @@ public class HeroMakerActivity extends AppCompatActivity {
     LinearLayout llSKills;
     @BindView(R.id.hero_maker_skills_ll)
     LinearLayout llSkillsAll;
+    @BindView(R.id.hero_maker_hp)
+    LinearLayout heroHpLayout;
+
     //others
     @BindView(R.id.hero_maker_skill_1_name)
     TextView tvSkill1Name;
@@ -236,10 +239,6 @@ public class HeroMakerActivity extends AppCompatActivity {
             layoutParams.leftMargin += moveStepOffset;
             currentView.requestLayout();
         }
-    }
-
-    public void chooseCurrentView(View view) {
-        currentView = view;
     }
 
     private void loadDefaultFormat() {
@@ -472,7 +471,19 @@ public class HeroMakerActivity extends AppCompatActivity {
     public void downSkillBoard(View view) {
         ViewGroup.LayoutParams layoutParams = imgHeroSkillBase.getLayoutParams();
         layoutParams.height -= 1;
-        imgHeroSkillBase.setLayoutParams(layoutParams);
+        imgHeroSkillBase.requestLayout();
+    }
+
+    public void fatSkillBoard(View view) {
+        ViewGroup.LayoutParams layoutParams = imgHeroSkillBase.getLayoutParams();
+        layoutParams.width += 1;
+        imgHeroSkillBase.requestLayout();
+    }
+
+    public void slimSkillBoard(View view) {
+        ViewGroup.LayoutParams layoutParams = imgHeroSkillBase.getLayoutParams();
+        layoutParams.width -= 1;
+        imgHeroSkillBase.requestLayout();
     }
 
     public void editSkill1Button(View view) {
@@ -680,6 +691,14 @@ public class HeroMakerActivity extends AppCompatActivity {
         checkNameTitleGroup(tvHeroTitle);
     }
 
+    public void rbHpClicked(View view) {
+
+    }
+
+    public void rbSkillBoardClicked(View view) {
+        checkNameTitleGroup(imgHeroSkillBase);
+    }
+
     private void checkNameTitleGroup(View view) {
         currentView = view;
         skill1Group.clearCheck();
@@ -743,4 +762,6 @@ public class HeroMakerActivity extends AppCompatActivity {
         skill2Group.clearCheck();
         nameTitleGroup.clearCheck();
     }
+
+
 }

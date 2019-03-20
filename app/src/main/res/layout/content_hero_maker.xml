@@ -73,7 +73,6 @@
                     android:layout_marginTop="75dp"
                     android:ems="1"
                     android:maxLength="5"
-                    android:onClick="chooseCurrentView"
                     android:textColor="@color/colorWhite"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -89,7 +88,6 @@
                     android:ems="1"
                     android:lineSpacingExtra="8dp"
                     android:maxLength="4"
-                    android:onClick="chooseCurrentView"
                     android:textColor="@color/colorWhite"
                     android:textSize="28sp"
                     app:innerColor="#ffffff"
@@ -97,16 +95,24 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:outerColor="#000000" />
 
+                <LinearLayout
+                    android:id="@+id/hero_maker_hp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <ImageView
                     android:id="@+id/hero_maker_skill_board"
                     android:layout_width="175dp"
                     android:layout_height="70dp"
-                    android:layout_marginEnd="25dp"
-                    android:layout_marginBottom="25dp"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginTop="256dp"
                     android:contentDescription="@string/empty"
                     android:scaleType="fitXY"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <!--skill1-->
                 <ImageView
@@ -114,12 +120,12 @@
                     android:layout_width="40dp"
                     android:layout_height="19dp"
                     android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
                     android:contentDescription="@string/empty"
-                    android:onClick="chooseCurrentView"
                     android:scaleType="fitXY"
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_1_text" />
+                    app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_board" />
 
                 <TextView
                     android:id="@+id/hero_maker_skill_1_name"
@@ -140,8 +146,7 @@
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="18dp"
-                    android:layout_marginTop="10dp"
-                    android:onClick="chooseCurrentView"
+                    android:layout_marginTop="8dp"
                     android:textColor="@color/colorBlack"
                     android:textSize="9sp"
                     android:visibility="gone"
@@ -155,12 +160,12 @@
                     android:layout_width="40dp"
                     android:layout_height="19dp"
                     android:layout_marginStart="20dp"
+                    android:layout_marginTop="30dp"
                     android:contentDescription="@string/empty"
-                    android:onClick="chooseCurrentView"
                     android:scaleType="fitXY"
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_2_text" />
+                    app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_board" />
 
                 <TextView
                     android:id="@+id/hero_maker_skill_2_name"
@@ -181,13 +186,12 @@
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="18dp"
-                    android:layout_marginTop="2dp"
-                    android:onClick="chooseCurrentView"
+                    android:layout_marginTop="30dp"
                     android:textColor="@color/colorBlack"
                     android:textSize="9sp"
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="@+id/hero_maker_skill_board"
-                    app:layout_constraintTop_toBottomOf="@+id/hero_maker_skill_1_text"
+                    app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_board"
                     tools:ignore="SmallSp" />
 
                 <!--skill3-->
@@ -196,12 +200,12 @@
                     android:layout_width="40dp"
                     android:layout_height="19dp"
                     android:layout_marginStart="20dp"
+                    android:layout_marginTop="50dp"
                     android:contentDescription="@string/empty"
-                    android:onClick="chooseCurrentView"
                     android:scaleType="fitXY"
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_3_text" />
+                    app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_board" />
 
                 <TextView
                     android:id="@+id/hero_maker_skill_3_name"
@@ -222,13 +226,12 @@
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="18dp"
-                    android:layout_marginTop="2dp"
-                    android:onClick="chooseCurrentView"
+                    android:layout_marginTop="50dp"
                     android:textColor="@color/colorBlack"
                     android:textSize="9sp"
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="@+id/hero_maker_skill_board"
-                    app:layout_constraintTop_toBottomOf="@+id/hero_maker_skill_2_text"
+                    app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_board"
                     tools:ignore="SmallSp" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -485,25 +488,16 @@
                         app:layout_constraintTop_toBottomOf="@+id/left_arrow" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <TextView
-                    android:id="@+id/tv_step_length"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="3dp"
-                    android:text="@string/step_len"
-                    app:layout_constraintStart_toEndOf="@id/arrow_layout"
-                    app:layout_constraintTop_toTopOf="parent" />
-
                 <EditText
                     android:id="@+id/edit_text_step_length"
                     android:layout_width="40dp"
                     android:layout_height="wrap_content"
+                    android:hint="@string/step_len"
                     android:imeOptions="actionDone"
                     android:inputType="number"
                     android:maxLines="1"
                     android:textSize="12sp"
-                    app:layout_constraintStart_toEndOf="@id/tv_step_length"
+                    app:layout_constraintEnd_toEndOf="@id/arrow_layout"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <RadioGroup
@@ -527,6 +521,18 @@
                         android:layout_height="wrap_content"
                         android:onClick="rbNameClicked"
                         android:text="@string/hero_name" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="rbHpClicked"
+                        android:text="@string/hero_hp" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="rbSkillBoardClicked"
+                        android:text="@string/skill_board" />
                 </RadioGroup>
 
                 <RadioGroup
@@ -679,7 +685,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/skill_board" />
+                        android:ems="3"
+                        android:text="@string/skill_board"
+                        android:textSize="12sp" />
 
                     <Button
                         android:id="@+id/hero_maker_btn_up_skill_board"
@@ -694,6 +702,18 @@
                         android:layout_height="wrap_content"
                         android:onClick="downSkillBoard"
                         android:text="@string/skill_board_down" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="fatSkillBoard"
+                        android:text="@string/skill_board_fat" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="slimSkillBoard"
+                        android:text="@string/skill_board_slim" />
                 </LinearLayout>
 
                 <TextView

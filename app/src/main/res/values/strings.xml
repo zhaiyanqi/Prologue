@@ -38,7 +38,7 @@
     <string name="format_jpg">JPG</string>
     <string name="export">导出</string>
     <string name="format_webp">WEBP</string>
-    <string name="skill_board">技能背景板</string>
+    <string name="skill_board">技能背景</string>
     <string name="skill_board_up">变高</string>
     <string name="skill_board_down">变矮</string>
     <string name="skill_name">技能名</string>
@@ -50,10 +50,12 @@
     <string name="base_info">基本信息</string>
     <string name="adjust_position">调整位置</string>
     <string name="other_info">高级选项</string>
-    <string name="step_len">移动步长</string>
+    <string name="step_len">步长</string>
     <string name="skill1_bar">技能一底板</string>
     <string name="skill1">技能一</string>
     <string name="skill2">技能二</string>
     <string name="skill3">技能三</string>
+    <string name="skill_board_fat">变宽</string>
+    <string name="skill_board_slim">变窄</string>
 
 </resources>
