@@ -136,6 +136,16 @@ public class HeroMakerActivity extends AppCompatActivity {
     private View currentView;
     private int moveStepOffset = 1;
 
+    @BindView(R.id.rg_move_position_1)
+    RadioGroup nameTitleGroup;
+    @BindView(R.id.rg_move_position_skill_1)
+    RadioGroup skill1Group;
+    @BindView(R.id.rg_move_position_skill_2)
+    RadioGroup skill2Group;
+    @BindView(R.id.rg_move_position_skill_3)
+    RadioGroup skill3Group;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -658,5 +668,79 @@ public class HeroMakerActivity extends AppCompatActivity {
         if (fontSubscribe != null && !fontSubscribe.isDisposed()) {
             fontSubscribe.dispose();
         }
+    }
+
+
+    //选中移动控件按钮时的监听事件
+    public void rbNameClicked(View view) {
+        checkNameTitleGroup(tvHeroName);
+    }
+
+    public void rbTitleClicked(View view) {
+        checkNameTitleGroup(tvHeroTitle);
+    }
+
+    private void checkNameTitleGroup(View view) {
+        currentView = view;
+        skill1Group.clearCheck();
+        skill2Group.clearCheck();
+        skill3Group.clearCheck();
+    }
+
+    public void rbSkill1BarClicked(View view) {
+        checkSkill1Group(ivSkill1Bar);
+    }
+
+    public void rbSkill1NameClicked(View view) {
+        checkSkill1Group(tvSkill1Name);
+    }
+
+    public void rbSkill1InfoClicked(View view) {
+        checkSkill1Group(tvSkill1Info);
+    }
+
+    private void checkSkill1Group(View view) {
+        currentView = view;
+        nameTitleGroup.clearCheck();
+        skill2Group.clearCheck();
+        skill3Group.clearCheck();
+    }
+
+    public void rbSkill2BarClicked(View view) {
+        checkSkill2Group(ivSkill2Bar);
+    }
+
+    public void rbSkill2NameClicked(View view) {
+        checkSkill2Group(tvSkill2Name);
+    }
+
+    public void rbSkill2InfoClicked(View view) {
+        checkSkill2Group(tvSkill2Info);
+    }
+
+    private void checkSkill2Group(View view) {
+        currentView = view;
+        skill1Group.clearCheck();
+        nameTitleGroup.clearCheck();
+        skill3Group.clearCheck();
+    }
+
+    public void rbSkill3BarClicked(View view) {
+        checkSkill3Group(ivSkill3Bar);
+    }
+
+    public void rbSkill3NameClicked(View view) {
+        checkSkill3Group(tvSkill3Name);
+    }
+
+    public void rbSkill3InfoClicked(View view) {
+        checkSkill3Group(tvSkill3Info);
+    }
+
+    public void checkSkill3Group(View view) {
+        currentView = view;
+        skill1Group.clearCheck();
+        skill2Group.clearCheck();
+        nameTitleGroup.clearCheck();
     }
 }

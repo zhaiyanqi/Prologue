@@ -42,7 +42,7 @@
     <string name="skill_board_up">变高</string>
     <string name="skill_board_down">变矮</string>
     <string name="skill_name">技能名</string>
-    <string name="skill_info">技能描述</string>
+    <string name="skill_info">描述</string>
     <string name="remove_skill">移除技能</string>
     <string name="export_fail">导出失败</string>
     <string name="export_done">导出成功</string>
@@ -51,5 +51,9 @@
     <string name="adjust_position">调整位置</string>
     <string name="other_info">高级选项</string>
     <string name="step_len">移动步长</string>
+    <string name="skill1_bar">技能一底板</string>
+    <string name="skill1">技能一</string>
+    <string name="skill2">技能二</string>
+    <string name="skill3">技能三</string>
 
 </resources>

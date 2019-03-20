@@ -485,15 +485,157 @@
                         app:layout_constraintTop_toBottomOf="@+id/left_arrow" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <EditText
-                    android:id="@+id/edit_text_step_length"
+                <TextView
+                    android:id="@+id/tv_step_length"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:hint="@string/step_len"
-                    android:inputType="number"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="3dp"
+                    android:text="@string/step_len"
                     app:layout_constraintStart_toEndOf="@id/arrow_layout"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/edit_text_step_length"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@id/tv_step_length"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <RadioGroup
+                    android:id="@+id/rg_move_position_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/edit_text_step_length"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="rbTitleClicked"
+                        android:text="@string/hero_title" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="rbNameClicked"
+                        android:text="@string/hero_name" />
+                </RadioGroup>
+
+                <RadioGroup
+                    android:id="@+id/rg_move_position_skill_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/arrow_layout"
+                    app:layout_constraintTop_toBottomOf="@id/rg_move_position_1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/skill1"
+                        app:layout_constraintStart_toEndOf="@id/arrow_layout"
+                        app:layout_constraintTop_toBottomOf="@id/rg_move_position_1" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="rbSkill1BarClicked"
+                        android:text="@string/hero_base_board" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="rbSkill1NameClicked"
+                        android:text="@string/skill_name" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="rbSkill1InfoClicked"
+                        android:text="@string/skill_info" />
+                </RadioGroup>
+
+                <RadioGroup
+                    android:id="@+id/rg_move_position_skill_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/arrow_layout"
+                    app:layout_constraintTop_toBottomOf="@id/rg_move_position_skill_1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/skill2"
+                        app:layout_constraintStart_toEndOf="@id/arrow_layout"
+                        app:layout_constraintTop_toBottomOf="@id/rg_move_position_1" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="rbSkill2BarClicked"
+                        android:text="@string/hero_base_board" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="rbSkill2NameClicked"
+                        android:text="@string/skill_name" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="rbSkill2InfoClicked"
+                        android:text="@string/skill_info" />
+                </RadioGroup>
+
+                <RadioGroup
+                    android:id="@+id/rg_move_position_skill_3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/arrow_layout"
+                    app:layout_constraintTop_toBottomOf="@id/rg_move_position_skill_2">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/skill3"
+                        app:layout_constraintStart_toEndOf="@id/arrow_layout"
+                        app:layout_constraintTop_toBottomOf="@id/rg_move_position_1" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="rbSkill3BarClicked"
+                        android:text="@string/hero_base_board" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="rbSkill3NameClicked"
+                        android:text="@string/skill_name" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="rbSkill3InfoClicked"
+                        android:text="@string/skill_info" />
+                </RadioGroup>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
