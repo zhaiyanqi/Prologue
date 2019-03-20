@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,6 +47,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 import cn.zhaiyanqi.prologue.R;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -59,6 +61,13 @@ public class HeroMakerActivity extends AppCompatActivity {
     private Typeface titleFont, nameFont, skillNameFont;
     private Bitmap.CompressFormat exportFormat;
     private ExecutorService executorService;
+    @BindView(R.id.menu_bar_adjust_position_arrow)
+    ImageView menuAdjustPositionArrow;
+    @BindView(R.id.layout_adjust_position)
+    ConstraintLayout adjustPositionLayout;
+    @BindView(R.id.menu_bar_basic_info_arrow)
+    ImageView basicInfoArrow;
+
     // hero view
     @BindView(R.id.hero_maker_main_card)
     CardView cardView;
@@ -117,8 +126,15 @@ public class HeroMakerActivity extends AppCompatActivity {
     Button skill2Button;
     @BindView(R.id.edit_skill_button_3)
     Button skill3Button;
+    @BindView(R.id.layout_basic_info)
+    LinearLayout basicInfoLayout;
+    @BindView(R.id.menu_bar_advance_option_arrow)
+    ImageView advanceOptionArrow;
+    @BindView(R.id.layout_advance_option)
+    LinearLayout advanceOptionLayout;
     private int skillCount = 0;
     private View currentView;
+    private int moveStepOffset = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,11 +151,52 @@ public class HeroMakerActivity extends AppCompatActivity {
         initFonts();
     }
 
+    @OnTextChanged(R.id.edit_text_step_length)
+    void changeMoveStep(CharSequence text) {
+        String str = text.toString();
+        if (!TextUtils.isEmpty(str)) {
+            moveStepOffset = Integer.parseInt(str);
+        }
+    }
+
+    @OnClick(R.id.menu_bar_advance_option)
+    void switchMenuAdvanceOption() {
+        if (advanceOptionLayout.getVisibility() == View.GONE) {
+            advanceOptionLayout.setVisibility(View.VISIBLE);
+            Glide.with(this).load(R.drawable.ic_expend).into(advanceOptionArrow);
+        } else {
+            advanceOptionLayout.setVisibility(View.GONE);
+            Glide.with(this).load(R.drawable.ic_close).into(advanceOptionArrow);
+        }
+    }
+
+    @OnClick(R.id.menu_bar_adjust_position)
+    void switchMenuAdjustPosition() {
+        if (adjustPositionLayout.getVisibility() == View.GONE) {
+            adjustPositionLayout.setVisibility(View.VISIBLE);
+            Glide.with(this).load(R.drawable.ic_expend).into(menuAdjustPositionArrow);
+        } else {
+            adjustPositionLayout.setVisibility(View.GONE);
+            Glide.with(this).load(R.drawable.ic_close).into(menuAdjustPositionArrow);
+        }
+    }
+
+    @OnClick(R.id.menu_bar_basic_info)
+    void switchMenuBasicInfo() {
+        if (basicInfoLayout.getVisibility() == View.GONE) {
+            basicInfoLayout.setVisibility(View.VISIBLE);
+            Glide.with(this).load(R.drawable.ic_expend).into(basicInfoArrow);
+        } else {
+            basicInfoLayout.setVisibility(View.GONE);
+            Glide.with(this).load(R.drawable.ic_close).into(basicInfoArrow);
+        }
+    }
+
     @OnClick(R.id.up_arrow)
     void moveUp() {
         if (currentView != null) {
             ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) currentView.getLayoutParams();
-            layoutParams.topMargin -= 1;
+            layoutParams.topMargin -= moveStepOffset;
             currentView.requestLayout();
         }
     }
@@ -148,7 +205,7 @@ public class HeroMakerActivity extends AppCompatActivity {
     void moveDown() {
         if (currentView != null) {
             ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) currentView.getLayoutParams();
-            layoutParams.topMargin += 1;
+            layoutParams.topMargin += moveStepOffset;
             currentView.requestLayout();
         }
     }
@@ -157,7 +214,7 @@ public class HeroMakerActivity extends AppCompatActivity {
     void moveLeft() {
         if (currentView != null) {
             ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) currentView.getLayoutParams();
-            layoutParams.leftMargin -= 1;
+            layoutParams.leftMargin -= moveStepOffset;
             currentView.requestLayout();
         }
     }
@@ -166,7 +223,7 @@ public class HeroMakerActivity extends AppCompatActivity {
     void moveRight() {
         if (currentView != null) {
             ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) currentView.getLayoutParams();
-            layoutParams.leftMargin += 1;
+            layoutParams.leftMargin += moveStepOffset;
             currentView.requestLayout();
         }
     }
@@ -223,7 +280,9 @@ public class HeroMakerActivity extends AppCompatActivity {
 //        if (actionBar != null) {
 //            actionBar.setDisplayHomeAsUpEnabled(true);
 //        }
-        Glide.with(this).load(R.drawable.btn_hero_maker_bg).into((ImageView) findViewById(R.id.hero_maker_img));
+        Glide.with(this)
+                .load(R.drawable.btn_hero_maker_bg)
+                .into((ImageView) findViewById(R.id.hero_maker_img));
     }
 
     private void initListener() {

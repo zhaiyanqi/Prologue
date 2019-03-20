@@ -47,5 +47,9 @@
     <string name="export_fail">导出失败</string>
     <string name="export_done">导出成功</string>
     <string name="no_permission">无法获得文件读写权限</string>
+    <string name="base_info">基本信息</string>
+    <string name="adjust_position">调整位置</string>
+    <string name="other_info">高级选项</string>
+    <string name="step_len">移动步长</string>
 
 </resources>
