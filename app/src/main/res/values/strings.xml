@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Prologue</string>
+    <string name="app_name">三国杀制图</string>
     <string name="empty">""</string>
     <string name="start_game">一二三四</string>
 
@@ -9,7 +9,7 @@
     <string name="card_version">卡牌版本</string>
     <string name="hero_group">武将势力</string>
     <string name="hero_group_with_dot">武将势力:</string>
-    <string name="max_hp">卡牌版本</string>
+    <string name="max_hp">生命值</string>
     <string name="show_or_hide">隐藏/显示</string>
 
     <string name="hero_base_board">底板</string>

@@ -147,6 +147,18 @@ public class HeroMakerActivity extends AppCompatActivity {
     RadioGroup skill2Group;
     @BindView(R.id.rg_move_position_skill_3)
     RadioGroup skill3Group;
+    @BindView(R.id.iv_hp_1)
+    ImageView ivHp1;
+    @BindView(R.id.iv_hp_2)
+    ImageView ivHp2;
+    @BindView(R.id.iv_hp_3)
+    ImageView ivHp3;
+    @BindView(R.id.iv_hp_4)
+    ImageView ivHp4;
+    @BindView(R.id.iv_hp_5)
+    ImageView ivHp5;
+    @BindView(R.id.tv_hp_text)
+    TextView tvHpText;
 
 
     @Override
@@ -169,6 +181,38 @@ public class HeroMakerActivity extends AppCompatActivity {
         String str = text.toString();
         if (!TextUtils.isEmpty(str)) {
             moveStepOffset = Integer.parseInt(str);
+        }
+    }
+
+    @OnTextChanged(R.id.edit_text_maxhp)
+    void changeMaxHp(CharSequence text) {
+        String str = text.toString();
+        if (!TextUtils.isEmpty(str)) {
+            int hp = Integer.parseInt(str);
+            ivHp1.setVisibility(View.GONE);
+            ivHp2.setVisibility(View.GONE);
+            ivHp3.setVisibility(View.GONE);
+            ivHp4.setVisibility(View.GONE);
+            ivHp5.setVisibility(View.GONE);
+            tvHpText.setVisibility(View.GONE);
+            switch (hp) {
+                case 5:
+                    ivHp5.setVisibility(View.VISIBLE);
+                case 4:
+                    ivHp4.setVisibility(View.VISIBLE);
+                case 3:
+                    ivHp3.setVisibility(View.VISIBLE);
+                case 2:
+                    ivHp2.setVisibility(View.VISIBLE);
+                case 1:
+                    ivHp1.setVisibility(View.VISIBLE);
+                case 0:
+                    break;
+                default: {
+                    tvHpText.setVisibility(View.VISIBLE);
+                    tvHpText.setText(hp + "/" + hp);
+                }
+            }
         }
     }
 
@@ -410,6 +454,11 @@ public class HeroMakerActivity extends AppCompatActivity {
         Glide.with(this).load(R.drawable.wei_skill_bar).into(ivSkill1Bar);
         Glide.with(this).load(R.drawable.wei_skill_bar).into(ivSkill2Bar);
         Glide.with(this).load(R.drawable.wei_skill_bar).into(ivSkill3Bar);
+        Glide.with(this).load(R.drawable.wei_hp).into(ivHp1);
+        Glide.with(this).load(R.drawable.wei_hp).into(ivHp2);
+        Glide.with(this).load(R.drawable.wei_hp).into(ivHp3);
+        Glide.with(this).load(R.drawable.wei_hp).into(ivHp4);
+        Glide.with(this).load(R.drawable.wei_hp).into(ivHp5);
     }
 
     public void loadShu(View view) {
@@ -423,6 +472,11 @@ public class HeroMakerActivity extends AppCompatActivity {
         Glide.with(this).load(R.drawable.shu_skill_bar).into(ivSkill1Bar);
         Glide.with(this).load(R.drawable.shu_skill_bar).into(ivSkill2Bar);
         Glide.with(this).load(R.drawable.shu_skill_bar).into(ivSkill3Bar);
+        Glide.with(this).load(R.drawable.shu_hp).into(ivHp1);
+        Glide.with(this).load(R.drawable.shu_hp).into(ivHp2);
+        Glide.with(this).load(R.drawable.shu_hp).into(ivHp3);
+        Glide.with(this).load(R.drawable.shu_hp).into(ivHp4);
+        Glide.with(this).load(R.drawable.shu_hp).into(ivHp5);
     }
 
     public void loadWu(View view) {
@@ -436,6 +490,11 @@ public class HeroMakerActivity extends AppCompatActivity {
         Glide.with(this).load(R.drawable.wu_skill_bar).into(ivSkill1Bar);
         Glide.with(this).load(R.drawable.wu_skill_bar).into(ivSkill2Bar);
         Glide.with(this).load(R.drawable.wu_skill_bar).into(ivSkill3Bar);
+        Glide.with(this).load(R.drawable.wu_hp).into(ivHp1);
+        Glide.with(this).load(R.drawable.wu_hp).into(ivHp2);
+        Glide.with(this).load(R.drawable.wu_hp).into(ivHp3);
+        Glide.with(this).load(R.drawable.wu_hp).into(ivHp4);
+        Glide.with(this).load(R.drawable.wu_hp).into(ivHp5);
     }
 
     public void loadQun(View view) {
@@ -449,6 +508,11 @@ public class HeroMakerActivity extends AppCompatActivity {
         Glide.with(this).load(R.drawable.qun_skill_bar).into(ivSkill1Bar);
         Glide.with(this).load(R.drawable.qun_skill_bar).into(ivSkill2Bar);
         Glide.with(this).load(R.drawable.qun_skill_bar).into(ivSkill3Bar);
+        Glide.with(this).load(R.drawable.qun_hp).into(ivHp1);
+        Glide.with(this).load(R.drawable.qun_hp).into(ivHp2);
+        Glide.with(this).load(R.drawable.qun_hp).into(ivHp3);
+        Glide.with(this).load(R.drawable.qun_hp).into(ivHp4);
+        Glide.with(this).load(R.drawable.qun_hp).into(ivHp5);
     }
 
     public void loadGod(View view) {
@@ -460,6 +524,11 @@ public class HeroMakerActivity extends AppCompatActivity {
         Glide.with(this).load(R.drawable.god_skill_bar).into(ivSkill1Bar);
         Glide.with(this).load(R.drawable.god_skill_bar).into(ivSkill2Bar);
         Glide.with(this).load(R.drawable.god_skill_bar).into(ivSkill3Bar);
+        Glide.with(this).load(R.drawable.god_hp).into(ivHp1);
+        Glide.with(this).load(R.drawable.god_hp).into(ivHp2);
+        Glide.with(this).load(R.drawable.god_hp).into(ivHp3);
+        Glide.with(this).load(R.drawable.god_hp).into(ivHp4);
+        Glide.with(this).load(R.drawable.god_hp).into(ivHp5);
     }
 
     public void upSkillBoard(View view) {
@@ -692,7 +761,7 @@ public class HeroMakerActivity extends AppCompatActivity {
     }
 
     public void rbHpClicked(View view) {
-
+        checkNameTitleGroup(heroHpLayout);
     }
 
     public void rbSkillBoardClicked(View view) {

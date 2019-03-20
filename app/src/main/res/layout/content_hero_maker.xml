@@ -99,9 +99,54 @@
                     android:id="@+id/hero_maker_hp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="13dp"
                     android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/tv_hp_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_hp_1"
+                        android:layout_width="15dp"
+                        android:layout_height="18dp"
+                        android:scaleType="fitXY" />
+
+                    <ImageView
+                        android:id="@+id/iv_hp_2"
+                        android:layout_width="15dp"
+                        android:layout_height="18dp"
+                        android:layout_marginStart="-3dp"
+                        android:scaleType="fitXY" />
+
+                    <ImageView
+                        android:id="@+id/iv_hp_3"
+                        android:layout_width="15dp"
+                        android:layout_height="18dp"
+                        android:layout_marginStart="-3dp"
+                        android:scaleType="fitXY" />
+
+                    <ImageView
+                        android:id="@+id/iv_hp_4"
+                        android:layout_width="15dp"
+                        android:layout_height="18dp"
+                        android:layout_marginStart="-3dp"
+                        android:scaleType="fitXY" />
+
+                    <ImageView
+                        android:id="@+id/iv_hp_5"
+                        android:layout_width="15dp"
+                        android:layout_height="18dp"
+                        android:layout_marginStart="-3dp"
+                        android:scaleType="fitXY" />
+
+                </LinearLayout>
 
                 <ImageView
                     android:id="@+id/hero_maker_skill_board"
@@ -338,6 +383,27 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/max_hp" />
+
+                    <EditText
+                        android:id="@+id/edit_text_maxhp"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionDone"
+                        android:inputType="number"
+                        android:maxLines="1" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -445,7 +511,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_adjust_position"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/arrow_layout"
