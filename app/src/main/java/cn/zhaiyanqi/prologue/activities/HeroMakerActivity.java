@@ -1,6 +1,7 @@
 package cn.zhaiyanqi.prologue.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -41,6 +42,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.zhaiyanqi.prologue.R;
@@ -56,39 +59,66 @@ public class HeroMakerActivity extends AppCompatActivity {
     private Typeface titleFont, nameFont, skillNameFont;
     private Bitmap.CompressFormat exportFormat;
     private ExecutorService executorService;
-
     // hero view
-    private ImageView imgHeroGroup;
-    private ImageView imgHeroFrame;
-    private ImageView imgHeroBaseBoard;
-    private ImageView imgHeroSkillBase;
-    private ImageView imgRightCloud;
-    private ImageView imgHeroImg;
-    private ImageView imgHeroOutImg;
-    private CardView layout;
-    private TextView tvHeroTitle;
-    private TextView tvHeroName;
-    private CheckBox checkBoxBaseBoard;
-    private CheckBox checkBoxFrame;
-    private CheckBox checkBoxLogo;
-    private CheckBox checkBoxSkill;
-    private LinearLayout llSKills;
-    private LinearLayout llSkillsAll;
-
+    @BindView(R.id.hero_maker_main_card)
+    CardView cardView;
+    @BindView(R.id.hero_maker_group)
+    ImageView imgHeroGroup;
+    @BindView(R.id.hero_maker_frame)
+    ImageView imgHeroFrame;
+    @BindView(R.id.hero_maker_base_board)
+    ImageView imgHeroBaseBoard;
+    @BindView(R.id.hero_maker_skill_board)
+    ImageView imgHeroSkillBase;
+    @BindView(R.id.hero_maker_right_cloud)
+    ImageView imgRightCloud;
+    @BindView(R.id.hero_maker_hero_img)
+    ImageView imgHeroImg;
+    @BindView(R.id.hero_maker_hero_out_img)
+    ImageView imgHeroOutImg;
+    @BindView(R.id.hero_maker_title)
+    TextView tvHeroTitle;
+    @BindView(R.id.hero_maker_name)
+    TextView tvHeroName;
+    @BindView(R.id.checkbox_hero_base_board)
+    CheckBox checkBoxBaseBoard;
+    @BindView(R.id.checkbox_hero_frame)
+    CheckBox checkBoxFrame;
+    @BindView(R.id.checkbox_hero_logo)
+    CheckBox checkBoxLogo;
+    @BindView(R.id.checkbox_hero_skill)
+    CheckBox checkBoxSkill;
+    @BindView(R.id.hero_maker_skills)
+    LinearLayout llSKills;
+    @BindView(R.id.hero_maker_skills_ll)
+    LinearLayout llSkillsAll;
     //others
-    private TextView tvSkill1Name;
-    private TextView tvSkill1Info;
-    private TextView tvSkill2Name;
-    private TextView tvSkill2Info;
-    private TextView tvSkill3Name;
-    private TextView tvSkill3Info;
-    private ImageView ivSkill1Bar;
-    private ImageView ivSkill2Bar;
-    private ImageView ivSkill3Bar;
-    private Button skill1Button;
-    private Button skill2Button;
-    private Button skill3Button;
+    @BindView(R.id.hero_maker_skill_1_name)
+    TextView tvSkill1Name;
+    @BindView(R.id.hero_maker_skill_1_text)
+    TextView tvSkill1Info;
+    @BindView(R.id.hero_maker_skill_2_name)
+    TextView tvSkill2Name;
+    @BindView(R.id.hero_maker_skill_2_text)
+    TextView tvSkill2Info;
+    @BindView(R.id.hero_maker_skill_3_name)
+    TextView tvSkill3Name;
+    @BindView(R.id.hero_maker_skill_3_text)
+    TextView tvSkill3Info;
+    @BindView(R.id.hero_maker_skill_1_bar)
+    ImageView ivSkill1Bar;
+    @BindView(R.id.hero_maker_skill_2_bar)
+    ImageView ivSkill2Bar;
+    @BindView(R.id.hero_maker_skill_3_bar)
+    ImageView ivSkill3Bar;
+    @BindView(R.id.edit_skill_button_1)
+    Button skill1Button;
+    @BindView(R.id.edit_skill_button_2)
+    Button skill2Button;
+    @BindView(R.id.edit_skill_button_3)
+    Button skill3Button;
     private int skillCount = 0;
+    private View currentView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,13 +127,52 @@ public class HeroMakerActivity extends AppCompatActivity {
         rxPermissions = new RxPermissions(this);
         ButterKnife.bind(this);
         executorService = Executors.newCachedThreadPool();
+
         initTitle();
-        initView();
         initListener();
         loadDefaultGroup();
         loadDefaultFormat();
         initFonts();
-        initDialog();
+    }
+
+    @OnClick(R.id.up_arrow)
+    void moveUp() {
+        if (currentView != null) {
+            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) currentView.getLayoutParams();
+            layoutParams.topMargin -= 1;
+            currentView.requestLayout();
+        }
+    }
+
+    @OnClick(R.id.down_arrow)
+    void moveDown() {
+        if (currentView != null) {
+            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) currentView.getLayoutParams();
+            layoutParams.topMargin += 1;
+            currentView.requestLayout();
+        }
+    }
+
+    @OnClick(R.id.left_arrow)
+    void moveLeft() {
+        if (currentView != null) {
+            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) currentView.getLayoutParams();
+            layoutParams.leftMargin -= 1;
+            currentView.requestLayout();
+        }
+    }
+
+    @OnClick(R.id.right_arrow)
+    void moveRight() {
+        if (currentView != null) {
+            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) currentView.getLayoutParams();
+            layoutParams.leftMargin += 1;
+            currentView.requestLayout();
+        }
+    }
+
+    public void chooseCurrentView(View view) {
+        currentView = view;
     }
 
     private void loadDefaultFormat() {
@@ -118,15 +187,15 @@ public class HeroMakerActivity extends AppCompatActivity {
         loadWei(null);
     }
 
+
     private Disposable fontSubscribe;
 
     private void initFonts() {
-        fontSubscribe = Observable.create(emitter -> {
-            titleFont = Typeface.createFromAsset(getAssets(), "fonts/DFPNewChuan-B5.ttf");
-            nameFont = Typeface.createFromAsset(getAssets(), "fonts/jmmcsgsfix.ttf");
-            skillNameFont = Typeface.createFromAsset(getAssets(), "fonts/fzlsft.ttf");
-            emitter.onComplete();
-        }).observeOn(Schedulers.io())
+        fontSubscribe = Observable.just(
+                titleFont = Typeface.createFromAsset(getAssets(), "fonts/DFPNewChuan-B5.ttf"),
+                nameFont = Typeface.createFromAsset(getAssets(), "fonts/jmmcsgsfix.ttf"),
+                skillNameFont = Typeface.createFromAsset(getAssets(), "fonts/fzlsft.ttf")
+        ).observeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
                     tvHeroTitle.setTypeface(titleFont);
@@ -135,51 +204,6 @@ public class HeroMakerActivity extends AppCompatActivity {
                     tvSkill2Name.setTypeface(skillNameFont);
                     tvSkill3Name.setTypeface(skillNameFont);
                 }, e -> Toast.makeText(HeroMakerActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
-    }
-
-    private void initView() {
-        layout = findViewById(R.id.hero_maker_main_card);
-
-        imgHeroGroup = findViewById(R.id.hero_maker_group);
-        imgHeroFrame = findViewById(R.id.hero_maker_frame);
-        imgHeroBaseBoard = findViewById(R.id.hero_maker_base_board);
-        imgHeroSkillBase = findViewById(R.id.hero_maker_skill_board);
-        imgRightCloud = findViewById(R.id.hero_maker_right_cloud);
-
-        imgHeroImg = findViewById(R.id.hero_maker_hero_img);
-        imgHeroOutImg = findViewById(R.id.hero_maker_hero_out_img);
-
-        tvHeroTitle = findViewById(R.id.hero_maker_title);
-        tvHeroName = findViewById(R.id.hero_maker_name);
-
-        checkBoxBaseBoard = findViewById(R.id.checkbox_hero_base_board);
-        checkBoxFrame = findViewById(R.id.checkbox_hero_frame);
-        checkBoxLogo = findViewById(R.id.checkbox_hero_logo);
-        checkBoxSkill = findViewById(R.id.checkbox_hero_skill);
-
-
-        llSKills = findViewById(R.id.hero_maker_skills);
-        llSkillsAll = findViewById(R.id.hero_maker_skills_ll);
-
-//        llSkillBoardText = findViewById(R.id.hero_maker_skill_board_texts);
-//        skillBoardLayout = findViewById(R.id.hero_maker_skill_board_layout);
-
-        tvSkill1Name = findViewById(R.id.hero_maker_skill_1_name);
-        tvSkill2Name = findViewById(R.id.hero_maker_skill_2_name);
-        tvSkill3Name = findViewById(R.id.hero_maker_skill_3_name);
-
-        tvSkill1Info = findViewById(R.id.hero_maker_skill_1_text);
-        tvSkill2Info = findViewById(R.id.hero_maker_skill_2_text);
-        tvSkill3Info = findViewById(R.id.hero_maker_skill_3_text);
-
-        ivSkill1Bar = findViewById(R.id.hero_maker_skill_1_bar);
-        ivSkill2Bar = findViewById(R.id.hero_maker_skill_2_bar);
-        ivSkill3Bar = findViewById(R.id.hero_maker_skill_3_bar);
-
-        skill1Button = findViewById(R.id.edit_skill_button_1);
-        skill2Button = findViewById(R.id.edit_skill_button_2);
-        skill3Button = findViewById(R.id.edit_skill_button_3);
-
     }
 
     @Override
@@ -214,14 +238,14 @@ public class HeroMakerActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("CheckResult")
     @OnClick(R.id.hero_maker_export_photo)
     void exportPhoto() {
-        Disposable subscribe = rxPermissions
-                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .subscribe(granted -> {
                     if (granted) {
                         executorService.execute(() -> {
-                            if (saveToGallery(String.valueOf(new Date().getTime()), exportFormat, 100)) {
+                            if (saveToGallery(String.valueOf(new Date().getTime()), exportFormat)) {
                                 runOnUiThread(() -> Toast.makeText(this, R.string.export_done, Toast.LENGTH_SHORT).show());
                             } else {
                                 runOnUiThread(() -> Toast.makeText(this, R.string.export_fail, Toast.LENGTH_SHORT).show());
@@ -307,14 +331,6 @@ public class HeroMakerActivity extends AppCompatActivity {
         }
     }
 
-    private void initDialog() {
-        initTitleDialog();
-    }
-
-    private void initTitleDialog() {
-
-    }
-
     public void loadWei(View view) {
         imgHeroBaseBoard.setVisibility(View.VISIBLE);
         imgRightCloud.setVisibility(View.VISIBLE);
@@ -381,7 +397,7 @@ public class HeroMakerActivity extends AppCompatActivity {
     public void upSkillBoard(View view) {
         ViewGroup.LayoutParams layoutParams = imgHeroSkillBase.getLayoutParams();
         layoutParams.height += 1;
-        imgHeroSkillBase.setLayoutParams(layoutParams);
+        imgHeroSkillBase.requestLayout();
     }
 
     public void downSkillBoard(View view) {
@@ -392,6 +408,7 @@ public class HeroMakerActivity extends AppCompatActivity {
 
     public void editSkill1Button(View view) {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        @SuppressLint("InflateParams")
         View dialogView = inflater.inflate(R.layout.layout_edit_skill_info, null, false);
         AlertDialog.Builder addSkillDialog = new AlertDialog.Builder(this);
         addSkillDialog.setTitle("请输入技能信息").setView(dialogView);
@@ -409,7 +426,8 @@ public class HeroMakerActivity extends AppCompatActivity {
 
     public void editSkill2Button(View view) {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
-        View dialogView = inflater.inflate(R.layout.layout_edit_skill_info, null);
+        @SuppressLint("InflateParams")
+        View dialogView = inflater.inflate(R.layout.layout_edit_skill_info, null, false);
         AlertDialog.Builder addSkillDialog = new AlertDialog.Builder(this);
         addSkillDialog.setTitle("请输入技能信息").setView(dialogView);
         EditText addSkillDialogInfo = dialogView.findViewById(R.id.edit_skill_info);
@@ -426,6 +444,7 @@ public class HeroMakerActivity extends AppCompatActivity {
 
     public void editSkill3Button(View view) {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        @SuppressLint("InflateParams")
         View dialogView = inflater.inflate(R.layout.layout_edit_skill_info, null);
         AlertDialog.Builder addSkillDialog = new AlertDialog.Builder(this);
         addSkillDialog.setTitle("请输入技能信息").setView(dialogView);
@@ -477,11 +496,10 @@ public class HeroMakerActivity extends AppCompatActivity {
 
 
     private boolean saveToGallery(String fileName, Bitmap.CompressFormat
-            format, int quality) {
+            format) {
         String subFolderPath = "prologue";
         String fileDescription = "PROLOGUE Save";
-        if (quality < 0 || quality > 100)
-            quality = 50;
+        int quality = 100;
 
         long currentTime = System.currentTimeMillis();
 
@@ -548,14 +566,14 @@ public class HeroMakerActivity extends AppCompatActivity {
     }
 
     public Bitmap getChartBitmap() {
-        Bitmap returnedBitmap = Bitmap.createBitmap(layout.getWidth(), layout.getHeight(), Bitmap.Config.RGB_565);
+        Bitmap returnedBitmap = Bitmap.createBitmap(cardView.getWidth(), cardView.getHeight(), Bitmap.Config.RGB_565);
         Canvas canvas = new Canvas(returnedBitmap);
-        Drawable bgDrawable = layout.getBackground();
+        Drawable bgDrawable = cardView.getBackground();
         if (bgDrawable != null)
             bgDrawable.draw(canvas);
         else
             canvas.drawColor(Color.WHITE);
-        layout.draw(canvas);
+        cardView.draw(canvas);
         return returnedBitmap;
     }
 
@@ -582,5 +600,4 @@ public class HeroMakerActivity extends AppCompatActivity {
             fontSubscribe.dispose();
         }
     }
-
 }

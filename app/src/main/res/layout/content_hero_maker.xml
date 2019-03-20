@@ -73,6 +73,7 @@
                     android:layout_marginTop="75dp"
                     android:ems="1"
                     android:maxLength="5"
+                    android:onClick="chooseCurrentView"
                     android:textColor="@color/colorWhite"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -88,6 +89,7 @@
                     android:ems="1"
                     android:lineSpacingExtra="8dp"
                     android:maxLength="4"
+                    android:onClick="chooseCurrentView"
                     android:textColor="@color/colorWhite"
                     android:textSize="28sp"
                     app:innerColor="#ffffff"
@@ -114,6 +116,7 @@
                     android:layout_height="19dp"
                     android:layout_marginStart="20dp"
                     android:contentDescription="@string/empty"
+                    android:onClick="chooseCurrentView"
                     android:scaleType="fitXY"
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
@@ -139,6 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="18dp"
                     android:layout_marginTop="10dp"
+                    android:onClick="chooseCurrentView"
                     android:textColor="@color/colorBlack"
                     android:textSize="9sp"
                     android:visibility="gone"
@@ -153,6 +157,7 @@
                     android:layout_height="19dp"
                     android:layout_marginStart="20dp"
                     android:contentDescription="@string/empty"
+                    android:onClick="chooseCurrentView"
                     android:scaleType="fitXY"
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
@@ -178,6 +183,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="18dp"
                     android:layout_marginTop="2dp"
+                    android:onClick="chooseCurrentView"
                     android:textColor="@color/colorBlack"
                     android:textSize="9sp"
                     android:visibility="gone"
@@ -192,6 +198,7 @@
                     android:layout_height="19dp"
                     android:layout_marginStart="20dp"
                     android:contentDescription="@string/empty"
+                    android:onClick="chooseCurrentView"
                     android:scaleType="fitXY"
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
@@ -217,6 +224,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="18dp"
                     android:layout_marginTop="2dp"
+                    android:onClick="chooseCurrentView"
                     android:textColor="@color/colorBlack"
                     android:textSize="9sp"
                     android:visibility="gone"
@@ -236,6 +244,53 @@
             android:layout_marginEnd="5dp"
             android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@+id/hero_maker_main_card">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/arrow_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/up_arrow"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_arrow_up"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/left_arrow"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_arrow_left"
+                        app:layout_constraintEnd_toStartOf="@+id/up_arrow"
+                        app:layout_constraintTop_toBottomOf="@+id/up_arrow" />
+
+                    <ImageView
+                        android:id="@+id/right_arrow"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_arrow_right"
+                        app:layout_constraintStart_toEndOf="@+id/up_arrow"
+                        app:layout_constraintTop_toBottomOf="@+id/up_arrow" />
+
+                    <ImageView
+                        android:id="@+id/down_arrow"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_arrow_downward"
+                        app:layout_constraintStart_toEndOf="@+id/left_arrow"
+                        app:layout_constraintTop_toBottomOf="@+id/left_arrow" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
