@@ -14,7 +14,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -176,6 +178,9 @@ public class HeroMakerActivity extends AppCompatActivity {
         initFonts();
     }
 
+    private long exitTime = 0;
+
+
     @OnTextChanged(R.id.edit_text_step_length)
     void changeMoveStep(CharSequence text) {
         String str = text.toString();
@@ -317,10 +322,19 @@ public class HeroMakerActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_hero_maker, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
             return true;
+        } else if (item.getItemId() == R.id.action_about) {
+            showAboutDialog();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -643,75 +657,22 @@ public class HeroMakerActivity extends AppCompatActivity {
         }
     }
 
-
-    private boolean saveToGallery(String fileName, Bitmap.CompressFormat
-            format) {
-        String subFolderPath = "prologue";
-        String fileDescription = "PROLOGUE Save";
-        int quality = 100;
-
-        long currentTime = System.currentTimeMillis();
-
-        File extBaseDir = Environment.getExternalStorageDirectory();
-        File file = new File(extBaseDir.getAbsolutePath() + "/DCIM/" + subFolderPath);
-        if (!file.exists()) {
-            if (!file.mkdirs()) {
-                return false;
-            }
-        }
-
-        String mimeType;
-        switch (format) {
-            case PNG:
-                mimeType = "image/png";
-                if (!fileName.endsWith(".png"))
-                    fileName += ".png";
-                break;
-            case WEBP:
-                mimeType = "image/webp";
-                if (!fileName.endsWith(".webp"))
-                    fileName += ".webp";
-                break;
-            case JPEG:
-            default:
-                mimeType = "image/jpeg";
-                if (!(fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")))
-                    fileName += ".jpg";
-                break;
-        }
-
-        String filePath = file.getAbsolutePath() + "/" + fileName;
-        FileOutputStream out;
-        try {
-            out = new FileOutputStream(filePath);
-
-            Bitmap b = getChartBitmap();
-            b.compress(format, quality, out);
-
-            out.flush();
-            out.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-
-            return false;
-        }
-
-        long size = new File(filePath).length();
-
-        ContentValues values = new ContentValues(8);
-
-        // store the details
-        values.put(MediaStore.Images.Media.TITLE, fileName);
-        values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
-        values.put(MediaStore.Images.Media.DATE_ADDED, currentTime);
-        values.put(MediaStore.Images.Media.MIME_TYPE, mimeType);
-        values.put(MediaStore.Images.Media.DESCRIPTION, fileDescription);
-        values.put(MediaStore.Images.Media.ORIENTATION, 0);
-        values.put(MediaStore.Images.Media.DATA, filePath);
-        values.put(MediaStore.Images.Media.SIZE, size);
-
-        return this.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values) != null;
+    private void showAboutDialog() {
+        final TextView textView = new TextView(this);
+        StringBuilder sb = new StringBuilder();
+        sb.append("      项目地址:\r\n            https://github.com/zhaiyanqi/Prologue\r\n")
+                .append("      如果觉得软件好用,欢迎Star.点击即可访问");
+        textView.setText(sb.toString());
+        textView.setOnClickListener(view -> {
+            Intent intent = new Intent();
+            intent.setData(Uri.parse("https://github.com/zhaiyanqi/Prologue"));
+            intent.setAction(Intent.ACTION_VIEW);
+            startActivity(intent);
+        });
+        AlertDialog.Builder inputDialog =
+                new AlertDialog.Builder(this);
+        inputDialog.setTitle("关于").setView(textView);
+        inputDialog.setPositiveButton("确定", null).show();
     }
 
     public Bitmap getChartBitmap() {
@@ -832,5 +793,90 @@ public class HeroMakerActivity extends AppCompatActivity {
         nameTitleGroup.clearCheck();
     }
 
+    private boolean saveToGallery(String fileName, Bitmap.CompressFormat
+            format) {
+        String subFolderPath = "三国杀制图";
+        String fileDescription = "Sanguosha Save";
+        int quality = 100;
+
+        long currentTime = System.currentTimeMillis();
+
+        File extBaseDir = Environment.getExternalStorageDirectory();
+        File file = new File(extBaseDir.getAbsolutePath() + "/DCIM/" + subFolderPath);
+        if (!file.exists()) {
+            if (!file.mkdirs()) {
+                return false;
+            }
+        }
+
+        String mimeType;
+        switch (format) {
+            case PNG:
+                mimeType = "image/png";
+                if (!fileName.endsWith(".png"))
+                    fileName += ".png";
+                break;
+            case WEBP:
+                mimeType = "image/webp";
+                if (!fileName.endsWith(".webp"))
+                    fileName += ".webp";
+                break;
+            case JPEG:
+            default:
+                mimeType = "image/jpeg";
+                if (!(fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")))
+                    fileName += ".jpg";
+                break;
+        }
+
+        String filePath = file.getAbsolutePath() + "/" + fileName;
+        FileOutputStream out;
+        try {
+            out = new FileOutputStream(filePath);
+
+            Bitmap b = getChartBitmap();
+            b.compress(format, quality, out);
+
+            out.flush();
+            out.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            return false;
+        }
+
+        long size = new File(filePath).length();
+
+        ContentValues values = new ContentValues(8);
+
+        // store the details
+        values.put(MediaStore.Images.Media.TITLE, fileName);
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
+        values.put(MediaStore.Images.Media.DATE_ADDED, currentTime);
+        values.put(MediaStore.Images.Media.MIME_TYPE, mimeType);
+        values.put(MediaStore.Images.Media.DESCRIPTION, fileDescription);
+        values.put(MediaStore.Images.Media.ORIENTATION, 0);
+        values.put(MediaStore.Images.Media.DATA, filePath);
+        values.put(MediaStore.Images.Media.SIZE, size);
+
+        return this.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values) != null;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK
+                && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            } else {
+                finish();
+            }
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
 
 }

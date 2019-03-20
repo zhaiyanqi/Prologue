@@ -4,7 +4,7 @@
     <string name="start_game">一二三四</string>
 
     <string name="hero_maker">武将制图</string>
-    <string name="title_activity_hero_maker">武将制图</string>
+    <string name="title_activity_hero_maker">三国杀制图</string>
     <string name="action_settings">Settings</string>
     <string name="card_version">卡牌版本</string>
     <string name="hero_group">武将势力</string>
@@ -57,5 +57,6 @@
     <string name="skill3">技能三</string>
     <string name="skill_board_fat">变宽</string>
     <string name="skill_board_slim">变窄</string>
+    <string name="action_about">关于</string>
 
 </resources>
