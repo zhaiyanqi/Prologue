@@ -59,4 +59,8 @@
     <string name="skill_board_slim">变窄</string>
     <string name="action_about">关于</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="auto_transfer_traditional">自动转繁体(实验性)</string>
+
 </resources>

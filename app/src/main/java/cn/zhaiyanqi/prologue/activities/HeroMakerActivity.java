@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.zqc.opencc.android.lib.ChineseConverter;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -51,10 +52,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import cn.zhaiyanqi.prologue.R;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
+import static com.zqc.opencc.android.lib.ConversionType.S2T;
 
 public class HeroMakerActivity extends AppCompatActivity {
 
@@ -162,7 +163,6 @@ public class HeroMakerActivity extends AppCompatActivity {
     @BindView(R.id.tv_hp_text)
     TextView tvHpText;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -176,7 +176,14 @@ public class HeroMakerActivity extends AppCompatActivity {
         loadDefaultGroup();
         loadDefaultFormat();
         initFonts();
+//        Button button = findViewById(R.id.hero_maker_btn_name);
+//        button.setEnabled(false);
+//        executorService.execute(() -> {
+//            Chined.convertToTraditional("赵云");
+//            runOnUiThread(() -> button.setEnabled(true));
+//        });
     }
+
 
     private long exitTime = 0;
 
@@ -306,19 +313,19 @@ public class HeroMakerActivity extends AppCompatActivity {
     private Disposable fontSubscribe;
 
     private void initFonts() {
-        fontSubscribe = Observable.just(
-                titleFont = Typeface.createFromAsset(getAssets(), "fonts/DFPNewChuan-B5.ttf"),
-                nameFont = Typeface.createFromAsset(getAssets(), "fonts/jmmcsgsfix.ttf"),
-                skillNameFont = Typeface.createFromAsset(getAssets(), "fonts/fzlsft.ttf")
-        ).observeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(o -> {
-                    tvHeroTitle.setTypeface(titleFont);
-                    tvHeroName.setTypeface(nameFont);
-                    tvSkill1Name.setTypeface(skillNameFont);
-                    tvSkill2Name.setTypeface(skillNameFont);
-                    tvSkill3Name.setTypeface(skillNameFont);
-                }, e -> Toast.makeText(HeroMakerActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
+//        fontSubscribe = Observable.just(
+//                titleFont = Typeface.createFromAsset(getAssets(), "fonts/DFPNewChuan-B5.ttf"),
+//                nameFont = Typeface.createFromAsset(getAssets(), "fonts/jmmcsgsfix.ttf"),
+//                skillNameFont = Typeface.createFromAsset(getAssets(), "fonts/fzlsft.ttf")
+//        ).observeOn(Schedulers.io())
+//                .subscribeOn(AndroidSchedulers.mainThread())
+//                .subscribe(o -> {
+//                    tvHeroTitle.setTypeface(titleFont);
+//                    tvHeroName.setTypeface(nameFont);
+//                    tvSkill1Name.setTypeface(skillNameFont);
+//                    tvSkill2Name.setTypeface(skillNameFont);
+//                    tvSkill3Name.setTypeface(skillNameFont);
+//                }, e -> Toast.makeText(HeroMakerActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
     @Override
@@ -460,89 +467,89 @@ public class HeroMakerActivity extends AppCompatActivity {
     public void loadWei(View view) {
         imgHeroBaseBoard.setVisibility(View.VISIBLE);
         imgRightCloud.setVisibility(View.VISIBLE);
-        Glide.with(this).load(R.drawable.wei_base_board).into(imgHeroBaseBoard);
-        Glide.with(this).load(R.drawable.wei).into(imgHeroFrame);
-        Glide.with(this).load(R.drawable.wei_logo).into(imgHeroGroup);
-        Glide.with(this).load(R.drawable.wei_right_cloud).into(imgRightCloud);
-        Glide.with(this).load(R.drawable.wei_skill_board).into(imgHeroSkillBase);
-        Glide.with(this).load(R.drawable.wei_skill_bar).into(ivSkill1Bar);
-        Glide.with(this).load(R.drawable.wei_skill_bar).into(ivSkill2Bar);
-        Glide.with(this).load(R.drawable.wei_skill_bar).into(ivSkill3Bar);
-        Glide.with(this).load(R.drawable.wei_hp).into(ivHp1);
-        Glide.with(this).load(R.drawable.wei_hp).into(ivHp2);
-        Glide.with(this).load(R.drawable.wei_hp).into(ivHp3);
-        Glide.with(this).load(R.drawable.wei_hp).into(ivHp4);
-        Glide.with(this).load(R.drawable.wei_hp).into(ivHp5);
+        Glide.with(this).load(R.drawable.wei_base_board).transition(withCrossFade()).into(imgHeroBaseBoard);
+        Glide.with(this).load(R.drawable.wei).transition(withCrossFade()).into(imgHeroFrame);
+        Glide.with(this).load(R.drawable.wei_logo).transition(withCrossFade()).into(imgHeroGroup);
+        Glide.with(this).load(R.drawable.wei_right_cloud).transition(withCrossFade()).into(imgRightCloud);
+        Glide.with(this).load(R.drawable.wei_skill_board).transition(withCrossFade()).into(imgHeroSkillBase);
+        Glide.with(this).load(R.drawable.wei_skill_bar).transition(withCrossFade()).into(ivSkill1Bar);
+        Glide.with(this).load(R.drawable.wei_skill_bar).transition(withCrossFade()).into(ivSkill2Bar);
+        Glide.with(this).load(R.drawable.wei_skill_bar).transition(withCrossFade()).into(ivSkill3Bar);
+        Glide.with(this).load(R.drawable.wei_hp).transition(withCrossFade()).into(ivHp1);
+        Glide.with(this).load(R.drawable.wei_hp).transition(withCrossFade()).into(ivHp2);
+        Glide.with(this).load(R.drawable.wei_hp).transition(withCrossFade()).into(ivHp3);
+        Glide.with(this).load(R.drawable.wei_hp).transition(withCrossFade()).into(ivHp4);
+        Glide.with(this).load(R.drawable.wei_hp).transition(withCrossFade()).into(ivHp5);
     }
 
     public void loadShu(View view) {
         imgHeroBaseBoard.setVisibility(View.VISIBLE);
         imgRightCloud.setVisibility(View.VISIBLE);
-        Glide.with(this).load(R.drawable.shu_base_board).into(imgHeroBaseBoard);
-        Glide.with(this).load(R.drawable.shu).into(imgHeroFrame);
-        Glide.with(this).load(R.drawable.shu_logo).into(imgHeroGroup);
-        Glide.with(this).load(R.drawable.shu_right_cloud).into(imgRightCloud);
-        Glide.with(this).load(R.drawable.shu_skill_board).into(imgHeroSkillBase);
-        Glide.with(this).load(R.drawable.shu_skill_bar).into(ivSkill1Bar);
-        Glide.with(this).load(R.drawable.shu_skill_bar).into(ivSkill2Bar);
-        Glide.with(this).load(R.drawable.shu_skill_bar).into(ivSkill3Bar);
-        Glide.with(this).load(R.drawable.shu_hp).into(ivHp1);
-        Glide.with(this).load(R.drawable.shu_hp).into(ivHp2);
-        Glide.with(this).load(R.drawable.shu_hp).into(ivHp3);
-        Glide.with(this).load(R.drawable.shu_hp).into(ivHp4);
-        Glide.with(this).load(R.drawable.shu_hp).into(ivHp5);
+        Glide.with(this).load(R.drawable.shu_base_board).transition(withCrossFade()).into(imgHeroBaseBoard);
+        Glide.with(this).load(R.drawable.shu).transition(withCrossFade()).into(imgHeroFrame);
+        Glide.with(this).load(R.drawable.shu_logo).transition(withCrossFade()).into(imgHeroGroup);
+        Glide.with(this).load(R.drawable.shu_right_cloud).transition(withCrossFade()).into(imgRightCloud);
+        Glide.with(this).load(R.drawable.shu_skill_board).transition(withCrossFade()).into(imgHeroSkillBase);
+        Glide.with(this).load(R.drawable.shu_skill_bar).transition(withCrossFade()).into(ivSkill1Bar);
+        Glide.with(this).load(R.drawable.shu_skill_bar).transition(withCrossFade()).into(ivSkill2Bar);
+        Glide.with(this).load(R.drawable.shu_skill_bar).transition(withCrossFade()).into(ivSkill3Bar);
+        Glide.with(this).load(R.drawable.shu_hp).transition(withCrossFade()).into(ivHp1);
+        Glide.with(this).load(R.drawable.shu_hp).transition(withCrossFade()).into(ivHp2);
+        Glide.with(this).load(R.drawable.shu_hp).transition(withCrossFade()).into(ivHp3);
+        Glide.with(this).load(R.drawable.shu_hp).transition(withCrossFade()).into(ivHp4);
+        Glide.with(this).load(R.drawable.shu_hp).transition(withCrossFade()).into(ivHp5);
     }
 
     public void loadWu(View view) {
         imgHeroBaseBoard.setVisibility(View.VISIBLE);
         imgRightCloud.setVisibility(View.VISIBLE);
-        Glide.with(this).load(R.drawable.wu_base_board).into(imgHeroBaseBoard);
-        Glide.with(this).load(R.drawable.wu).into(imgHeroFrame);
-        Glide.with(this).load(R.drawable.wu_logo).into(imgHeroGroup);
-        Glide.with(this).load(R.drawable.wu_right_cloud).into(imgRightCloud);
-        Glide.with(this).load(R.drawable.wu_skill_board).into(imgHeroSkillBase);
-        Glide.with(this).load(R.drawable.wu_skill_bar).into(ivSkill1Bar);
-        Glide.with(this).load(R.drawable.wu_skill_bar).into(ivSkill2Bar);
-        Glide.with(this).load(R.drawable.wu_skill_bar).into(ivSkill3Bar);
-        Glide.with(this).load(R.drawable.wu_hp).into(ivHp1);
-        Glide.with(this).load(R.drawable.wu_hp).into(ivHp2);
-        Glide.with(this).load(R.drawable.wu_hp).into(ivHp3);
-        Glide.with(this).load(R.drawable.wu_hp).into(ivHp4);
-        Glide.with(this).load(R.drawable.wu_hp).into(ivHp5);
+        Glide.with(this).load(R.drawable.wu_base_board).transition(withCrossFade()).into(imgHeroBaseBoard);
+        Glide.with(this).load(R.drawable.wu).transition(withCrossFade()).into(imgHeroFrame);
+        Glide.with(this).load(R.drawable.wu_logo).transition(withCrossFade()).into(imgHeroGroup);
+        Glide.with(this).load(R.drawable.wu_right_cloud).transition(withCrossFade()).into(imgRightCloud);
+        Glide.with(this).load(R.drawable.wu_skill_board).transition(withCrossFade()).into(imgHeroSkillBase);
+        Glide.with(this).load(R.drawable.wu_skill_bar).transition(withCrossFade()).into(ivSkill1Bar);
+        Glide.with(this).load(R.drawable.wu_skill_bar).transition(withCrossFade()).into(ivSkill2Bar);
+        Glide.with(this).load(R.drawable.wu_skill_bar).transition(withCrossFade()).into(ivSkill3Bar);
+        Glide.with(this).load(R.drawable.wu_hp).transition(withCrossFade()).into(ivHp1);
+        Glide.with(this).load(R.drawable.wu_hp).transition(withCrossFade()).into(ivHp2);
+        Glide.with(this).load(R.drawable.wu_hp).transition(withCrossFade()).into(ivHp3);
+        Glide.with(this).load(R.drawable.wu_hp).transition(withCrossFade()).into(ivHp4);
+        Glide.with(this).load(R.drawable.wu_hp).transition(withCrossFade()).into(ivHp5);
     }
 
     public void loadQun(View view) {
         imgHeroBaseBoard.setVisibility(View.VISIBLE);
         imgRightCloud.setVisibility(View.VISIBLE);
-        Glide.with(this).load(R.drawable.qun_base_board).into(imgHeroBaseBoard);
-        Glide.with(this).load(R.drawable.qun).into(imgHeroFrame);
-        Glide.with(this).load(R.drawable.qun_logo).into(imgHeroGroup);
-        Glide.with(this).load(R.drawable.qun_right_cloud).into(imgRightCloud);
-        Glide.with(this).load(R.drawable.qun_skill_board).into(imgHeroSkillBase);
-        Glide.with(this).load(R.drawable.qun_skill_bar).into(ivSkill1Bar);
-        Glide.with(this).load(R.drawable.qun_skill_bar).into(ivSkill2Bar);
-        Glide.with(this).load(R.drawable.qun_skill_bar).into(ivSkill3Bar);
-        Glide.with(this).load(R.drawable.qun_hp).into(ivHp1);
-        Glide.with(this).load(R.drawable.qun_hp).into(ivHp2);
-        Glide.with(this).load(R.drawable.qun_hp).into(ivHp3);
-        Glide.with(this).load(R.drawable.qun_hp).into(ivHp4);
-        Glide.with(this).load(R.drawable.qun_hp).into(ivHp5);
+        Glide.with(this).load(R.drawable.qun_base_board).transition(withCrossFade()).into(imgHeroBaseBoard);
+        Glide.with(this).load(R.drawable.qun).transition(withCrossFade()).into(imgHeroFrame);
+        Glide.with(this).load(R.drawable.qun_logo).transition(withCrossFade()).into(imgHeroGroup);
+        Glide.with(this).load(R.drawable.qun_right_cloud).transition(withCrossFade()).into(imgRightCloud);
+        Glide.with(this).load(R.drawable.qun_skill_board).transition(withCrossFade()).into(imgHeroSkillBase);
+        Glide.with(this).load(R.drawable.qun_skill_bar).transition(withCrossFade()).into(ivSkill1Bar);
+        Glide.with(this).load(R.drawable.qun_skill_bar).transition(withCrossFade()).into(ivSkill2Bar);
+        Glide.with(this).load(R.drawable.qun_skill_bar).transition(withCrossFade()).into(ivSkill3Bar);
+        Glide.with(this).load(R.drawable.qun_hp).transition(withCrossFade()).into(ivHp1);
+        Glide.with(this).load(R.drawable.qun_hp).transition(withCrossFade()).into(ivHp2);
+        Glide.with(this).load(R.drawable.qun_hp).transition(withCrossFade()).into(ivHp3);
+        Glide.with(this).load(R.drawable.qun_hp).transition(withCrossFade()).into(ivHp4);
+        Glide.with(this).load(R.drawable.qun_hp).transition(withCrossFade()).into(ivHp5);
     }
 
     public void loadGod(View view) {
         imgHeroBaseBoard.setVisibility(View.GONE);
         imgRightCloud.setVisibility(View.GONE);
-        Glide.with(this).load(R.drawable.god).into(imgHeroFrame);
-        Glide.with(this).load(R.drawable.god_logo).into(imgHeroGroup);
-        Glide.with(this).load(R.drawable.god_skill_board).into(imgHeroSkillBase);
-        Glide.with(this).load(R.drawable.god_skill_bar).into(ivSkill1Bar);
-        Glide.with(this).load(R.drawable.god_skill_bar).into(ivSkill2Bar);
-        Glide.with(this).load(R.drawable.god_skill_bar).into(ivSkill3Bar);
-        Glide.with(this).load(R.drawable.god_hp).into(ivHp1);
-        Glide.with(this).load(R.drawable.god_hp).into(ivHp2);
-        Glide.with(this).load(R.drawable.god_hp).into(ivHp3);
-        Glide.with(this).load(R.drawable.god_hp).into(ivHp4);
-        Glide.with(this).load(R.drawable.god_hp).into(ivHp5);
+        Glide.with(this).load(R.drawable.god).transition(withCrossFade()).into(imgHeroFrame);
+        Glide.with(this).load(R.drawable.god_logo).transition(withCrossFade()).into(imgHeroGroup);
+        Glide.with(this).load(R.drawable.god_skill_board).transition(withCrossFade()).into(imgHeroSkillBase);
+        Glide.with(this).load(R.drawable.god_skill_bar).transition(withCrossFade()).into(ivSkill1Bar);
+        Glide.with(this).load(R.drawable.god_skill_bar).transition(withCrossFade()).into(ivSkill2Bar);
+        Glide.with(this).load(R.drawable.god_skill_bar).transition(withCrossFade()).into(ivSkill3Bar);
+        Glide.with(this).load(R.drawable.god_hp).transition(withCrossFade()).into(ivHp1);
+        Glide.with(this).load(R.drawable.god_hp).transition(withCrossFade()).into(ivHp2);
+        Glide.with(this).load(R.drawable.god_hp).transition(withCrossFade()).into(ivHp3);
+        Glide.with(this).load(R.drawable.god_hp).transition(withCrossFade()).into(ivHp4);
+        Glide.with(this).load(R.drawable.god_hp).transition(withCrossFade()).into(ivHp5);
     }
 
     public void upSkillBoard(View view) {
@@ -641,8 +648,11 @@ public class HeroMakerActivity extends AppCompatActivity {
         AlertDialog.Builder inputDialog =
                 new AlertDialog.Builder(this);
         inputDialog.setTitle("请输入武将名").setView(editText);
-        inputDialog.setPositiveButton("确定", (dialog, which) ->
-                tvHeroName.setText(editText.getText().toString())).show();
+        inputDialog.setPositiveButton("确定", (dialog, which) -> {
+                    String name = editText.getText().toString();
+                    tvHeroName.setText(ChineseConverter.convert(name, S2T, HeroMakerActivity.this));
+                }
+        ).show();
     }
 
     @Override
@@ -878,5 +888,4 @@ public class HeroMakerActivity extends AppCompatActivity {
 
         return super.onKeyDown(keyCode, event);
     }
-
 }
