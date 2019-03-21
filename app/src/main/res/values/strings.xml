@@ -59,8 +59,15 @@
     <string name="skill_board_slim">变窄</string>
     <string name="action_about">关于</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="auto_transfer_traditional">自动转繁体(实验性)</string>
+    <string name="font_size">字号</string>
+    <string name="font">字体</string>
+    <string name="font_color">字体颜色</string>
+    <string name="default_color">#F8EDED</string>
+    <string name="font_outer_color">发光颜色</string>
+    <string name="horizontal_name">横向显示</string>
+    <string name="font_spacing">行间距(上下字体间距)</string>
+    <string name="font_spacing_description">注:如果值为正数表示增加行间距;如果值为负数表示减少行间距.横向显示时可通过添加空格实现间距控制</string>
 
 </resources>

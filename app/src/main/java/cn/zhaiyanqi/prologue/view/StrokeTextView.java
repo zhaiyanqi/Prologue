@@ -89,4 +89,14 @@ public class StrokeTextView extends AppCompatTextView {
         m_TextPaint.setColor(color);
     }
 
+    public void setInnerColor(int color) {
+        this.mInnerColor = color;
+        invalidate();
+    }
+
+    public void setOuterColor(int color) {
+        this.mOuterColor = color;
+        invalidate();
+    }
+
 }
