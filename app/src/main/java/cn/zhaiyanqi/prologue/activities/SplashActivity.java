@@ -6,6 +6,7 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 import cn.zhaiyanqi.prologue.R;
+import cn.zhaiyanqi.prologue.cardmaker.CardMakerActivity;
 
 public class SplashActivity extends AppCompatActivity {
 

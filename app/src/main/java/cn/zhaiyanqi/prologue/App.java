@@ -13,10 +13,14 @@ import java.util.HashMap;
 
 public class App extends Application {
 
-    @SuppressLint("StaticFieldLeak")
-    private static Context context;
     public static HashMap<String, Typeface> fonts;
     public static String[] fontNameArray;
+    @SuppressLint("StaticFieldLeak")
+    private static Context context;
+
+    public static Context getContext() {
+        return context;
+    }
 
     @Override
     public void onCreate() {
@@ -37,9 +41,5 @@ public class App extends Application {
                 Log.e("font", e.getMessage());
             }
         }
-    }
-
-    public static Context getContext() {
-        return context;
     }
 }

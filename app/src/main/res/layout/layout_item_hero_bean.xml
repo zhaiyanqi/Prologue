@@ -28,6 +28,7 @@
             android:scaleType="centerCrop"
             android:src="@drawable/ic_launcher_background"
             android:transitionName="@string/transition_start_game_img" />
+
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"

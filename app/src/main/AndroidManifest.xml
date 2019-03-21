@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".activities.CardMakerActivity"></activity>
+        <activity android:name=".cardmaker.CardMakerActivity"></activity>
         <activity
             android:name=".activities.HeroMakerActivity"
             android:label="@string/title_activity_hero_maker"
