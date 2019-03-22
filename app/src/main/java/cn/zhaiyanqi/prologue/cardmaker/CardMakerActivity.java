@@ -1,6 +1,7 @@
 package cn.zhaiyanqi.prologue.cardmaker;
 
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
@@ -28,6 +29,20 @@ public class CardMakerActivity extends AppCompatActivity {
     //武将牌的元素
     @BindView(R.id.hero_maker_name)
     TextView cmName;
+    @BindView(R.id.hero_maker_title)
+    TextView cmTitle;
+
+    @BindView(R.id.hero_maker_base_board)
+    ImageView cmBaseBoard;
+    @BindView(R.id.hero_maker_frame)
+    ImageView cmFrame;
+    @BindView(R.id.hero_maker_group)
+    ImageView cmGroup;
+    @BindView(R.id.hero_maker_right_cloud)
+    ImageView cmCloud;
+    @BindView(R.id.hero_maker_skill_board)
+    ImageView cmSkillBoard;
+
     private ViewPagerAdapter adapter;
 
     @Override
@@ -41,11 +56,13 @@ public class CardMakerActivity extends AppCompatActivity {
 
     private void initViewPager() {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addItem(new TemplateFragment());
+        adapter.addItem(new TitleFragment());
         adapter.addItem(new NameFragment());
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+        viewPager.setOffscreenPageLimit(5);
     }
-
 
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {
