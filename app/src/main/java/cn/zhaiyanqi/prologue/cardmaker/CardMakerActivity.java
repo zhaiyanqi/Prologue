@@ -26,12 +26,12 @@ public class CardMakerActivity extends AppCompatActivity {
     TabLayout tabLayout;
     @BindView(R.id.card_maker_view_pager)
     ViewPager viewPager;
+
     //武将牌的元素
     @BindView(R.id.hero_maker_name)
     TextView cmName;
     @BindView(R.id.hero_maker_title)
     TextView cmTitle;
-
     @BindView(R.id.hero_maker_base_board)
     ImageView cmBaseBoard;
     @BindView(R.id.hero_maker_frame)

@@ -70,5 +70,8 @@
     <string name="font_spacing">行间距(上下字体间距)</string>
     <string name="font_spacing_description">注:如果值为正数表示增加行间距;如果值为负数表示减少行间距.横向显示时可通过添加空格实现间距控制</string>
     <string name="line_space_hint">0~60</string>
+    <string name="custom_component">自定义组件</string>
+    <string name="select">选择</string>
+    <string name="enable">启用</string>
 
 </resources>
