@@ -13,7 +13,6 @@ import android.widget.Toast;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.io.File;
-import java.io.FileFilter;
 
 import androidx.appcompat.app.AppCompatActivity;
 import cn.zhaiyanqi.prologue.App;
@@ -54,13 +53,7 @@ public class SplashActivity extends AppCompatActivity {
             if (!created) return;
             MediaScannerConnection.scanFile(this, new String[]{fontDir.getPath()}, null, null);
         }
-//        File[] fonts = fontDir.listFiles(pathname -> pathname.getName().endsWith("\\.ttf"));
-        File[] fonts = fontDir.listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                return pathname.getName().endsWith("ttf");
-            }
-        });
+        File[] fonts = fontDir.listFiles(pathname -> pathname.getName().endsWith("ttf"));
         String[] extraFonts = new String[fonts.length];
         for (int i = 0; i < extraFonts.length; i++) {
             String filename = fonts[i].getName();

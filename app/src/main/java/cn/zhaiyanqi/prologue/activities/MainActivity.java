@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             }
             case R.id.btn_hero_maker: {
-                startActivity(new Intent(this, HeroMakerActivity.class));
+//                startActivity(new Intent(this, HeroMakerActivity.class));
 //                startTransition(imgHeroMaker, HeroMakerActivity.class, R.string.transition_hero_maker_img);
             }
         }

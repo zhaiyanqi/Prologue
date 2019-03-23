@@ -17,17 +17,12 @@
             android:contentDescription="@string/empty" />
 
         <ImageView
-            android:id="@+id/hero_maker_base_board"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/empty" />
-
-        <ImageView
             android:id="@+id/hero_maker_frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/empty"
-            android:scaleType="fitXY" />
+            android:scaleType="fitXY"
+            android:src="@drawable/wei" />
 
         <ImageView
             android:id="@+id/hero_maker_hero_out_img"
@@ -38,14 +33,14 @@
 
         <ImageView
             android:id="@+id/hero_maker_group"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/empty" />
-
-        <ImageView
-            android:id="@+id/hero_maker_right_cloud"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="50dp"
+            android:layout_height="62.25dp"
+            android:layout_marginStart="12.94dp"
+            android:layout_marginTop="10.74dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/wei_logo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:contentDescription="@string/empty" />
 
         <TextView
@@ -83,68 +78,108 @@
             android:id="@+id/hero_maker_hp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="13dp"
+            android:layout_marginStart="68dp"
+            android:layout_marginTop="15dp"
             android:orientation="horizontal"
+            android:gravity="center_vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/tv_hp_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorWhite"
-                android:textSize="16sp" />
+            <!--<TextView-->
+            <!--android:id="@+id/tv_hp_text"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textColor="@color/colorWhite"-->
+            <!--android:textSize="16sp"-->
+            <!--/>-->
 
             <ImageView
                 android:id="@+id/iv_hp_1"
-                android:layout_width="15dp"
-                android:layout_height="18dp"
+                android:layout_width="11.5dp"
+                android:layout_height="12.45dp"
                 android:contentDescription="@string/empty"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:src="@drawable/wei_hp" />
 
             <ImageView
-                android:id="@+id/iv_hp_2"
-                android:layout_width="15dp"
-                android:layout_height="18dp"
-                android:layout_marginStart="-3dp"
+                android:layout_width="11.5dp"
+                android:layout_height="12.45dp"
+                android:layout_marginStart="1.4dp"
                 android:contentDescription="@string/empty"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:src="@drawable/wei_hp" />
+
 
             <ImageView
-                android:id="@+id/iv_hp_3"
-                android:layout_width="15dp"
-                android:layout_height="18dp"
-                android:layout_marginStart="-3dp"
+                android:layout_width="11.5dp"
+                android:layout_height="12.45dp"
+                android:layout_marginStart="1.4dp"
                 android:contentDescription="@string/empty"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:src="@drawable/wei_hp" />
+
 
             <ImageView
-                android:id="@+id/iv_hp_4"
-                android:layout_width="15dp"
-                android:layout_height="18dp"
-                android:layout_marginStart="-3dp"
+                android:layout_width="11.5dp"
+                android:layout_height="12.45dp"
+                android:layout_marginStart="1.4dp"
                 android:contentDescription="@string/empty"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:src="@drawable/wei_hp" />
+
 
             <ImageView
-                android:id="@+id/iv_hp_5"
-                android:layout_width="15dp"
-                android:layout_height="18dp"
-                android:layout_marginStart="-3dp"
+                android:layout_width="11.5dp"
+                android:layout_height="12.45dp"
+                android:layout_marginStart="1.4dp"
                 android:contentDescription="@string/empty"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:src="@drawable/wei_hp" />
+
+
+            <!--<ImageView-->
+            <!--android:id="@+id/iv_hp_2"-->
+            <!--android:layout_width="15dp"-->
+            <!--android:layout_height="18dp"-->
+            <!--android:layout_marginStart="-3dp"-->
+            <!--android:contentDescription="@string/empty"-->
+            <!--android:scaleType="fitXY" />-->
+
+            <!--<ImageView-->
+            <!--android:id="@+id/iv_hp_3"-->
+            <!--android:layout_width="15dp"-->
+            <!--android:layout_height="18dp"-->
+            <!--android:layout_marginStart="-3dp"-->
+            <!--android:contentDescription="@string/empty"-->
+            <!--android:scaleType="fitXY" />-->
+
+            <!--<ImageView-->
+            <!--android:id="@+id/iv_hp_4"-->
+            <!--android:layout_width="15dp"-->
+            <!--android:layout_height="18dp"-->
+            <!--android:layout_marginStart="-3dp"-->
+            <!--android:contentDescription="@string/empty"-->
+            <!--android:scaleType="fitXY" />-->
+
+            <!--<ImageView-->
+            <!--android:id="@+id/iv_hp_5"-->
+            <!--android:layout_width="15dp"-->
+            <!--android:layout_height="18dp"-->
+            <!--android:layout_marginStart="-3dp"-->
+            <!--android:contentDescription="@string/empty"-->
+            <!--android:scaleType="fitXY" />-->
 
         </LinearLayout>
 
         <ImageView
             android:id="@+id/hero_maker_skill_board"
             android:layout_width="175dp"
-            android:layout_height="70dp"
+            android:layout_height="570dp"
             android:layout_marginStart="50dp"
             android:layout_marginTop="256dp"
             android:contentDescription="@string/empty"
             android:scaleType="fitXY"
+            android:src="@drawable/wei_skill_board"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -32,14 +32,10 @@ public class CardMakerActivity extends AppCompatActivity {
     TextView cmName;
     @BindView(R.id.hero_maker_title)
     TextView cmTitle;
-    @BindView(R.id.hero_maker_base_board)
-    ImageView cmBaseBoard;
     @BindView(R.id.hero_maker_frame)
     ImageView cmFrame;
     @BindView(R.id.hero_maker_group)
     ImageView cmGroup;
-    @BindView(R.id.hero_maker_right_cloud)
-    ImageView cmCloud;
     @BindView(R.id.hero_maker_skill_board)
     ImageView cmSkillBoard;
 
