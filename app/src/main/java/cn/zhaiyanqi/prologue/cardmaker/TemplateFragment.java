@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -35,6 +36,8 @@ public class TemplateFragment extends Fragment {
     TextView tvCustomGroup;
     private ImageView cmFrame, cmGroup, cmSkillBoard;
     private Uri frameUri, groupUri;
+    private ImageView ivHp1, ivHp2, ivHp3, ivHp4, ivHp5;
+    private LinearLayout ivHpLayout;
 
     public TemplateFragment() {
     }
@@ -49,7 +52,7 @@ public class TemplateFragment extends Fragment {
         return view;
     }
 
-    @OnCheckedChanged({R.id.cb_show_frame, R.id.cb_show_logo})
+    @OnCheckedChanged({R.id.cb_show_frame, R.id.cb_show_logo, R.id.cb_show_hp})
     void switchShowAndHide(CompoundButton button, boolean checked) {
         switch (button.getId()) {
             case R.id.cb_show_frame: {
@@ -58,6 +61,10 @@ public class TemplateFragment extends Fragment {
             }
             case R.id.cb_show_logo: {
                 cmGroup.setVisibility(checked ? View.VISIBLE : View.GONE);
+                break;
+            }
+            case R.id.cb_show_hp: {
+                ivHpLayout.setVisibility(checked ? View.VISIBLE : View.GONE);
                 break;
             }
         }
@@ -131,16 +138,15 @@ public class TemplateFragment extends Fragment {
     void loadWei() {
         Glide.with(this).load(R.drawable.wei).transition(withCrossFade()).into(cmFrame);
         Glide.with(this).load(R.drawable.wei_logo).transition(withCrossFade()).into(cmGroup);
-//        Glide.with(this).load(R.drawable.wei_skill_board).transition(withCrossFade()).into(cmSkillBoard);
-//        cmSkillBoard.setImageResource(R.drawable.wei_skill_board);
-        //        Glide.with(this).load(R.drawable.wei_skill_bar).transition(withCrossFade()).into(ivSkill1Bar);
+        Glide.with(this).load(R.drawable.wei_skill_board).transition(withCrossFade()).into(cmSkillBoard);
+//        Glide.with(this).load(R.drawable.wei_skill_bar).transition(withCrossFade()).into(ivSkill1Bar);
 //        Glide.with(this).load(R.drawable.wei_skill_bar).transition(withCrossFade()).into(ivSkill2Bar);
 //        Glide.with(this).load(R.drawable.wei_skill_bar).transition(withCrossFade()).into(ivSkill3Bar);
-//        Glide.with(this).load(R.drawable.wei_hp).transition(withCrossFade()).into(ivHp1);
-//        Glide.with(this).load(R.drawable.wei_hp).transition(withCrossFade()).into(ivHp2);
-//        Glide.with(this).load(R.drawable.wei_hp).transition(withCrossFade()).into(ivHp3);
-//        Glide.with(this).load(R.drawable.wei_hp).transition(withCrossFade()).into(ivHp4);
-//        Glide.with(this).load(R.drawable.wei_hp).transition(withCrossFade()).into(ivHp5);
+        Glide.with(this).load(R.drawable.wei_hp).transition(withCrossFade()).into(ivHp1);
+        Glide.with(this).load(R.drawable.wei_hp).transition(withCrossFade()).into(ivHp2);
+        Glide.with(this).load(R.drawable.wei_hp).transition(withCrossFade()).into(ivHp3);
+        Glide.with(this).load(R.drawable.wei_hp).transition(withCrossFade()).into(ivHp4);
+        Glide.with(this).load(R.drawable.wei_hp).transition(withCrossFade()).into(ivHp5);
     }
 
     @OnClick(R.id.rb_shu)
@@ -151,11 +157,11 @@ public class TemplateFragment extends Fragment {
 //        Glide.with(this).load(R.drawable.shu_skill_bar).transition(withCrossFade()).into(ivSkill1Bar);
 //        Glide.with(this).load(R.drawable.shu_skill_bar).transition(withCrossFade()).into(ivSkill2Bar);
 //        Glide.with(this).load(R.drawable.shu_skill_bar).transition(withCrossFade()).into(ivSkill3Bar);
-//        Glide.with(this).load(R.drawable.shu_hp).transition(withCrossFade()).into(ivHp1);
-//        Glide.with(this).load(R.drawable.shu_hp).transition(withCrossFade()).into(ivHp2);
-//        Glide.with(this).load(R.drawable.shu_hp).transition(withCrossFade()).into(ivHp3);
-//        Glide.with(this).load(R.drawable.shu_hp).transition(withCrossFade()).into(ivHp4);
-//        Glide.with(this).load(R.drawable.shu_hp).transition(withCrossFade()).into(ivHp5);
+        Glide.with(this).load(R.drawable.shu_hp).transition(withCrossFade()).into(ivHp1);
+        Glide.with(this).load(R.drawable.shu_hp).transition(withCrossFade()).into(ivHp2);
+        Glide.with(this).load(R.drawable.shu_hp).transition(withCrossFade()).into(ivHp3);
+        Glide.with(this).load(R.drawable.shu_hp).transition(withCrossFade()).into(ivHp4);
+        Glide.with(this).load(R.drawable.shu_hp).transition(withCrossFade()).into(ivHp5);
     }
 
     @OnClick(R.id.rb_wu)
@@ -166,11 +172,11 @@ public class TemplateFragment extends Fragment {
 //        Glide.with(this).load(R.drawable.wu_skill_bar).transition(withCrossFade()).into(ivSkill1Bar);
 //        Glide.with(this).load(R.drawable.wu_skill_bar).transition(withCrossFade()).into(ivSkill2Bar);
 //        Glide.with(this).load(R.drawable.wu_skill_bar).transition(withCrossFade()).into(ivSkill3Bar);
-//        Glide.with(this).load(R.drawable.wu_hp).transition(withCrossFade()).into(ivHp1);
-//        Glide.with(this).load(R.drawable.wu_hp).transition(withCrossFade()).into(ivHp2);
-//        Glide.with(this).load(R.drawable.wu_hp).transition(withCrossFade()).into(ivHp3);
-//        Glide.with(this).load(R.drawable.wu_hp).transition(withCrossFade()).into(ivHp4);
-//        Glide.with(this).load(R.drawable.wu_hp).transition(withCrossFade()).into(ivHp5);
+        Glide.with(this).load(R.drawable.wu_hp).transition(withCrossFade()).into(ivHp1);
+        Glide.with(this).load(R.drawable.wu_hp).transition(withCrossFade()).into(ivHp2);
+        Glide.with(this).load(R.drawable.wu_hp).transition(withCrossFade()).into(ivHp3);
+        Glide.with(this).load(R.drawable.wu_hp).transition(withCrossFade()).into(ivHp4);
+        Glide.with(this).load(R.drawable.wu_hp).transition(withCrossFade()).into(ivHp5);
     }
 
     @OnClick(R.id.rb_qun)
@@ -181,11 +187,11 @@ public class TemplateFragment extends Fragment {
 //        Glide.with(this).load(R.drawable.qun_skill_bar).transition(withCrossFade()).into(ivSkill1Bar);
 //        Glide.with(this).load(R.drawable.qun_skill_bar).transition(withCrossFade()).into(ivSkill2Bar);
 //        Glide.with(this).load(R.drawable.qun_skill_bar).transition(withCrossFade()).into(ivSkill3Bar);
-//        Glide.with(this).load(R.drawable.qun_hp).transition(withCrossFade()).into(ivHp1);
-//        Glide.with(this).load(R.drawable.qun_hp).transition(withCrossFade()).into(ivHp2);
-//        Glide.with(this).load(R.drawable.qun_hp).transition(withCrossFade()).into(ivHp3);
-//        Glide.with(this).load(R.drawable.qun_hp).transition(withCrossFade()).into(ivHp4);
-//        Glide.with(this).load(R.drawable.qun_hp).transition(withCrossFade()).into(ivHp5);
+        Glide.with(this).load(R.drawable.qun_hp).transition(withCrossFade()).into(ivHp1);
+        Glide.with(this).load(R.drawable.qun_hp).transition(withCrossFade()).into(ivHp2);
+        Glide.with(this).load(R.drawable.qun_hp).transition(withCrossFade()).into(ivHp3);
+        Glide.with(this).load(R.drawable.qun_hp).transition(withCrossFade()).into(ivHp4);
+        Glide.with(this).load(R.drawable.qun_hp).transition(withCrossFade()).into(ivHp5);
     }
 
     @OnClick(R.id.rb_god)
@@ -196,11 +202,11 @@ public class TemplateFragment extends Fragment {
 //        Glide.with(this).load(R.drawable.god_skill_bar).transition(withCrossFade()).into(ivSkill1Bar);
 //        Glide.with(this).load(R.drawable.god_skill_bar).transition(withCrossFade()).into(ivSkill2Bar);
 //        Glide.with(this).load(R.drawable.god_skill_bar).transition(withCrossFade()).into(ivSkill3Bar);
-//        Glide.with(this).load(R.drawable.god_hp).transition(withCrossFade()).into(ivHp1);
-//        Glide.with(this).load(R.drawable.god_hp).transition(withCrossFade()).into(ivHp2);
-//        Glide.with(this).load(R.drawable.god_hp).transition(withCrossFade()).into(ivHp3);
-//        Glide.with(this).load(R.drawable.god_hp).transition(withCrossFade()).into(ivHp4);
-//        Glide.with(this).load(R.drawable.god_hp).transition(withCrossFade()).into(ivHp5);
+        Glide.with(this).load(R.drawable.god_hp).transition(withCrossFade()).into(ivHp1);
+        Glide.with(this).load(R.drawable.god_hp).transition(withCrossFade()).into(ivHp2);
+        Glide.with(this).load(R.drawable.god_hp).transition(withCrossFade()).into(ivHp3);
+        Glide.with(this).load(R.drawable.god_hp).transition(withCrossFade()).into(ivHp4);
+        Glide.with(this).load(R.drawable.god_hp).transition(withCrossFade()).into(ivHp5);
     }
 
     @Override
@@ -211,6 +217,12 @@ public class TemplateFragment extends Fragment {
             cmFrame = activity.cmFrame;
             cmGroup = activity.cmGroup;
             cmSkillBoard = activity.cmSkillBoard;
+            ivHpLayout = activity.cmHpLayout;
+            ivHp1 = activity.cmHp1;
+            ivHp2 = activity.cmHp2;
+            ivHp3 = activity.cmHp3;
+            ivHp4 = activity.cmHp4;
+            ivHp5 = activity.cmHp5;
         }
     }
 

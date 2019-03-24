@@ -2,6 +2,7 @@ package cn.zhaiyanqi.prologue.cardmaker;
 
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
@@ -38,6 +39,18 @@ public class CardMakerActivity extends AppCompatActivity {
     ImageView cmGroup;
     @BindView(R.id.hero_maker_skill_board)
     ImageView cmSkillBoard;
+    @BindView(R.id.hero_maker_hp)
+    LinearLayout cmHpLayout;
+    @BindView(R.id.iv_hp_1)
+    ImageView cmHp1;
+    @BindView(R.id.iv_hp_2)
+    ImageView cmHp2;
+    @BindView(R.id.iv_hp_3)
+    ImageView cmHp3;
+    @BindView(R.id.iv_hp_4)
+    ImageView cmHp4;
+    @BindView(R.id.iv_hp_5)
+    ImageView cmHp5;
 
     private ViewPagerAdapter adapter;
 
