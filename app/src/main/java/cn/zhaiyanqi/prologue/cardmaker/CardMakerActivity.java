@@ -1,10 +1,12 @@
 package cn.zhaiyanqi.prologue.cardmaker;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -33,6 +36,10 @@ public class CardMakerActivity extends AppCompatActivity {
     TextView cmName;
     @BindView(R.id.hero_maker_title)
     TextView cmTitle;
+    @BindView(R.id.hero_maker_hero_img)
+    PhotoView photoView;
+    @BindView(R.id.hero_maker_hero_out_img)
+    PhotoView photoViewOut;
     @BindView(R.id.hero_maker_frame)
     ImageView cmFrame;
     @BindView(R.id.hero_maker_group)
@@ -59,8 +66,25 @@ public class CardMakerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_maker);
         ButterKnife.bind(this);
-
         initViewPager();
+    }
+
+    public void initCardView() {
+        float WIDTH = 688;
+        float HEIGHT = 965;
+        ConstraintLayout rootView = findViewById(R.id.root_layout);
+        float scaleX = rootView.getMeasuredWidth() / WIDTH;
+        float scaleY = rootView.getMeasuredHeight() / HEIGHT;
+        int count = rootView.getChildCount();
+        for (int i = 0; i < count; i++) {
+            View child = rootView.getChildAt(i);
+            ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) child.getLayoutParams();
+            params.width = (int) (params.width * scaleX);
+            params.height = (int) (params.height * scaleY);
+            params.leftMargin = (int) (params.leftMargin * scaleX);
+            params.topMargin = (int) (params.topMargin * scaleX);
+        }
+        rootView.requestLayout();
     }
 
     private void initViewPager() {
@@ -68,6 +92,7 @@ public class CardMakerActivity extends AppCompatActivity {
         adapter.addItem(new TemplateFragment());
         adapter.addItem(new TitleFragment());
         adapter.addItem(new NameFragment());
+        adapter.addItem(new AdjustFragment());
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setOffscreenPageLimit(5);

@@ -73,5 +73,12 @@
     <string name="custom_component">自定义组件</string>
     <string name="select">选择</string>
     <string name="enable">启用</string>
+    <string name="outImg">出框</string>
+    <string name="hero_image">插画</string>
+    <string name="tall">变高</string>
+    <string name="high">高</string>
+    <string name="fat">胖</string>
+    <string name="thin">瘦</string>
+    <string name="low">矮</string>
 
 </resources>

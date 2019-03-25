@@ -3,18 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/hero_maker_main_card"
-    android:layout_width="250dp"
-    android:layout_height="351dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/root_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
+        <!--<ImageView-->
+        <!--android:id="@+id/hero_maker_hero_img"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:contentDescription="@string/empty" />-->
+        <com.github.chrisbanes.photoview.PhotoView
             android:id="@+id/hero_maker_hero_img"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/empty" />
+            android:layout_height="match_parent" />
 
         <ImageView
             android:id="@+id/hero_maker_frame"
@@ -24,12 +29,19 @@
             android:scaleType="fitXY"
             android:src="@drawable/wei" />
 
-        <ImageView
+        <com.github.chrisbanes.photoview.PhotoView
             android:id="@+id/hero_maker_hero_out_img"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:contentDescription="@string/empty"
             android:visibility="gone" />
+
+
+        <!--<ImageView-->
+        <!--android:id="@+id/hero_maker_hero_out_img"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:contentDescription="@string/empty"-->
+        <!--android:visibility="gone" />-->
 
         <ImageView
             android:id="@+id/hero_maker_group"
@@ -37,11 +49,11 @@
             android:layout_height="62.25dp"
             android:layout_marginStart="12.94dp"
             android:layout_marginTop="10.74dp"
+            android:contentDescription="@string/empty"
             android:scaleType="fitXY"
             android:src="@drawable/wei_logo"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="@string/empty" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/hero_maker_title"
@@ -80,8 +92,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="68dp"
             android:layout_marginTop="15dp"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -131,7 +143,6 @@
                 android:layout_marginStart="1dp"
                 android:contentDescription="@string/empty"
                 android:scaleType="fitXY" />
-
 
         </LinearLayout>
 

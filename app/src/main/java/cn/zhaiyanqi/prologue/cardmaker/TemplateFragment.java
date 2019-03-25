@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.github.chrisbanes.photoview.PhotoView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,14 +31,18 @@ public class TemplateFragment extends Fragment {
 
     private static final int SELECT_FRAME_REQUEST_CODE = 1;
     private static final int SELECT_GROUP_REQUEST_CODE = 2;
+    private static final int SELECT_PHOTO_REQUEST_CODE = 3;
     @BindView(R.id.tv_custom_frame)
     TextView tvCustomFrame;
     @BindView(R.id.tv_custom_group)
     TextView tvCustomGroup;
+    @BindView(R.id.tv_custom_photo)
+    TextView tvCustomPhoto;
     private ImageView cmFrame, cmGroup, cmSkillBoard;
-    private Uri frameUri, groupUri;
+    private Uri frameUri, groupUri, photoUri;
     private ImageView ivHp1, ivHp2, ivHp3, ivHp4, ivHp5;
     private LinearLayout ivHpLayout;
+    private PhotoView photoView, outPhotoView;
 
     public TemplateFragment() {
     }
@@ -52,7 +57,7 @@ public class TemplateFragment extends Fragment {
         return view;
     }
 
-    @OnCheckedChanged({R.id.cb_show_frame, R.id.cb_show_logo, R.id.cb_show_hp})
+    @OnCheckedChanged({R.id.cb_show_frame, R.id.cb_show_logo, R.id.cb_show_skill, R.id.cb_show_hp})
     void switchShowAndHide(CompoundButton button, boolean checked) {
         switch (button.getId()) {
             case R.id.cb_show_frame: {
@@ -63,6 +68,10 @@ public class TemplateFragment extends Fragment {
                 cmGroup.setVisibility(checked ? View.VISIBLE : View.GONE);
                 break;
             }
+            case R.id.cb_show_skill: {
+                cmSkillBoard.setVisibility(checked ? View.VISIBLE : View.GONE);
+                break;
+            }
             case R.id.cb_show_hp: {
                 ivHpLayout.setVisibility(checked ? View.VISIBLE : View.GONE);
                 break;
@@ -70,8 +79,9 @@ public class TemplateFragment extends Fragment {
         }
     }
 
-    @OnClick({R.id.btn_select_custom_frame, R.id.btn_select_custom_group})
-    void selectCustomFrame(View view) {
+    @OnClick({R.id.btn_select_custom_frame, R.id.btn_select_custom_group, R.id.btn_select_custom_photo})
+    void selectCustomImage(View view) {
+
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         intent.putExtra("crop", true);
@@ -85,10 +95,14 @@ public class TemplateFragment extends Fragment {
                 startActivityForResult(intent, SELECT_GROUP_REQUEST_CODE);
                 break;
             }
+            case R.id.btn_select_custom_photo: {
+                startActivityForResult(intent, SELECT_PHOTO_REQUEST_CODE);
+                break;
+            }
         }
     }
 
-    @OnCheckedChanged(R.id.cb_custom_frame)
+    @OnCheckedChanged({R.id.cb_custom_frame, R.id.cb_custom_group, R.id.cb_custom_photo_out})
     void switchFrame(CompoundButton button, boolean checked) {
         switch (button.getId()) {
             case R.id.cb_custom_frame: {
@@ -103,7 +117,19 @@ public class TemplateFragment extends Fragment {
                 if (checked && groupUri != null) {
                     Glide.with(this).load(groupUri).transition(withCrossFade()).into(cmGroup);
                 } else {
-                    Glide.with(this).load(R.drawable.wei).transition(withCrossFade()).into(cmGroup);
+                    Glide.with(this).load(R.drawable.wei_logo).transition(withCrossFade()).into(cmGroup);
+                }
+                break;
+            }
+            case R.id.cb_custom_photo_out: {
+                if (checked && photoUri != null) {
+                    outPhotoView.setImageURI(photoUri);
+                    outPhotoView.setVisibility(View.VISIBLE);
+                    photoView.setVisibility(View.GONE);
+                } else {
+                    photoView.setImageURI(photoUri);
+                    photoView.setVisibility(View.VISIBLE);
+                    outPhotoView.setVisibility(View.GONE);
                 }
                 break;
             }
@@ -127,6 +153,15 @@ public class TemplateFragment extends Fragment {
                     groupUri = data.getData();
                     if (groupUri != null) {
                         tvCustomGroup.setText(groupUri.getPath());
+                    }
+                    break;
+                }
+                case SELECT_PHOTO_REQUEST_CODE: {
+                    photoUri = data.getData();
+                    if (photoUri != null) {
+                        tvCustomPhoto.setText(photoUri.getPath());
+                        photoView.setImageURI(photoUri);
+                        outPhotoView.setImageURI(photoUri);
                     }
                     break;
                 }
@@ -218,6 +253,8 @@ public class TemplateFragment extends Fragment {
             cmGroup = activity.cmGroup;
             cmSkillBoard = activity.cmSkillBoard;
             ivHpLayout = activity.cmHpLayout;
+            photoView = activity.photoView;
+            outPhotoView = activity.photoViewOut;
             ivHp1 = activity.cmHp1;
             ivHp2 = activity.cmHp2;
             ivHp3 = activity.cmHp3;
