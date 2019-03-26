@@ -18,7 +18,6 @@
             android:text="@string/export_format" />
 
         <RadioGroup
-            android:id="@+id/hero_maker_rg_select_format"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -26,7 +25,7 @@
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/hero_maker_rb_format_png"
+                android:id="@+id/rb_format_png"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -34,14 +33,14 @@
                 android:text="@string/format_png" />
 
             <RadioButton
-                android:id="@+id/hero_maker_rb_format_jpg"
+                android:id="@+id/rb_format_jpg"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/format_jpg" />
 
             <RadioButton
-                android:id="@+id/hero_maker_rb_format_webp"
+                android:id="@+id/rb_format_webp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

@@ -86,5 +86,7 @@
     <string name="hp_image">勾玉图片</string>
     <string name="half_hp_image">半血勾玉</string>
     <string name="default_hp">5</string>
+    <string name="hp_height">勾玉高度</string>
+    <string name="hp_width">勾玉宽度</string>
 
 </resources>

@@ -50,6 +50,12 @@ public class HpFragment extends Fragment {
     CheckBox cbCustomHalfHp;
     @BindView(R.id.tv_cur_hp)
     TextView tvCurHp;
+    @BindView(R.id.tv_hp_height)
+    TextView tvHpHeight;
+    @BindView(R.id.tv_hp_width)
+    TextView tvHpWidth;
+
+
     private boolean standardMode = true;
     private int stdHp = 5;
     private float guozhanHp = 2.0f;
@@ -67,7 +73,47 @@ public class HpFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_hp, container, false);
         ButterKnife.bind(this, view);
+        refreshWHText();
         return view;
+    }
+
+    @OnClick({R.id.btn_add_height, R.id.btn_add_width, R.id.btn_reduce_height, R.id.btn_reduce_width})
+    void changeHpSize(View view) {
+        switch (view.getId()) {
+            case R.id.btn_add_height: {
+                addHeight(ivHp1);
+                addHeight(ivHp2);
+                addHeight(ivHp3);
+                addHeight(ivHp4);
+                addHeight(ivHp5);
+                break;
+            }
+            case R.id.btn_add_width: {
+                addWidth(ivHp1);
+                addWidth(ivHp2);
+                addWidth(ivHp3);
+                addWidth(ivHp4);
+                addWidth(ivHp5);
+                break;
+            }
+            case R.id.btn_reduce_height: {
+                reduceHeight(ivHp1);
+                reduceHeight(ivHp2);
+                reduceHeight(ivHp3);
+                reduceHeight(ivHp4);
+                reduceHeight(ivHp5);
+                break;
+            }
+            case R.id.btn_reduce_width: {
+                reduceWidth(ivHp1);
+                reduceWidth(ivHp2);
+                reduceWidth(ivHp3);
+                reduceWidth(ivHp4);
+                reduceWidth(ivHp5);
+                break;
+            }
+        }
+        refreshWHText();
     }
 
     @OnClick({R.id.rb_standard, R.id.rb_guozhan})
@@ -193,7 +239,13 @@ public class HpFragment extends Fragment {
             ivHp3 = activity.getCmHp3();
             ivHp4 = activity.getCmHp4();
             ivHp5 = activity.getCmHp5();
+
         }
+    }
+
+    private void refreshWHText() {
+        tvHpWidth.setText(String.valueOf(ivHp1.getWidth()));
+        tvHpHeight.setText(String.valueOf(ivHp1.getHeight()));
     }
 
     @NonNull
@@ -229,6 +281,78 @@ public class HpFragment extends Fragment {
             case 1:
                 ivHp1.setVisibility(View.VISIBLE);
             case 0:
+                break;
+        }
+        RequestBuilder<Drawable> rb;
+        switch (activity.getGroup()) {
+            case Wei:
+                loadWei();
+                if (useCustomHalfHpImage && halfHpUri != null) {
+                    rb = Glide.with(this).load(halfHpUri).transition(withCrossFade());
+                } else {
+                    rb = Glide.with(this).load(R.drawable.wei_hp_half).transition(withCrossFade());
+                }
+                break;
+            case Shu:
+                loadShu();
+                if (useCustomHalfHpImage && halfHpUri != null) {
+                    rb = Glide.with(this).load(halfHpUri).transition(withCrossFade());
+                } else {
+                    rb = Glide.with(this).load(R.drawable.shu_hp_half).transition(withCrossFade());
+                }
+                break;
+            case Wu:
+                loadWu();
+                if (useCustomHalfHpImage && halfHpUri != null) {
+                    rb = Glide.with(this).load(halfHpUri).transition(withCrossFade());
+                } else {
+                    rb = Glide.with(this).load(R.drawable.wu_hp_half).transition(withCrossFade());
+                }
+                break;
+            case Qun:
+                loadQun();
+                if (useCustomHalfHpImage && halfHpUri != null) {
+                    rb = Glide.with(this).load(halfHpUri).transition(withCrossFade());
+                } else {
+                    rb = Glide.with(this).load(R.drawable.qun_hp_half).transition(withCrossFade());
+                }
+                break;
+            case God:
+                loadGod();
+                if (useCustomHalfHpImage && halfHpUri != null) {
+                    rb = Glide.with(this).load(halfHpUri).transition(withCrossFade());
+                } else {
+                    rb = Glide.with(this).load(R.drawable.god_hp_half).transition(withCrossFade());
+                }
+                break;
+            default:
+                if (useCustomHalfHpImage && halfHpUri != null) {
+                    rb = Glide.with(this).load(halfHpUri).transition(withCrossFade());
+                } else {
+                    rb = Glide.with(this).load(R.drawable.wei_hp_half).transition(withCrossFade());
+                }
+
+        }
+        switch (String.valueOf(guozhanHp)) {
+            case "4.5":
+                ivHp5.setVisibility(View.VISIBLE);
+                rb.into(ivHp5);
+                break;
+            case "3.5":
+                ivHp4.setVisibility(View.VISIBLE);
+                rb.into(ivHp4);
+                break;
+            case "2.5":
+                ivHp3.setVisibility(View.VISIBLE);
+                rb.into(ivHp3);
+                break;
+            case "1.5":
+                ivHp2.setVisibility(View.VISIBLE);
+                rb.into(ivHp2);
+                break;
+            case "0.5":
+                ivHp1.setVisibility(View.VISIBLE);
+                rb.into(ivHp1);
                 break;
         }
     }
@@ -278,7 +402,7 @@ public class HpFragment extends Fragment {
         if (useCustomHpImage && hpUri != null) {
             rb = Glide.with(this).load(hpUri).transition(withCrossFade());
         } else {
-            rb = Glide.with(this).load(R.drawable.wei_hp).transition(withCrossFade());
+            rb = Glide.with(this).load(standardMode ? R.drawable.wei_hp : R.drawable.wei_hp_double).transition(withCrossFade());
         }
         rb.into(ivHp1);
         rb.into(ivHp2);
@@ -292,7 +416,7 @@ public class HpFragment extends Fragment {
         if (useCustomHpImage && hpUri != null) {
             rb = Glide.with(this).load(hpUri).transition(withCrossFade());
         } else {
-            rb = Glide.with(this).load(R.drawable.shu_hp).transition(withCrossFade());
+            rb = Glide.with(this).load(standardMode ? R.drawable.shu_hp : R.drawable.shu_hp_double).transition(withCrossFade());
         }
         rb.into(ivHp1);
         rb.into(ivHp2);
@@ -306,7 +430,7 @@ public class HpFragment extends Fragment {
         if (useCustomHpImage && hpUri != null) {
             rb = Glide.with(this).load(hpUri).transition(withCrossFade());
         } else {
-            rb = Glide.with(this).load(R.drawable.wu_hp).transition(withCrossFade());
+            rb = Glide.with(this).load(standardMode ? R.drawable.wu_hp : R.drawable.wu_hp_double).transition(withCrossFade());
         }
         rb.into(ivHp1);
         rb.into(ivHp2);
@@ -320,7 +444,7 @@ public class HpFragment extends Fragment {
         if (useCustomHpImage && hpUri != null) {
             rb = Glide.with(this).load(hpUri).transition(withCrossFade());
         } else {
-            rb = Glide.with(this).load(R.drawable.qun_hp).transition(withCrossFade());
+            rb = Glide.with(this).load(standardMode ? R.drawable.qun_hp : R.drawable.qun_hp_double).transition(withCrossFade());
         }
         rb.into(ivHp1);
         rb.into(ivHp2);
@@ -334,7 +458,7 @@ public class HpFragment extends Fragment {
         if (useCustomHpImage && hpUri != null) {
             rb = Glide.with(this).load(hpUri).transition(withCrossFade());
         } else {
-            rb = Glide.with(this).load(R.drawable.god_hp).transition(withCrossFade());
+            rb = Glide.with(this).load(standardMode ? R.drawable.god_hp : R.drawable.god_hp_double).transition(withCrossFade());
         }
         rb.into(ivHp1);
         rb.into(ivHp2);
@@ -342,4 +466,29 @@ public class HpFragment extends Fragment {
         rb.into(ivHp4);
         rb.into(ivHp5);
     }
+
+    private void addHeight(ImageView view) {
+        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
+        layoutParams.height += 1;
+        view.requestLayout();
+    }
+
+    private void addWidth(ImageView view) {
+        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
+        layoutParams.width += 1;
+        view.requestLayout();
+    }
+
+    private void reduceHeight(ImageView view) {
+        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
+        layoutParams.height -= 1;
+        view.requestLayout();
+    }
+
+    private void reduceWidth(ImageView view) {
+        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
+        layoutParams.width -= 1;
+        view.requestLayout();
+    }
+
 }

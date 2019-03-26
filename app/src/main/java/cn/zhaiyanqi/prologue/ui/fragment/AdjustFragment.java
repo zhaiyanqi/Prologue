@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
@@ -25,6 +27,9 @@ public class AdjustFragment extends Fragment {
     private View curView;
     private int moveStepOffset = 3;
 
+    @BindView(R.id.ll_change_size)
+    LinearLayout llChangeSize;
+
     public AdjustFragment() {
     }
 
@@ -39,6 +44,7 @@ public class AdjustFragment extends Fragment {
 
     @OnClick({R.id.rb_title, R.id.rb_name, R.id.rb_hp, R.id.rb_skill_board})
     void changeCurView(View view) {
+        llChangeSize.setVisibility(View.GONE);
         switch (view.getId()) {
             case R.id.rb_title: {
                 curView = activity.getCmTitle();
@@ -54,6 +60,7 @@ public class AdjustFragment extends Fragment {
             }
             case R.id.rb_skill_board: {
                 curView = activity.getCmSkillBoard();
+                llChangeSize.setVisibility(View.VISIBLE);
                 break;
             }
         }

@@ -47,11 +47,13 @@
     </ScrollView>
 
     <LinearLayout
+        android:id="@+id/ll_change_size"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="5dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/arrow_layout"
         app:layout_constraintStart_toEndOf="@+id/scroll_button"
         app:layout_constraintTop_toTopOf="parent">
