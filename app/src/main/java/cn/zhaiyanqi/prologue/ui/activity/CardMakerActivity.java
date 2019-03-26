@@ -1,10 +1,12 @@
-package cn.zhaiyanqi.prologue.cardmaker;
+package cn.zhaiyanqi.prologue.ui.activity;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.material.tabs.TabLayout;
@@ -23,6 +25,12 @@ import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.zhaiyanqi.prologue.R;
+import cn.zhaiyanqi.prologue.ui.fragment.AdjustFragment;
+import cn.zhaiyanqi.prologue.ui.fragment.ExportFragment;
+import cn.zhaiyanqi.prologue.ui.fragment.HpFragment;
+import cn.zhaiyanqi.prologue.ui.fragment.NameFragment;
+import cn.zhaiyanqi.prologue.ui.fragment.TemplateFragment;
+import cn.zhaiyanqi.prologue.ui.fragment.TitleFragment;
 
 public class CardMakerActivity extends AppCompatActivity {
 
@@ -37,9 +45,9 @@ public class CardMakerActivity extends AppCompatActivity {
     @BindView(R.id.hero_maker_title)
     TextView cmTitle;
     @BindView(R.id.hero_maker_hero_img)
-    PhotoView photoView;
+    PhotoView cmPhotoView;
     @BindView(R.id.hero_maker_hero_out_img)
-    PhotoView photoViewOut;
+    PhotoView cmPhotoViewOut;
     @BindView(R.id.hero_maker_frame)
     ImageView cmFrame;
     @BindView(R.id.hero_maker_group)
@@ -60,6 +68,7 @@ public class CardMakerActivity extends AppCompatActivity {
     ImageView cmHp5;
 
     private ViewPagerAdapter adapter;
+    private long exitTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +76,10 @@ public class CardMakerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_card_maker);
         ButterKnife.bind(this);
         initViewPager();
+        initPhotoView();
+    }
+
+    private void initPhotoView() {
     }
 
     public void initCardView() {
@@ -92,22 +105,91 @@ public class CardMakerActivity extends AppCompatActivity {
         adapter.addItem(new TemplateFragment());
         adapter.addItem(new TitleFragment());
         adapter.addItem(new NameFragment());
+        adapter.addItem(new HpFragment());
         adapter.addItem(new AdjustFragment());
+        adapter.addItem(new ExportFragment());
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setOffscreenPageLimit(5);
     }
 
+    public TextView getCmName() {
+        return cmName;
+    }
+
+    public TextView getCmTitle() {
+        return cmTitle;
+    }
+
+    public PhotoView getCmPhotoView() {
+        return cmPhotoView;
+    }
+
+    public PhotoView getCmPhotoViewOut() {
+        return cmPhotoViewOut;
+    }
+
+    public ImageView getCmFrame() {
+        return cmFrame;
+    }
+
+    public ImageView getCmGroup() {
+        return cmGroup;
+    }
+
+    public ImageView getCmSkillBoard() {
+        return cmSkillBoard;
+    }
+
+    public LinearLayout getCmHpLayout() {
+        return cmHpLayout;
+    }
+
+    public ImageView getCmHp1() {
+        return cmHp1;
+    }
+
+    public ImageView getCmHp2() {
+        return cmHp2;
+    }
+
+    public ImageView getCmHp3() {
+        return cmHp3;
+    }
+
+    public ImageView getCmHp4() {
+        return cmHp4;
+    }
+
+    public ImageView getCmHp5() {
+        return cmHp5;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK
+                && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            } else {
+                finish();
+            }
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {
         private List<Fragment> list;
 
-        public ViewPagerAdapter(@NonNull FragmentManager fm) {
+        ViewPagerAdapter(@NonNull FragmentManager fm) {
             super(fm);
             list = new ArrayList<>();
         }
 
-        public void addItem(Fragment fragment) {
+        void addItem(Fragment fragment) {
             list.add(fragment);
         }
 

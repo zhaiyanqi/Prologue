@@ -15,19 +15,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".cardmaker.CardMakerActivity"></activity>
         <activity
-            android:name=".activities.HeroMakerActivity"
-            android:label="@string/title_activity_hero_maker"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".ui.activity.CardMakerActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.HeroActivity"
-            android:parentActivityName=".activities.MainActivity" />
+            android:name=".ui.activity.HeroActivity"
+            android:parentActivityName=".ui.activity.MainActivity" />
         <activity
-            android:name=".activities.MainActivity"
-            android:theme="@style/AppThemeNoActionBar"></activity>
+            android:name=".ui.activity.MainActivity"
+            android:theme="@style/AppThemeNoActionBar" />
         <activity
-            android:name=".activities.SplashActivity"
+            android:name=".ui.activity.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>

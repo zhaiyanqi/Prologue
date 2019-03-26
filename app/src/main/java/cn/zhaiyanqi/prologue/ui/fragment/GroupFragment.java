@@ -1,4 +1,4 @@
-package cn.zhaiyanqi.prologue.cardmaker;
+package cn.zhaiyanqi.prologue.ui.fragment;
 
 
 import android.os.Bundle;

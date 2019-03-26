@@ -1,4 +1,4 @@
-package cn.zhaiyanqi.prologue.activities;
+package cn.zhaiyanqi.prologue.ui.activity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -18,8 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import cn.zhaiyanqi.prologue.R;
-import cn.zhaiyanqi.prologue.adapter.HeroAdapter;
 import cn.zhaiyanqi.prologue.bean.HeroBean;
+import cn.zhaiyanqi.prologue.ui.adapter.HeroAdapter;
 
 public class HeroActivity extends AppCompatActivity {
 

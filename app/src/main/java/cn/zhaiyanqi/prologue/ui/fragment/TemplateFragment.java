@@ -1,4 +1,4 @@
-package cn.zhaiyanqi.prologue.cardmaker;
+package cn.zhaiyanqi.prologue.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,6 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import cn.zhaiyanqi.prologue.R;
+import cn.zhaiyanqi.prologue.ui.activity.CardMakerActivity;
 
 import static android.app.Activity.RESULT_OK;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
@@ -32,17 +34,30 @@ public class TemplateFragment extends Fragment {
     private static final int SELECT_FRAME_REQUEST_CODE = 1;
     private static final int SELECT_GROUP_REQUEST_CODE = 2;
     private static final int SELECT_PHOTO_REQUEST_CODE = 3;
+    private static final int SELECT_SKILL_BOARD_REQUEST_CODE = 4;
     @BindView(R.id.tv_custom_frame)
     TextView tvCustomFrame;
     @BindView(R.id.tv_custom_group)
     TextView tvCustomGroup;
     @BindView(R.id.tv_custom_photo)
     TextView tvCustomPhoto;
+    @BindView(R.id.tv_custom_skill_board)
+    TextView tvCustomSkillBoard;
+
+    @BindView(R.id.cb_custom_frame)
+    CheckBox cbFrame;
+    @BindView(R.id.cb_custom_group)
+    CheckBox cbGroup;
+    @BindView(R.id.cb_custom_skill_board)
+    CheckBox cbSkillBoard;
+
+
     private ImageView cmFrame, cmGroup, cmSkillBoard;
-    private Uri frameUri, groupUri, photoUri;
+    private Uri frameUri, groupUri, photoUri, skillBoardUri;
     private ImageView ivHp1, ivHp2, ivHp3, ivHp4, ivHp5;
     private LinearLayout ivHpLayout;
     private PhotoView photoView, outPhotoView;
+    private boolean outFrame;
 
     public TemplateFragment() {
     }
@@ -57,7 +72,8 @@ public class TemplateFragment extends Fragment {
         return view;
     }
 
-    @OnCheckedChanged({R.id.cb_show_frame, R.id.cb_show_logo, R.id.cb_show_skill, R.id.cb_show_hp})
+    @OnCheckedChanged({R.id.cb_show_frame, R.id.cb_show_logo,
+            R.id.cb_show_skill, R.id.cb_show_hp, R.id.cb_show_img})
     void switchShowAndHide(CompoundButton button, boolean checked) {
         switch (button.getId()) {
             case R.id.cb_show_frame: {
@@ -76,12 +92,20 @@ public class TemplateFragment extends Fragment {
                 ivHpLayout.setVisibility(checked ? View.VISIBLE : View.GONE);
                 break;
             }
+            case R.id.cb_show_img: {
+                if (outFrame) {
+                    outPhotoView.setVisibility(checked ? View.VISIBLE : View.GONE);
+                } else {
+                    photoView.setVisibility(checked ? View.VISIBLE : View.GONE);
+                }
+                break;
+            }
         }
     }
 
-    @OnClick({R.id.btn_select_custom_frame, R.id.btn_select_custom_group, R.id.btn_select_custom_photo})
+    @OnClick({R.id.btn_select_custom_frame, R.id.btn_select_custom_group,
+            R.id.btn_select_custom_photo, R.id.btn_select_custom_skill_board})
     void selectCustomImage(View view) {
-
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         intent.putExtra("crop", true);
@@ -99,10 +123,14 @@ public class TemplateFragment extends Fragment {
                 startActivityForResult(intent, SELECT_PHOTO_REQUEST_CODE);
                 break;
             }
+            case R.id.btn_select_custom_skill_board: {
+                startActivityForResult(intent, SELECT_SKILL_BOARD_REQUEST_CODE);
+                break;
+            }
         }
     }
 
-    @OnCheckedChanged({R.id.cb_custom_frame, R.id.cb_custom_group, R.id.cb_custom_photo_out})
+    @OnCheckedChanged({R.id.cb_custom_frame, R.id.cb_custom_group, R.id.cb_custom_photo_out, R.id.cb_custom_skill_board})
     void switchFrame(CompoundButton button, boolean checked) {
         switch (button.getId()) {
             case R.id.cb_custom_frame: {
@@ -122,6 +150,7 @@ public class TemplateFragment extends Fragment {
                 break;
             }
             case R.id.cb_custom_photo_out: {
+                outFrame = checked;
                 if (checked && photoUri != null) {
                     outPhotoView.setImageURI(photoUri);
                     outPhotoView.setVisibility(View.VISIBLE);
@@ -130,6 +159,14 @@ public class TemplateFragment extends Fragment {
                     photoView.setImageURI(photoUri);
                     photoView.setVisibility(View.VISIBLE);
                     outPhotoView.setVisibility(View.GONE);
+                }
+                break;
+            }
+            case R.id.cb_custom_skill_board: {
+                if (checked && skillBoardUri != null) {
+                    Glide.with(this).load(skillBoardUri).transition(withCrossFade()).into(cmSkillBoard);
+                } else {
+                    Glide.with(this).load(R.drawable.wei_skill_board).transition(withCrossFade()).into(cmSkillBoard);
                 }
                 break;
             }
@@ -146,6 +183,8 @@ public class TemplateFragment extends Fragment {
                     frameUri = data.getData();
                     if (frameUri != null) {
                         tvCustomFrame.setText(frameUri.getPath());
+                        Glide.with(this).load(frameUri).transition(withCrossFade()).into(cmFrame);
+                        cbFrame.setChecked(true);
                     }
                     break;
                 }
@@ -153,6 +192,8 @@ public class TemplateFragment extends Fragment {
                     groupUri = data.getData();
                     if (groupUri != null) {
                         tvCustomGroup.setText(groupUri.getPath());
+                        Glide.with(this).load(groupUri).transition(withCrossFade()).into(cmGroup);
+                        cbGroup.setChecked(true);
                     }
                     break;
                 }
@@ -162,6 +203,15 @@ public class TemplateFragment extends Fragment {
                         tvCustomPhoto.setText(photoUri.getPath());
                         photoView.setImageURI(photoUri);
                         outPhotoView.setImageURI(photoUri);
+                    }
+                    break;
+                }
+                case SELECT_SKILL_BOARD_REQUEST_CODE: {
+                    skillBoardUri = data.getData();
+                    if (skillBoardUri != null) {
+                        tvCustomSkillBoard.setText(skillBoardUri.getPath());
+                        Glide.with(this).load(skillBoardUri).transition(withCrossFade()).into(cmSkillBoard);
+                        cbSkillBoard.setChecked(true);
                     }
                     break;
                 }
@@ -249,17 +299,17 @@ public class TemplateFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof CardMakerActivity) {
             CardMakerActivity activity = (CardMakerActivity) context;
-            cmFrame = activity.cmFrame;
-            cmGroup = activity.cmGroup;
-            cmSkillBoard = activity.cmSkillBoard;
-            ivHpLayout = activity.cmHpLayout;
-            photoView = activity.photoView;
-            outPhotoView = activity.photoViewOut;
-            ivHp1 = activity.cmHp1;
-            ivHp2 = activity.cmHp2;
-            ivHp3 = activity.cmHp3;
-            ivHp4 = activity.cmHp4;
-            ivHp5 = activity.cmHp5;
+            cmFrame = activity.getCmFrame();
+            cmGroup = activity.getCmGroup();
+            cmSkillBoard = activity.getCmSkillBoard();
+            ivHpLayout = activity.getCmHpLayout();
+            photoView = activity.getCmPhotoView();
+            outPhotoView = activity.getCmPhotoViewOut();
+            ivHp1 = activity.getCmHp1();
+            ivHp2 = activity.getCmHp2();
+            ivHp3 = activity.getCmHp3();
+            ivHp4 = activity.getCmHp4();
+            ivHp5 = activity.getCmHp5();
         }
     }
 

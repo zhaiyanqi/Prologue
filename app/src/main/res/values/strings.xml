@@ -64,7 +64,7 @@
     <string name="font_size">字号</string>
     <string name="font">字体</string>
     <string name="font_color">字体颜色</string>
-    <string name="default_color">#F8EDEDDE</string>
+    <string name="default_color">#ffe600</string>
     <string name="font_outer_color">发光颜色</string>
     <string name="horizontal_name">横向显示</string>
     <string name="font_spacing">行间距(上下字体间距)</string>
@@ -80,5 +80,11 @@
     <string name="fat">胖</string>
     <string name="thin">瘦</string>
     <string name="low">矮</string>
+    <string name="guozhan_mode">国战模式</string>
+    <string name="standard_mode">标准模式</string>
+    <string name="hp_number">勾玉数量</string>
+    <string name="hp_image">勾玉图片</string>
+    <string name="half_hp_image">半血勾玉</string>
+    <string name="default_hp">5</string>
 
 </resources>

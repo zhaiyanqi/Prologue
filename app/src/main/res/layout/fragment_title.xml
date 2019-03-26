@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="15dp"
-    tools:context=".cardmaker.NameFragment">
+    tools:context=".ui.fragment.TitleFragment">
 
     <LinearLayout
         android:id="@+id/line1"
@@ -82,6 +82,7 @@
             android:id="@+id/color_picker"
             android:layout_width="60dp"
             android:layout_height="35dp"
+            android:background="@color/colorTitle"
             android:layout_marginStart="10dp" />
     </LinearLayout>
 

@@ -1,4 +1,4 @@
-package cn.zhaiyanqi.prologue.cardmaker;
+package cn.zhaiyanqi.prologue.ui.fragment;
 
 
 import android.content.Context;
@@ -14,6 +14,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import cn.zhaiyanqi.prologue.R;
+import cn.zhaiyanqi.prologue.ui.activity.CardMakerActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,19 +41,19 @@ public class AdjustFragment extends Fragment {
     void changeCurView(View view) {
         switch (view.getId()) {
             case R.id.rb_title: {
-                curView = activity.cmTitle;
+                curView = activity.getCmTitle();
                 break;
             }
             case R.id.rb_name: {
-                curView = activity.cmName;
+                curView = activity.getCmName();
                 break;
             }
             case R.id.rb_hp: {
-                curView = activity.cmHpLayout;
+                curView = activity.getCmHpLayout();
                 break;
             }
             case R.id.rb_skill_board: {
-                curView = activity.cmSkillBoard;
+                curView = activity.getCmSkillBoard();
                 break;
             }
         }

@@ -3,12 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.HeroActivity">
+    tools:context=".ui.fragment.SkillsFragment">
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/activity_hero_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
 </FrameLayout>

@@ -1,4 +1,4 @@
-package cn.zhaiyanqi.prologue.adapter;
+package cn.zhaiyanqi.prologue.ui.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;

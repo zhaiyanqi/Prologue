@@ -1,4 +1,4 @@
-package cn.zhaiyanqi.prologue.activities;
+package cn.zhaiyanqi.prologue.ui.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -17,7 +17,6 @@ import java.io.File;
 import androidx.appcompat.app.AppCompatActivity;
 import cn.zhaiyanqi.prologue.App;
 import cn.zhaiyanqi.prologue.R;
-import cn.zhaiyanqi.prologue.cardmaker.CardMakerActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
