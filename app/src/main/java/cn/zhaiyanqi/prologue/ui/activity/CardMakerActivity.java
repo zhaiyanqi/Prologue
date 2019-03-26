@@ -2,8 +2,6 @@ package cn.zhaiyanqi.prologue.ui.activity;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -45,7 +43,7 @@ public class CardMakerActivity extends AppCompatActivity {
     ViewPager viewPager;
 
     //武将牌的元素
-    @BindView(R.id.hero_card_wrapper)
+    @BindView(R.id.root_layout)
     ConstraintLayout cardWrapper;
     @BindView(R.id.hero_maker_name)
     TextView cmName;
@@ -124,11 +122,11 @@ public class CardMakerActivity extends AppCompatActivity {
     public Bitmap getChartBitmap() {
         Bitmap returnedBitmap = Bitmap.createBitmap(cardWrapper.getWidth(), cardWrapper.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(returnedBitmap);
-        Drawable bgDrawable = cardWrapper.getBackground();
-        if (bgDrawable != null)
-            bgDrawable.draw(canvas);
-        else
-            canvas.drawColor(Color.WHITE);
+//        Drawable bgDrawable = cardWrapper.getBackground();
+//        if (bgDrawable != null){
+//            bgDrawable.setAlpha(0);
+//            bgDrawable.draw(canvas);
+//        }
         cardWrapper.draw(canvas);
         return returnedBitmap;
     }
