@@ -25,6 +25,7 @@ import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.zhaiyanqi.prologue.R;
+import cn.zhaiyanqi.prologue.enums.HeroGroup;
 import cn.zhaiyanqi.prologue.ui.fragment.AdjustFragment;
 import cn.zhaiyanqi.prologue.ui.fragment.ExportFragment;
 import cn.zhaiyanqi.prologue.ui.fragment.HpFragment;
@@ -69,6 +70,7 @@ public class CardMakerActivity extends AppCompatActivity {
 
     private ViewPagerAdapter adapter;
     private long exitTime;
+    private HeroGroup group;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +113,14 @@ public class CardMakerActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setOffscreenPageLimit(5);
+    }
+
+    public HeroGroup getGroup() {
+        return group;
+    }
+
+    public void setGroup(HeroGroup group) {
+        this.group = group;
     }
 
     public TextView getCmName() {

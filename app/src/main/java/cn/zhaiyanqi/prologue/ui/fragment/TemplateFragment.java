@@ -24,6 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import cn.zhaiyanqi.prologue.R;
+import cn.zhaiyanqi.prologue.enums.HeroGroup;
 import cn.zhaiyanqi.prologue.ui.activity.CardMakerActivity;
 
 import static android.app.Activity.RESULT_OK;
@@ -58,6 +59,7 @@ public class TemplateFragment extends Fragment {
     private LinearLayout ivHpLayout;
     private PhotoView photoView, outPhotoView;
     private boolean outFrame;
+    private CardMakerActivity activity;
 
     public TemplateFragment() {
     }
@@ -221,6 +223,7 @@ public class TemplateFragment extends Fragment {
 
     @OnClick(R.id.rb_wei)
     void loadWei() {
+        activity.setGroup(HeroGroup.Wei);
         Glide.with(this).load(R.drawable.wei).transition(withCrossFade()).into(cmFrame);
         Glide.with(this).load(R.drawable.wei_logo).transition(withCrossFade()).into(cmGroup);
         Glide.with(this).load(R.drawable.wei_skill_board).transition(withCrossFade()).into(cmSkillBoard);
@@ -236,6 +239,7 @@ public class TemplateFragment extends Fragment {
 
     @OnClick(R.id.rb_shu)
     void loadShu() {
+        activity.setGroup(HeroGroup.Shu);
         Glide.with(this).load(R.drawable.shu).transition(withCrossFade()).into(cmFrame);
         Glide.with(this).load(R.drawable.shu_logo).transition(withCrossFade()).into(cmGroup);
         Glide.with(this).load(R.drawable.shu_skill_board).transition(withCrossFade()).into(cmSkillBoard);
@@ -251,6 +255,7 @@ public class TemplateFragment extends Fragment {
 
     @OnClick(R.id.rb_wu)
     void loadWu() {
+        activity.setGroup(HeroGroup.Wu);
         Glide.with(this).load(R.drawable.wu).transition(withCrossFade()).into(cmFrame);
         Glide.with(this).load(R.drawable.wu_logo).transition(withCrossFade()).into(cmGroup);
         Glide.with(this).load(R.drawable.wu_skill_board).transition(withCrossFade()).into(cmSkillBoard);
@@ -266,6 +271,7 @@ public class TemplateFragment extends Fragment {
 
     @OnClick(R.id.rb_qun)
     void loadQun() {
+        activity.setGroup(HeroGroup.Qun);
         Glide.with(this).load(R.drawable.qun).transition(withCrossFade()).into(cmFrame);
         Glide.with(this).load(R.drawable.qun_logo).transition(withCrossFade()).into(cmGroup);
         Glide.with(this).load(R.drawable.qun_skill_board).transition(withCrossFade()).into(cmSkillBoard);
@@ -281,6 +287,7 @@ public class TemplateFragment extends Fragment {
 
     @OnClick(R.id.rb_god)
     void loadGod() {
+        activity.setGroup(HeroGroup.God);
         Glide.with(this).load(R.drawable.god).transition(withCrossFade()).into(cmFrame);
         Glide.with(this).load(R.drawable.god_logo).transition(withCrossFade()).into(cmGroup);
         Glide.with(this).load(R.drawable.god_skill_board).transition(withCrossFade()).into(cmSkillBoard);
@@ -298,7 +305,7 @@ public class TemplateFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof CardMakerActivity) {
-            CardMakerActivity activity = (CardMakerActivity) context;
+            activity = (CardMakerActivity) context;
             cmFrame = activity.getCmFrame();
             cmGroup = activity.getCmGroup();
             cmSkillBoard = activity.getCmSkillBoard();
