@@ -17,11 +17,12 @@ import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import cn.zhaiyanqi.prologue.R;
 import cn.zhaiyanqi.prologue.ui.activity.CardMakerActivity;
+import cn.zhaiyanqi.prologue.ui.fragment.base.BaseMakerFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AdjustFragment extends Fragment {
+public class AdjustFragment extends BaseMakerFragment {
 
     private CardMakerActivity activity;
     private View curView;

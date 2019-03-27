@@ -18,7 +18,6 @@ import com.github.chrisbanes.photoview.PhotoView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
@@ -26,11 +25,12 @@ import butterknife.OnClick;
 import cn.zhaiyanqi.prologue.R;
 import cn.zhaiyanqi.prologue.enums.HeroGroup;
 import cn.zhaiyanqi.prologue.ui.activity.CardMakerActivity;
+import cn.zhaiyanqi.prologue.ui.fragment.base.BaseMakerFragment;
 
 import static android.app.Activity.RESULT_OK;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
-public class TemplateFragment extends Fragment {
+public class TemplateFragment extends BaseMakerFragment {
 
     private static final int SELECT_FRAME_REQUEST_CODE = 1;
     private static final int SELECT_GROUP_REQUEST_CODE = 2;

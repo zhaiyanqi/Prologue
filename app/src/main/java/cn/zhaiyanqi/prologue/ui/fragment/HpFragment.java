@@ -28,6 +28,7 @@ import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import cn.zhaiyanqi.prologue.R;
 import cn.zhaiyanqi.prologue.ui.activity.CardMakerActivity;
+import cn.zhaiyanqi.prologue.ui.fragment.base.BaseMakerFragment;
 
 import static android.app.Activity.RESULT_OK;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
@@ -35,7 +36,7 @@ import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOption
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HpFragment extends Fragment {
+public class HpFragment extends BaseMakerFragment {
     private static final int SELECT_HP_REQUEST_CODE = 1;
     private static final int SELECT_HALF_HP_REQUEST_CODE = 2;
     @BindView(R.id.ll_half_hp)

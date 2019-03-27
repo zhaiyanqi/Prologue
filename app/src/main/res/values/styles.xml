@@ -39,7 +39,7 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
-    <declare-styleable name="StrokeTextView">
+    <declare-styleable name="HeroNameTextView">
         <attr name="outerColor" format="color|reference" />
         <attr name="innerColor" format="color|reference" />
     </declare-styleable>

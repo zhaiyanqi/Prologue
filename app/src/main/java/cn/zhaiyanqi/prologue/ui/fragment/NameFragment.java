@@ -22,7 +22,6 @@ import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
@@ -32,10 +31,11 @@ import butterknife.OnTextChanged;
 import cn.zhaiyanqi.prologue.App;
 import cn.zhaiyanqi.prologue.R;
 import cn.zhaiyanqi.prologue.ui.activity.CardMakerActivity;
+import cn.zhaiyanqi.prologue.ui.fragment.base.BaseMakerFragment;
+import cn.zhaiyanqi.prologue.ui.widget.HeroNameTextView;
 import cn.zhaiyanqi.prologue.utils.ColorUtil;
-import cn.zhaiyanqi.prologue.view.StrokeTextView;
 
-public class NameFragment extends Fragment {
+public class NameFragment extends BaseMakerFragment {
 
     private CardMakerActivity activity;
     private TextView nameView;
@@ -78,7 +78,7 @@ public class NameFragment extends Fragment {
                 .setPositiveButton("确定", (dialog, selectedColor, allColors) -> {
                     curColor = selectedColor;
                     colorPicker.setBackgroundColor(selectedColor);
-                    ((StrokeTextView) nameView).setInnerColor(selectedColor);
+                    ((HeroNameTextView) nameView).setInnerColor(selectedColor);
                     String colorStr = ColorUtil.int2HexColor(selectedColor);
                     if (colorStr != null) {
                         colorEditText.setText(colorStr);
@@ -100,7 +100,7 @@ public class NameFragment extends Fragment {
                 .setPositiveButton("确定", (dialog, selectedColor, allColors) -> {
                     curOuterColor = selectedColor;
                     outerColorPicker.setBackgroundColor(selectedColor);
-                    ((StrokeTextView) nameView).setOuterColor(selectedColor);
+                    ((HeroNameTextView) nameView).setOuterColor(selectedColor);
                 })
                 .setNegativeButton("cancel", (dialog, which) -> dialog.dismiss())
                 .build()
@@ -147,7 +147,7 @@ public class NameFragment extends Fragment {
                 try {
                     int colorInt = Color.parseColor(color.toString());
                     colorPicker.setBackgroundColor(colorInt);
-                    ((StrokeTextView) nameView).setInnerColor(colorInt);
+                    ((HeroNameTextView) nameView).setInnerColor(colorInt);
                     curColor = colorInt;
                 } catch (Exception e) {
                     e.printStackTrace();

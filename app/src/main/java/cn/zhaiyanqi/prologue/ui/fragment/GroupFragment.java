@@ -9,11 +9,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import cn.zhaiyanqi.prologue.R;
+import cn.zhaiyanqi.prologue.ui.fragment.base.BaseMakerFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GroupFragment extends Fragment {
+public class GroupFragment extends BaseMakerFragment {
 
 
     public GroupFragment() {

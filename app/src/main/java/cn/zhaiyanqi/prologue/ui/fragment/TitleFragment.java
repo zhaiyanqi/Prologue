@@ -32,12 +32,13 @@ import butterknife.OnTextChanged;
 import cn.zhaiyanqi.prologue.App;
 import cn.zhaiyanqi.prologue.R;
 import cn.zhaiyanqi.prologue.ui.activity.CardMakerActivity;
+import cn.zhaiyanqi.prologue.ui.fragment.base.BaseMakerFragment;
 import cn.zhaiyanqi.prologue.utils.ColorUtil;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TitleFragment extends Fragment {
+public class TitleFragment extends BaseMakerFragment {
     @BindView(R.id.color_picker)
     View colorPicker;
     @BindView(R.id.et_font_color)
@@ -47,7 +48,7 @@ public class TitleFragment extends Fragment {
     private CardMakerActivity activity;
     private TextView titleView;
     private boolean autoTrans2T;
-    private int curColor = Color.parseColor("#ffe600");
+    private int curColor = Color.parseColor("#f4f424");
 
     public TitleFragment() {
     }
