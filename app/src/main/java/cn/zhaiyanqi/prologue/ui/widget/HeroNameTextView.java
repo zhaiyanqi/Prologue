@@ -56,17 +56,11 @@ public class HeroNameTextView extends AppCompatTextView {
     @Override
     protected void onDraw(Canvas canvas) {
         setTextColor(mInnerColor);
-        m_TextPaint.setStrokeWidth(0); // 描边宽度
-        m_TextPaint.setStyle(Paint.Style.FILL); // 描边种类
-        m_TextPaint.setFakeBoldText(false); // 外层text采用粗体
-        m_TextPaint.setShadowLayer(0.1f, getWidth() / 50.f, getHeight() / 35.f, Color.BLACK);
-        super.onDraw(canvas);
-
-        setTextColor(mInnerColor);
-        m_TextPaint.setStrokeWidth(getWidth() / 25.f);
+        m_TextPaint.setStrokeWidth(getWidth() / 30.f);
         m_TextPaint.setStyle(Paint.Style.STROKE);
         m_TextPaint.setFakeBoldText(false);
         m_TextPaint.setShadowLayer(0, 0, 40, 0);
+        m_TextPaint.setShadowLayer(0.1f, 0, getHeight() / 65.f, Color.BLACK);
         super.onDraw(canvas);
 
         setTextColor(mOuterColor);
@@ -74,6 +68,12 @@ public class HeroNameTextView extends AppCompatTextView {
         m_TextPaint.setStyle(Paint.Style.STROKE);
         m_TextPaint.setFakeBoldText(false);
         m_TextPaint.setShadowLayer(0, 0, 40, 0);
+        super.onDraw(canvas);
+
+        setTextColor(mInnerColor);
+        m_TextPaint.setStrokeWidth(0); // 描边宽度
+        m_TextPaint.setStyle(Paint.Style.FILL); // 描边种类
+        m_TextPaint.setFakeBoldText(false); // 外层text采用粗体
         super.onDraw(canvas);
     }
 

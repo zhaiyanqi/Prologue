@@ -29,19 +29,21 @@ public class HeroTitleTextView extends AppCompatTextView {
 
     private void initPaint() {
         m_TextPaint = this.getPaint();
+        m_TextPaint.setStrokeCap(Paint.Cap.ROUND);
+        m_TextPaint.setStrokeJoin(Paint.Join.ROUND);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         int currentTextColor = getCurrentTextColor();
+        setTextColor(Color.BLACK);
+        m_TextPaint.setStrokeWidth(5);
+        m_TextPaint.setStyle(Paint.Style.STROKE);
+        super.onDraw(canvas);
+
+        setTextColor(currentTextColor);
         m_TextPaint.setStrokeWidth(0); // 描边宽度
         m_TextPaint.setStyle(Paint.Style.FILL); // 描边种类
         super.onDraw(canvas);
-
-        setTextColor(Color.BLACK);
-        m_TextPaint.setStrokeWidth(0);
-        m_TextPaint.setStyle(Paint.Style.STROKE);
-        super.onDraw(canvas);
-        setTextColor(currentTextColor);
     }
 }
