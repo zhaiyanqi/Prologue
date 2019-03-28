@@ -59,4 +59,7 @@ dependencies {
     //自由缩放的photoview
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
 
+    //hawk
+    implementation 'com.orhanobut:hawk:2.0.1'
+
 }

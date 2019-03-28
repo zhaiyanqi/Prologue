@@ -57,22 +57,19 @@ public class HeroNameTextView extends AppCompatTextView {
         setTextColor(mInnerColor);
         m_TextPaint.setStrokeWidth(getWidth() / 25.f);
         m_TextPaint.setStyle(Paint.Style.STROKE);
-        m_TextPaint.setFakeBoldText(false);
-        m_TextPaint.setShadowLayer(0, 0, 40, 0);
         m_TextPaint.setShadowLayer(0.1f, 0, getHeight() / 65.f, Color.BLACK);
         super.onDraw(canvas);
 
         setTextColor(mOuterColor);
         m_TextPaint.setStrokeWidth(getWidth() / 30.f);
         m_TextPaint.setStyle(Paint.Style.STROKE);
-        m_TextPaint.setFakeBoldText(false);
         m_TextPaint.setShadowLayer(0, 0, 40, 0);
         super.onDraw(canvas);
 
         setTextColor(mInnerColor);
         m_TextPaint.setStrokeWidth(0); // 描边宽度
         m_TextPaint.setStyle(Paint.Style.FILL); // 描边种类
-        m_TextPaint.setFakeBoldText(false); // 外层text采用粗体
+        m_TextPaint.setShadowLayer(0, 0, 0, 0);
         super.onDraw(canvas);
     }
 
@@ -85,5 +82,4 @@ public class HeroNameTextView extends AppCompatTextView {
         this.mOuterColor = color;
         invalidate();
     }
-
 }

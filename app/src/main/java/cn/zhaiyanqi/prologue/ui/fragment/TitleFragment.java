@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
+import com.orhanobut.hawk.Hawk;
 import com.zqc.opencc.android.lib.ChineseConverter;
 import com.zqc.opencc.android.lib.ConversionType;
 
@@ -40,18 +41,25 @@ import cn.zhaiyanqi.prologue.utils.ColorUtil;
  */
 public class TitleFragment extends BaseMakerFragment {
 
-    @BindView(R.id.tv_font_size)
-    TextView tvFontSize;
+    private static final String KEY_FONT_INDEX = "card_maker_title_font_index";
+    private static final String KEY_TITLE_FONT_SIZE = "card_maker_title_size";
+    private static final String KEY_TITLE_CONTENT = "card_maker_title";
+    private static final String KEY_AUTO_TRANSFER = "card_maker_title_auto_transfer";
     private int fontSize;
     private TextView titleView;
     private boolean autoTrans2T = true;
 
+    @BindView(R.id.tv_font_size)
+    TextView tvFontSize;
     @BindView(R.id.color_picker)
     View colorPicker;
     @BindView(R.id.et_font_color)
     EditText colorEditText;
     @BindView(R.id.spinner_font)
     Spinner fontSpinner;
+    @BindView(R.id.et_title)
+    EditText etTitle;
+
     private int curColor = Color.parseColor("#f4f424");
 
     public TitleFragment() {
@@ -69,9 +77,13 @@ public class TitleFragment extends BaseMakerFragment {
     private void initData() {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(Objects.requireNonNull(getContext()), R.layout.support_simple_spinner_dropdown_item, App.fontNameArray);
         fontSpinner.setAdapter(adapter);
-        fontSpinner.setSelection(1);
-        fontSize = (int) titleView.getTextSize();
+        int selection = Hawk.get(KEY_FONT_INDEX, 1);
+        fontSpinner.setSelection(selection);
+        fontSize = Hawk.get(KEY_TITLE_FONT_SIZE, (int) titleView.getTextSize());
         tvFontSize.setText(String.valueOf(fontSize));
+        titleView.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
+        String title = Hawk.get(KEY_TITLE_CONTENT, "");
+        etTitle.setText(title);
     }
 
     @OnClick(R.id.color_picker)
@@ -102,6 +114,7 @@ public class TitleFragment extends BaseMakerFragment {
             String font = App.fontNameArray[position];
             Typeface typeface = App.fonts.get(font);
             titleView.setTypeface(typeface);
+            Hawk.put(KEY_FONT_INDEX, position);
         }
     }
 
@@ -113,8 +126,10 @@ public class TitleFragment extends BaseMakerFragment {
                         ChineseConverter.convert(name.toString(), ConversionType.S2T, activity)
                         : name.toString();
                 titleView.setText(str);
+                Hawk.put(KEY_TITLE_CONTENT, str);
             } else {
                 titleView.setText("");
+                Hawk.put(KEY_TITLE_CONTENT, "");
             }
         }
     }
@@ -135,6 +150,7 @@ public class TitleFragment extends BaseMakerFragment {
                 break;
             }
         }
+        Hawk.put(KEY_TITLE_FONT_SIZE, fontSize);
     }
 
     @OnTextChanged(R.id.et_font_color)

@@ -28,7 +28,7 @@ public class ExportFragment extends BaseMakerFragment {
 
     private RxPermissions rxPermissions;
     private Bitmap.CompressFormat exportFormat = Bitmap.CompressFormat.PNG;
-
+    private boolean exporting = false;
     public ExportFragment() {
     }
 
@@ -57,6 +57,8 @@ public class ExportFragment extends BaseMakerFragment {
                 break;
             }
             case R.id.export_photo: {
+                if (exporting) return;
+                exporting = true;
                 rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         .subscribe(granted -> {
                             if (granted) {
@@ -66,8 +68,10 @@ public class ExportFragment extends BaseMakerFragment {
                                     } else {
                                         activity().runOnUiThread(() -> Toast.makeText(this.getContext(), R.string.export_fail, Toast.LENGTH_SHORT).show());
                                     }
+                                    exporting = false;
                                 }).start();
                             } else {
+                                exporting = false;
                                 Toast.makeText(this.getContext(), R.string.no_permission, Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -123,7 +127,7 @@ public class ExportFragment extends BaseMakerFragment {
         try {
             out = new FileOutputStream(filePath);
 
-            Bitmap b = activity().getChartBitmap();
+            Bitmap b = activity().getCardBitmap();
             b.compress(format, quality, out);
 
             out.flush();
@@ -131,8 +135,9 @@ public class ExportFragment extends BaseMakerFragment {
 
         } catch (IOException e) {
             e.printStackTrace();
-
             return false;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
         long size = new File(filePath).length();

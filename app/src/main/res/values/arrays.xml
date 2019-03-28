@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="font_spinner_values">
-        <item>金梅毛草行</item>
-        <item>华康新篆体</item>
-        <item>隶书</item>
-        <item>方正准圆</item>
+        <item>武将名</item>
+        <item>称号</item>
     </string-array>
 </resources>

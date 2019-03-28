@@ -7,6 +7,8 @@ import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.util.Log;
 
+import com.orhanobut.hawk.Hawk;
+
 import org.litepal.LitePal;
 
 import java.util.HashMap;
@@ -28,6 +30,7 @@ public class App extends Application {
         context = getApplicationContext();
         LitePal.initialize(this);
         loadFonts();
+        Hawk.init(context).build();
     }
 
     private void loadFonts() {

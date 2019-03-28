@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -85,6 +86,7 @@ public class CardMakerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_card_maker);
         ButterKnife.bind(this);
         initViewPager();
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
     }
 
     private void initViewPager() {
@@ -100,12 +102,26 @@ public class CardMakerActivity extends AppCompatActivity {
         viewPager.setOffscreenPageLimit(5);
     }
 
-    public Bitmap getChartBitmap() {
-        Bitmap returnedBitmap = Bitmap.createBitmap(cardWrapper.getWidth(), cardWrapper.getHeight(), Bitmap.Config.ARGB_8888);
+    public Bitmap getCardBitmap() throws InterruptedException {
+        int w = cardWrapper.getWidth();
+        int h = cardWrapper.getHeight();
+        Bitmap returnedBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(returnedBitmap);
+        cardWrapper.layout(0, 0, w, h);
         cardWrapper.draw(canvas);
+        Thread.sleep(3000);
         return returnedBitmap;
     }
+// public Bitmap getCardBitmap() {
+//     cardWrapper.setDrawingCacheEnabled(true);
+//     cardWrapper.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+//             View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+//     cardWrapper.layout(0, 0, cardWrapper.getMeasuredWidth(), cardWrapper.getMeasuredHeight());
+//     cardWrapper.buildDrawingCache();
+//     Bitmap bitmap = Bitmap.createBitmap(cardWrapper.getDrawingCache());
+//     cardWrapper.setDrawingCacheEnabled(false);
+//     return bitmap;
+// }
 
     public HeroGroup getGroup() {
         return group;
