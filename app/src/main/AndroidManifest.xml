@@ -16,10 +16,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
-            android:name=".ui.activity.MakerFullActivity"
-            android:theme="@style/FullScreenTheme" />
-        <activity
             android:name=".ui.activity.CardMakerActivity"
+            android:theme="@style/FullScreenTheme"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.activity.HeroActivity"

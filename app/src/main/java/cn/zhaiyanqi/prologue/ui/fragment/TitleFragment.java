@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,6 @@ import butterknife.OnItemSelected;
 import butterknife.OnTextChanged;
 import cn.zhaiyanqi.prologue.App;
 import cn.zhaiyanqi.prologue.R;
-import cn.zhaiyanqi.prologue.ui.activity.CardMakerActivity;
 import cn.zhaiyanqi.prologue.ui.fragment.base.BaseMakerFragment;
 import cn.zhaiyanqi.prologue.utils.ColorUtil;
 
@@ -39,29 +39,39 @@ import cn.zhaiyanqi.prologue.utils.ColorUtil;
  * A simple {@link Fragment} subclass.
  */
 public class TitleFragment extends BaseMakerFragment {
+
+    @BindView(R.id.tv_font_size)
+    TextView tvFontSize;
+    private int fontSize;
+    private TextView titleView;
+    private boolean autoTrans2T = true;
+
     @BindView(R.id.color_picker)
     View colorPicker;
     @BindView(R.id.et_font_color)
     EditText colorEditText;
     @BindView(R.id.spinner_font)
     Spinner fontSpinner;
-    private CardMakerActivity activity;
-    private TextView titleView;
-    private boolean autoTrans2T;
     private int curColor = Color.parseColor("#f4f424");
 
     public TitleFragment() {
     }
-
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_title, container, false);
         ButterKnife.bind(this, view);
+        initData();
+        return view;
+    }
+
+    private void initData() {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(Objects.requireNonNull(getContext()), R.layout.support_simple_spinner_dropdown_item, App.fontNameArray);
         fontSpinner.setAdapter(adapter);
-        return view;
+        fontSpinner.setSelection(1);
+        fontSize = (int) titleView.getTextSize();
+        tvFontSize.setText(String.valueOf(fontSize));
     }
 
     @OnClick(R.id.color_picker)
@@ -109,12 +119,20 @@ public class TitleFragment extends BaseMakerFragment {
         }
     }
 
-    @OnTextChanged(R.id.et_font_size)
-    void setFontSize(CharSequence size) {
-        if (titleView != null) {
-            if (!TextUtils.isEmpty(size)) {
-                int s = Integer.parseInt(size.toString());
-                titleView.setTextSize(s);
+    @OnClick({R.id.btn_add, R.id.btn_reduce})
+    void setFontSize(View view) {
+        switch (view.getId()) {
+            case R.id.btn_add: {
+                fontSize++;
+                tvFontSize.setText(String.valueOf(fontSize));
+                titleView.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
+                break;
+            }
+            case R.id.btn_reduce: {
+                fontSize--;
+                tvFontSize.setText(String.valueOf(fontSize));
+                titleView.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
+                break;
             }
         }
     }
@@ -175,8 +193,7 @@ public class TitleFragment extends BaseMakerFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if (context instanceof CardMakerActivity) {
-            activity = (CardMakerActivity) context;
+        if (activity != null) {
             titleView = activity.getCmTitle();
         }
     }
@@ -184,9 +201,6 @@ public class TitleFragment extends BaseMakerFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        if (activity != null) {
-            activity = null;
-        }
         if (titleView != null) {
             titleView = null;
         }

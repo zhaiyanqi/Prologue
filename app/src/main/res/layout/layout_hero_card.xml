@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/hero_maker_main_card"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/root_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="372.4dp"
+        android:layout_height="0dp"
         android:background="@color/colorTransparent"
-        android:transitionName="@string/transition_card_maker_layout">
+        app:layout_constraintDimensionRatio="1024:1438"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="PxUsage">
 
         <com.github.chrisbanes.photoview.PhotoView
             android:id="@+id/hero_maker_hero_img"
@@ -34,10 +38,10 @@
 
         <ImageView
             android:id="@+id/hero_maker_group"
-            android:layout_width="50dp"
-            android:layout_height="62.25dp"
-            android:layout_marginStart="12.94dp"
-            android:layout_marginTop="10.74dp"
+            android:layout_width="74.9dp"
+            android:layout_height="92.73dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="17dp"
             android:contentDescription="@string/empty"
             android:scaleType="fitXY"
             android:src="@drawable/wei_logo"
@@ -48,12 +52,12 @@
             android:id="@+id/hero_maker_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="75dp"
+            android:layout_marginStart="42dp"
+            android:layout_marginTop="120dp"
             android:ems="1"
             android:maxLength="20"
             android:textColor="@color/colorTitle"
-            android:textSize="18sp"
+            android:textSize="28sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -61,15 +65,15 @@
             android:id="@+id/hero_maker_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="22dp"
-            android:layout_marginTop="150dp"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="240dp"
             android:elevation="8dp"
             android:ems="1"
             android:lineSpacingExtra="8dp"
             android:maxLength="20"
             android:padding="5dp"
             android:textColor="@color/colorWhite"
-            android:textSize="28sp"
+            android:textSize="38sp"
             app:innerColor="#ffffff"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -79,56 +83,48 @@
             android:id="@+id/hero_maker_hp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="68dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginStart="105dp"
+            android:layout_marginTop="22dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <!--<TextView-->
-            <!--android:id="@+id/tv_hp_text"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textColor="@color/colorWhite"-->
-            <!--android:textSize="16sp"-->
-            <!--/>-->
-
             <ImageView
                 android:id="@+id/iv_hp_1"
-                android:layout_width="12.939dp"
-                android:layout_height="15.625dp"
+                android:layout_width="19.3dp"
+                android:layout_height="23.27dp"
                 android:contentDescription="@string/empty"
                 android:scaleType="fitXY" />
 
             <ImageView
                 android:id="@+id/iv_hp_2"
-                android:layout_width="12.939dp"
-                android:layout_height="15.625dp"
+                android:layout_width="19.3dp"
+                android:layout_height="23.27dp"
                 android:layout_marginStart="1dp"
                 android:contentDescription="@string/empty"
                 android:scaleType="fitXY" />
 
             <ImageView
                 android:id="@+id/iv_hp_3"
-                android:layout_width="12.939dp"
-                android:layout_height="15.625dp"
+                android:layout_width="19.3dp"
+                android:layout_height="23.27dp"
                 android:layout_marginStart="1dp"
                 android:contentDescription="@string/empty"
                 android:scaleType="fitXY" />
 
             <ImageView
                 android:id="@+id/iv_hp_4"
-                android:layout_width="12.939dp"
-                android:layout_height="15.625dp"
+                android:layout_width="19.3dp"
+                android:layout_height="23.27dp"
                 android:layout_marginStart="1dp"
                 android:contentDescription="@string/empty"
                 android:scaleType="fitXY" />
 
             <ImageView
                 android:id="@+id/iv_hp_5"
-                android:layout_width="12.939dp"
-                android:layout_height="15.625dp"
+                android:layout_width="19.3dp"
+                android:layout_height="23.27dp"
                 android:layout_marginStart="1dp"
                 android:contentDescription="@string/empty"
                 android:scaleType="fitXY" />
@@ -137,10 +133,10 @@
 
         <ImageView
             android:id="@+id/hero_maker_skill_board"
-            android:layout_width="175dp"
-            android:layout_height="70dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="256dp"
+            android:layout_width="262dp"
+            android:layout_height="97dp"
+            android:layout_marginStart="75dp"
+            android:layout_marginTop="390dp"
             android:contentDescription="@string/empty"
             android:scaleType="fitXY"
             app:layout_constraintStart_toStartOf="parent"
@@ -267,4 +263,4 @@
             tools:ignore="SmallSp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
