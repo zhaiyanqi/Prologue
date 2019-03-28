@@ -22,6 +22,14 @@
     <!--transition动画字符串-->
     <string name="transition_start_game_img">transition_start_game_img</string>
     <string name="transition_hero_maker_img">transition_hero_maker_img</string>
+
+    <string name="transition_card_maker_frame">transition_card_maker_frame</string>
+    <string name="transition_card_maker_group">transition_card_maker_group</string>
+    <string name="transition_card_maker_hp">transition_card_maker_hp</string>
+    <string name="transition_card_maker_skill_bard">transition_card_maker_skill_bard</string>
+    <string name="transition_card_maker_layout">transition_card_maker_layout</string>
+
+
     <string name="add_skill">添加技能</string>
     <string name="import_pic">导入图片</string>
     <string name="skill">技能:</string>

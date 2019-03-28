@@ -1,5 +1,6 @@
 package cn.zhaiyanqi.prologue.ui.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
@@ -20,6 +21,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -27,6 +31,7 @@ import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.zhaiyanqi.prologue.R;
+import cn.zhaiyanqi.prologue.bean.CardMakerBean;
 import cn.zhaiyanqi.prologue.enums.HeroGroup;
 import cn.zhaiyanqi.prologue.ui.fragment.AdjustFragment;
 import cn.zhaiyanqi.prologue.ui.fragment.ExportFragment;
@@ -75,6 +80,7 @@ public class CardMakerActivity extends AppCompatActivity {
     private ViewPagerAdapter adapter;
     private long exitTime;
     private HeroGroup group;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -235,6 +241,29 @@ public class CardMakerActivity extends AppCompatActivity {
         public int getCount() {
             return list.size();
         }
+    }
+
+    public void startMakerFull() {
+        Intent intent = new Intent(this, MakerFullActivity.class);
+        CardMakerBean bean = new CardMakerBean();
+        mappingBean(bean);
+        intent.putExtra("position", bean);
+        Pair namePair = new Pair<>(cmFrame, getString(R.string.transition_card_maker_frame));
+        Pair groupPair = new Pair<>(cmName, getString(R.string.transition_card_maker_frame));
+        Pair framePair = new Pair<>(cmFrame, getString(R.string.transition_card_maker_frame));
+        ActivityOptionsCompat options =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(this, namePair, groupPair);
+        ActivityCompat.startActivity(this, intent, options.toBundle());
+    }
+
+    private void mappingBean(CardMakerBean bean) {
+        bean.setWidth(cardWrapper.getMeasuredWidth());
+        bean.setHeight(cardWrapper.getMeasuredHeight());
+    }
+
+
+    private void test(String... arr) {
+
     }
 }
 

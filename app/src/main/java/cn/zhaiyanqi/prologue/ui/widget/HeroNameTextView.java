@@ -20,7 +20,6 @@ public class HeroNameTextView extends AppCompatTextView {
     TextPaint m_TextPaint;
     int mInnerColor;
     int mOuterColor;
-    private boolean m_bDrawSideLine = true; // 默认采用描边
 
     public HeroNameTextView(Context context, int outerColor, int innerColor) {
         super(context);
@@ -49,14 +48,14 @@ public class HeroNameTextView extends AppCompatTextView {
 
     private void initPaint() {
         m_TextPaint = this.getPaint();
-//        m_TextPaint.setStrokeCap(Paint.Cap.ROUND);
+        m_TextPaint.setStrokeCap(Paint.Cap.ROUND);
 //        m_TextPaint.setStrokeJoin(Paint.Join.ROUND);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         setTextColor(mInnerColor);
-        m_TextPaint.setStrokeWidth(getWidth() / 30.f);
+        m_TextPaint.setStrokeWidth(getWidth() / 25.f);
         m_TextPaint.setStyle(Paint.Style.STROKE);
         m_TextPaint.setFakeBoldText(false);
         m_TextPaint.setShadowLayer(0, 0, 40, 0);
@@ -64,7 +63,7 @@ public class HeroNameTextView extends AppCompatTextView {
         super.onDraw(canvas);
 
         setTextColor(mOuterColor);
-        m_TextPaint.setStrokeWidth(getWidth() / 50.f);
+        m_TextPaint.setStrokeWidth(getWidth() / 30.f);
         m_TextPaint.setStyle(Paint.Style.STROKE);
         m_TextPaint.setFakeBoldText(false);
         m_TextPaint.setShadowLayer(0, 0, 40, 0);

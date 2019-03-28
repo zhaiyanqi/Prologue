@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/hero_maker_main_card"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".ui.activity.MakerFullActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/root_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
         android:background="@color/colorTransparent"
-        android:transitionName="@string/transition_card_maker_layout">
+        android:transitionName="@string/transition_card_maker_layout"
+        app:layout_constraintDimensionRatio="1024:1438"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.github.chrisbanes.photoview.PhotoView
             android:id="@+id/hero_maker_hero_img"
@@ -34,8 +38,8 @@
 
         <ImageView
             android:id="@+id/hero_maker_group"
-            android:layout_width="50dp"
-            android:layout_height="62.25dp"
+            android:layout_width="150dp"
+            android:layout_height="162.25dp"
             android:layout_marginStart="12.94dp"
             android:layout_marginTop="10.74dp"
             android:contentDescription="@string/empty"
@@ -85,14 +89,6 @@
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
-            <!--<TextView-->
-            <!--android:id="@+id/tv_hp_text"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textColor="@color/colorWhite"-->
-            <!--android:textSize="16sp"-->
-            <!--/>-->
 
             <ImageView
                 android:id="@+id/iv_hp_1"
@@ -267,4 +263,5 @@
             tools:ignore="SmallSp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

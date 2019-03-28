@@ -1,6 +1,5 @@
 package cn.zhaiyanqi.prologue.ui.fragment;
 
-import android.Manifest;
 import android.content.ContentValues;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -9,25 +8,26 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Date;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.zhaiyanqi.prologue.R;
+import cn.zhaiyanqi.prologue.ui.activity.CardMakerActivity;
 import cn.zhaiyanqi.prologue.ui.fragment.base.BaseMakerFragment;
 
 public class ExportFragment extends BaseMakerFragment {
 
     private RxPermissions rxPermissions;
     private Bitmap.CompressFormat exportFormat = Bitmap.CompressFormat.PNG;
+
     public ExportFragment() {
     }
 
@@ -56,20 +56,24 @@ public class ExportFragment extends BaseMakerFragment {
                 break;
             }
             case R.id.export_photo: {
-                rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        .subscribe(granted -> {
-                            if (granted) {
-                                new Thread(() -> {
-                                    if (saveToGallery(String.valueOf(new Date().getTime()), exportFormat)) {
-                                        activity().runOnUiThread(() -> Toast.makeText(this.getContext(), R.string.export_done, Toast.LENGTH_SHORT).show());
-                                    } else {
-                                        activity().runOnUiThread(() -> Toast.makeText(this.getContext(), R.string.export_fail, Toast.LENGTH_SHORT).show());
-                                    }
-                                }).start();
-                            } else {
-                                Toast.makeText(this.getContext(), R.string.no_permission, Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                FragmentActivity activity = getActivity();
+                if (activity instanceof CardMakerActivity) {
+                    ((CardMakerActivity) activity).startMakerFull();
+                }
+//                rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//                        .subscribe(granted -> {
+//                            if (granted) {
+//                                new Thread(() -> {
+//                                    if (saveToGallery(String.valueOf(new Date().getTime()), exportFormat)) {
+//                                        activity().runOnUiThread(() -> Toast.makeText(this.getContext(), R.string.export_done, Toast.LENGTH_SHORT).show());
+//                                    } else {
+//                                        activity().runOnUiThread(() -> Toast.makeText(this.getContext(), R.string.export_fail, Toast.LENGTH_SHORT).show());
+//                                    }
+//                                }).start();
+//                            } else {
+//                                Toast.makeText(this.getContext(), R.string.no_permission, Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
                 break;
             }
         }

@@ -14,6 +14,12 @@
         <item name="android:windowBackground">@color/colorPrimaryDark</item>
     </style>
 
+    <style name="AppThemeCardMaker" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/colorPrimaryDark</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -38,6 +44,11 @@
         <item name="android:windowBackground">@color/colorGray</item>
         <item name="android:windowFullscreen">true</item>
     </style>
+
+    <style name="FullScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+    </style>
+
 
     <declare-styleable name="HeroNameTextView">
         <attr name="outerColor" format="color|reference" />
