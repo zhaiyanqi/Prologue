@@ -32,6 +32,7 @@ import cn.zhaiyanqi.prologue.ui.fragment.AdjustFragment;
 import cn.zhaiyanqi.prologue.ui.fragment.ExportFragment;
 import cn.zhaiyanqi.prologue.ui.fragment.HpFragment;
 import cn.zhaiyanqi.prologue.ui.fragment.NameFragment;
+import cn.zhaiyanqi.prologue.ui.fragment.SkillInfoFragment;
 import cn.zhaiyanqi.prologue.ui.fragment.TemplateFragment;
 import cn.zhaiyanqi.prologue.ui.fragment.TitleFragment;
 
@@ -96,12 +97,12 @@ public class CardMakerActivity extends AppCompatActivity {
         adapter.addItem(new NameFragment());
         adapter.addItem(new HpFragment());
 //        adapter.addItem(new SkillsFragment());
-//        adapter.addItem(new SkillInfoFragment());
+        adapter.addItem(new SkillInfoFragment());
         adapter.addItem(new AdjustFragment());
         adapter.addItem(new ExportFragment());
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
-        viewPager.setOffscreenPageLimit(5);
+        viewPager.setOffscreenPageLimit(10);
     }
 
     public Bitmap getCardBitmap() {
