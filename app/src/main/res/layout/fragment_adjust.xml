@@ -16,7 +16,7 @@
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scroll_button"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:padding="5dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -43,6 +43,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/hero_hp" />
+
+                <RadioButton
+                    android:id="@+id/rb_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hero_group" />
 
                 <RadioButton
                     android:id="@+id/rb_skill_board"

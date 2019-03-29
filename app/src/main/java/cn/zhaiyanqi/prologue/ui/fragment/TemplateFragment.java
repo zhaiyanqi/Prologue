@@ -15,9 +15,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
+import com.orhanobut.hawk.Hawk;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
@@ -36,6 +38,16 @@ public class TemplateFragment extends BaseMakerFragment {
     private static final int SELECT_GROUP_REQUEST_CODE = 2;
     private static final int SELECT_PHOTO_REQUEST_CODE = 3;
     private static final int SELECT_SKILL_BOARD_REQUEST_CODE = 4;
+    static final String KEY_GROUP_MARGIN_LEFT = "card_maker_group_margin_left";
+    static final String KEY_GROUP_MARGIN_TOP = "card_maker_group_margin_top";
+    static final String KEY_GROUP_WIDTH = "card_maker_group_width";
+    static final String KEY_GROUP_HEIGHT = "card_maker_group_height";
+    static final String KEY_SKILL_BOARD_MARGIN_LEFT = "card_maker_skill_board_margin_left";
+    static final String KEY_SKILL_BOARD_MARGIN_TOP = "card_maker_skill_board_margin_top";
+    static final String KEY_SKILL_BOARD_WIDTH = "card_maker_skill_board_width";
+    static final String KEY_SKILL_BOARD_HEIGHT = "card_maker_skill_board_height";
+
+
     @BindView(R.id.tv_custom_frame)
     TextView tvCustomFrame;
     @BindView(R.id.tv_custom_group)
@@ -71,7 +83,24 @@ public class TemplateFragment extends BaseMakerFragment {
         View view = inflater.inflate(R.layout.fragment_template, container, false);
         ButterKnife.bind(this, view);
         loadWei();
+        initData();
         return view;
+    }
+
+    private void initData() {
+        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) cmGroup.getLayoutParams();
+        layoutParams.leftMargin = Hawk.get(KEY_GROUP_MARGIN_LEFT, layoutParams.leftMargin);
+        layoutParams.topMargin = Hawk.get(KEY_GROUP_MARGIN_TOP, layoutParams.topMargin);
+        layoutParams.width = Hawk.get(KEY_GROUP_WIDTH, layoutParams.width);
+        layoutParams.height = Hawk.get(KEY_GROUP_HEIGHT, layoutParams.height);
+        cmGroup.requestLayout();
+
+        ConstraintLayout.LayoutParams layoutParams2 = (ConstraintLayout.LayoutParams) cmSkillBoard.getLayoutParams();
+        layoutParams2.leftMargin = Hawk.get(KEY_SKILL_BOARD_MARGIN_LEFT, layoutParams2.leftMargin);
+        layoutParams2.topMargin = Hawk.get(KEY_SKILL_BOARD_MARGIN_TOP, layoutParams2.topMargin);
+        layoutParams2.width = Hawk.get(KEY_SKILL_BOARD_WIDTH, layoutParams2.width);
+        layoutParams2.height = Hawk.get(KEY_SKILL_BOARD_HEIGHT, layoutParams2.height);
+        cmSkillBoard.requestLayout();
     }
 
     @OnCheckedChanged({R.id.cb_show_frame, R.id.cb_show_logo,
