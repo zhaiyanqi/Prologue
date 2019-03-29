@@ -30,4 +30,10 @@ public class SkillsFragment extends BaseMakerFragment {
         return view;
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        return "技能";
+
+    }
 }

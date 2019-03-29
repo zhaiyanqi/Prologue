@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -24,6 +25,7 @@ import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
@@ -41,6 +43,10 @@ public class NameFragment extends BaseMakerFragment {
     private static final String KEY_FONT_INDEX = "card_maker_name_font_index";
     private static final String KEY_NAME_FONT_SIZE = "card_maker_name_font_size";
     private static final String KEY_NAME_CONTENT = "card_maker_name_content";
+    static final String KEY_MARGIN_LEFT = "card_maker_name_margin_left";
+    static final String KEY_MARGIN_TOP = "card_maker_name_margin_top";
+    private static final String KEY_AUTO_TRANSFER = "card_maker_name_auto_transfer";
+
     @BindView(R.id.et_font_size)
     EditText etFontSize;
     private HeroNameTextView nameView;
@@ -57,6 +63,9 @@ public class NameFragment extends BaseMakerFragment {
     EditText colorEditText;
     @BindView(R.id.spinner_font)
     Spinner fontSpinner;
+    @BindView(R.id.cb_auto_transfer)
+    CheckBox cbAutoTransfer;
+
     private int fontSize;
 
     public NameFragment() {
@@ -82,6 +91,14 @@ public class NameFragment extends BaseMakerFragment {
         etFontSize.setText(String.valueOf(fontSize));
         String title = Hawk.get(KEY_NAME_CONTENT, "");
         etName.setText(title);
+        autoTrans2T = Hawk.get(KEY_AUTO_TRANSFER, true);
+        cbAutoTransfer.setChecked(autoTrans2T);
+
+        //从缓存中读取名字位置信息
+        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) nameView.getLayoutParams();
+        layoutParams.leftMargin = Hawk.get(KEY_MARGIN_LEFT, layoutParams.leftMargin);
+        layoutParams.topMargin = Hawk.get(KEY_MARGIN_TOP, layoutParams.topMargin);
+        nameView.requestLayout();
     }
 
     @OnClick(R.id.color_picker)
@@ -117,7 +134,7 @@ public class NameFragment extends BaseMakerFragment {
                 .setPositiveButton("确定", (dialog, selectedColor, allColors) -> {
                     curOuterColor = selectedColor;
                     outerColorPicker.setBackgroundColor(selectedColor);
-                    ((HeroNameTextView) nameView).setOuterColor(selectedColor);
+                    nameView.setOuterColor(selectedColor);
                 })
                 .setNegativeButton("cancel", (dialog, which) -> dialog.dismiss())
                 .build()
@@ -220,6 +237,7 @@ public class NameFragment extends BaseMakerFragment {
                         : ChineseConverter.convert(str, ConversionType.T2S, activity);
                 nameView.setText(str);
             }
+            Hawk.put(KEY_AUTO_TRANSFER, autoTrans2T);
         }
     }
 

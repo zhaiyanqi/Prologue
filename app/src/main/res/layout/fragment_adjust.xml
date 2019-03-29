@@ -6,11 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragment.AdjustFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <LinearLayout
 
-        <ScrollView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        tools:ignore="ContentDescription">
+
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/scroll_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -48,65 +51,121 @@
                     android:text="@string/skill_board" />
 
             </RadioGroup>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
         <LinearLayout
-            android:id="@+id/ll_change_size"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:gravity="center"
+            android:layout_weight="1"
             android:orientation="vertical"
-            android:padding="5dp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toStartOf="@+id/arrow_layout"
-            app:layout_constraintStart_toEndOf="@+id/scroll_button"
-            app:layout_constraintTop_toTopOf="parent">
+            android:padding="3dp">
 
-            <Button
-                android:id="@+id/btn_high"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/step_len"
+                    android:textSize="12sp" />
+
+                <SeekBar
+                    android:id="@+id/sb_step_length"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_change_width"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/high" />
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
-            <Button
-                android:id="@+id/btn_low"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/s_width" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/btn_thin"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_remove" />
+
+                <TextView
+                    android:id="@+id/tv_width"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/default_value"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/btn_fat"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_add" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_change_height"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/low" />
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
-            <Button
-                android:id="@+id/btn_fat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/fat" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/s_height" />
 
-            <Button
-                android:id="@+id/btn_thin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/thin" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
 
+                <ImageView
+                    android:id="@+id/btn_low"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_remove" />
+
+                <TextView
+                    android:id="@+id/tv_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/default_hp"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/btn_high"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_add"
+                    tools:ignore="ContentDescription" />
+            </LinearLayout>
 
         </LinearLayout>
-
-        <EditText
-            android:id="@+id/step_length"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/step_len"
-            android:imeOptions="actionDone"
-            android:inputType="number"
-            android:maxLines="1"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/arrow_layout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/step_length">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/up_arrow"
@@ -142,6 +201,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/left_arrow" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </androidx.core.widget.NestedScrollView>
 

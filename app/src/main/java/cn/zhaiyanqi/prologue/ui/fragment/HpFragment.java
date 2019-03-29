@@ -18,9 +18,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
+import com.orhanobut.hawk.Hawk;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,6 +41,12 @@ import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOption
 public class HpFragment extends BaseMakerFragment {
     private static final int SELECT_HP_REQUEST_CODE = 1;
     private static final int SELECT_HALF_HP_REQUEST_CODE = 2;
+
+    static final String KEY_MARGIN_LEFT = "card_maker_hp_margin_left";
+    static final String KEY_MARGIN_TOP = "card_maker_hp_margin_top";
+    private static final String KEY_HP_WIDTH = "card_maker_hp_width";
+    private static final String KEY_HP_HEIGHT = "card_maker_hp_height";
+
     @BindView(R.id.ll_half_hp)
     LinearLayout halfHpLayout;
     @BindView(R.id.tv_custom_hp)
@@ -74,8 +82,31 @@ public class HpFragment extends BaseMakerFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_hp, container, false);
         ButterKnife.bind(this, view);
-        refreshWHText();
+        initData();
         return view;
+    }
+
+    private void initData() {
+        int width = Hawk.get(KEY_HP_WIDTH, ivHp1.getWidth());
+        int height = Hawk.get(KEY_HP_HEIGHT, ivHp1.getHeight());
+        if (width > 0 && height > 0) {
+            setSize(ivHp1, width, height);
+            setSize(ivHp2, width, height);
+            setSize(ivHp3, width, height);
+            setSize(ivHp4, width, height);
+            setSize(ivHp5, width, height);
+        }
+        tvHpHeight.post(() -> {
+            tvHpWidth.setText(String.valueOf(ivHp1.getWidth()));
+            tvHpHeight.setText(String.valueOf(ivHp1.getHeight()));
+        });
+
+        //position
+        LinearLayout cmHpLayout = activity.getCmHpLayout();
+        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) cmHpLayout.getLayoutParams();
+        layoutParams.leftMargin = Hawk.get(KEY_MARGIN_LEFT, layoutParams.leftMargin);
+        layoutParams.topMargin = Hawk.get(KEY_MARGIN_TOP, layoutParams.topMargin);
+        cmHpLayout.requestLayout();
     }
 
     @OnClick({R.id.btn_add_height, R.id.btn_add_width, R.id.btn_reduce_height, R.id.btn_reduce_width})
@@ -247,6 +278,8 @@ public class HpFragment extends BaseMakerFragment {
     private void refreshWHText() {
         tvHpWidth.setText(String.valueOf(ivHp1.getWidth()));
         tvHpHeight.setText(String.valueOf(ivHp1.getHeight()));
+        Hawk.put(KEY_HP_WIDTH, ivHp1.getWidth());
+        Hawk.put(KEY_HP_HEIGHT, ivHp1.getHeight());
     }
 
     @NonNull
@@ -492,4 +525,10 @@ public class HpFragment extends BaseMakerFragment {
         view.requestLayout();
     }
 
+    private void setSize(ImageView view, int width, int height) {
+        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
+        layoutParams.height = height;
+        layoutParams.width = width;
+        view.requestLayout();
+    }
 }

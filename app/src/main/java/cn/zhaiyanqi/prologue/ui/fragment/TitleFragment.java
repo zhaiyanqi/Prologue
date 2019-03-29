@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import com.zqc.opencc.android.lib.ConversionType;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +47,9 @@ public class TitleFragment extends BaseMakerFragment {
     private static final String KEY_TITLE_FONT_SIZE = "card_maker_title_size";
     private static final String KEY_TITLE_CONTENT = "card_maker_title";
     private static final String KEY_AUTO_TRANSFER = "card_maker_title_auto_transfer";
+    static final String KEY_MARGIN_LEFT = "card_maker_title_margin_left";
+    static final String KEY_MARGIN_TOP = "card_maker_title_margin_top";
+
     private int fontSize;
     private TextView titleView;
     private boolean autoTrans2T = true;
@@ -59,6 +64,8 @@ public class TitleFragment extends BaseMakerFragment {
     Spinner fontSpinner;
     @BindView(R.id.et_title)
     EditText etTitle;
+    @BindView(R.id.cb_auto_transfer)
+    CheckBox cbAutoTransfer;
 
     private int curColor = Color.parseColor("#f4f424");
 
@@ -83,6 +90,14 @@ public class TitleFragment extends BaseMakerFragment {
         etFontSize.setText(String.valueOf(fontSize));
         String title = Hawk.get(KEY_TITLE_CONTENT, "");
         etTitle.setText(title);
+        autoTrans2T = Hawk.get(KEY_AUTO_TRANSFER, true);
+        cbAutoTransfer.setChecked(autoTrans2T);
+
+        //从缓存中读取名字位置信息
+        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) titleView.getLayoutParams();
+        layoutParams.leftMargin = Hawk.get(KEY_MARGIN_LEFT, layoutParams.leftMargin);
+        layoutParams.topMargin = Hawk.get(KEY_MARGIN_TOP, layoutParams.topMargin);
+        titleView.requestLayout();
     }
 
     @OnClick(R.id.color_picker)
@@ -134,7 +149,7 @@ public class TitleFragment extends BaseMakerFragment {
     }
 
     @OnClick({R.id.btn_add, R.id.btn_reduce})
-    void setFontSize(View view) {
+    void adjustFontSize(View view) {
         switch (view.getId()) {
             case R.id.btn_add: {
                 fontSize++;
@@ -203,6 +218,7 @@ public class TitleFragment extends BaseMakerFragment {
                         : ChineseConverter.convert(str, ConversionType.T2S, activity);
                 titleView.setText(str);
             }
+            Hawk.put(KEY_AUTO_TRANSFER, autoTrans2T);
         }
     }
 
