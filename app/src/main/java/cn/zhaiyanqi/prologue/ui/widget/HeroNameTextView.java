@@ -20,6 +20,7 @@ public class HeroNameTextView extends AppCompatTextView {
     TextPaint m_TextPaint;
     int mInnerColor;
     int mOuterColor;
+    private boolean drawLayer1 = true, drawLayer2 = true, drawLayer3 = true;
 
     public HeroNameTextView(Context context, int outerColor, int innerColor) {
         super(context);
@@ -54,23 +55,29 @@ public class HeroNameTextView extends AppCompatTextView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        setTextColor(mInnerColor);
-        m_TextPaint.setStrokeWidth(getWidth() / 25.f);
-        m_TextPaint.setStyle(Paint.Style.STROKE);
-        m_TextPaint.setShadowLayer(0.1f, 0, getHeight() / 65.f, Color.BLACK);
-        super.onDraw(canvas);
+        if (drawLayer1) {
+            setTextColor(mInnerColor);
+            m_TextPaint.setStrokeWidth(getWidth() / 25.f);
+            m_TextPaint.setStyle(Paint.Style.STROKE);
+            m_TextPaint.setShadowLayer(0.1f, 0, getHeight() / 65.f, Color.BLACK);
+            super.onDraw(canvas);
+        }
 
-        setTextColor(mOuterColor);
-        m_TextPaint.setStrokeWidth(getWidth() / 30.f);
-        m_TextPaint.setStyle(Paint.Style.STROKE);
-        m_TextPaint.setShadowLayer(0, 0, 40, 0);
-        super.onDraw(canvas);
+        if (drawLayer2) {
+            setTextColor(mOuterColor);
+            m_TextPaint.setStrokeWidth(getWidth() / 30.f);
+            m_TextPaint.setStyle(Paint.Style.STROKE);
+            m_TextPaint.setShadowLayer(0, 0, 0, 0);
+            super.onDraw(canvas);
+        }
 
-        setTextColor(mInnerColor);
-        m_TextPaint.setStrokeWidth(0); // 描边宽度
-        m_TextPaint.setStyle(Paint.Style.FILL); // 描边种类
-        m_TextPaint.setShadowLayer(0, 0, 0, 0);
-        super.onDraw(canvas);
+        if (drawLayer3) {
+            setTextColor(mInnerColor);
+            m_TextPaint.setStrokeWidth(0); // 描边宽度
+            m_TextPaint.setStyle(Paint.Style.FILL); // 描边种类
+            m_TextPaint.setShadowLayer(0, 0, 0, 0);
+            super.onDraw(canvas);
+        }
     }
 
     public void setInnerColor(int color) {
@@ -82,4 +89,20 @@ public class HeroNameTextView extends AppCompatTextView {
         this.mOuterColor = color;
         invalidate();
     }
+
+    public void setLayer1(boolean draw) {
+        drawLayer1 = draw;
+        invalidate();
+    }
+
+    public void setLayer2(boolean draw) {
+        drawLayer2 = draw;
+        invalidate();
+    }
+
+    public void setLayer3(boolean draw) {
+        drawLayer3 = draw;
+        invalidate();
+    }
+
 }

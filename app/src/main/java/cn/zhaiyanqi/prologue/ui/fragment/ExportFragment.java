@@ -136,8 +136,6 @@ public class ExportFragment extends BaseMakerFragment {
         } catch (IOException e) {
             e.printStackTrace();
             return false;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
 
         long size = new File(filePath).length();

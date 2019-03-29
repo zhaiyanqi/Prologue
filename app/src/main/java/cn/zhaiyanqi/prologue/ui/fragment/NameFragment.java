@@ -10,9 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
@@ -41,9 +41,9 @@ public class NameFragment extends BaseMakerFragment {
     private static final String KEY_FONT_INDEX = "card_maker_name_font_index";
     private static final String KEY_NAME_FONT_SIZE = "card_maker_name_font_size";
     private static final String KEY_NAME_CONTENT = "card_maker_name_content";
-    @BindView(R.id.tv_font_size)
-    TextView tvFontSize;
-    private TextView nameView;
+    @BindView(R.id.et_font_size)
+    EditText etFontSize;
+    private HeroNameTextView nameView;
     private boolean autoTrans2T = true;
     private int curColor = Color.WHITE;
     private int curOuterColor = Color.BLACK;
@@ -79,8 +79,7 @@ public class NameFragment extends BaseMakerFragment {
         fontSpinner.setSelection(selection);
         fontSize = (int) nameView.getTextSize();
         fontSize = Hawk.get(KEY_NAME_FONT_SIZE, (int) nameView.getTextSize());
-        tvFontSize.setText(String.valueOf(fontSize));
-        nameView.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
+        etFontSize.setText(String.valueOf(fontSize));
         String title = Hawk.get(KEY_NAME_CONTENT, "");
         etName.setText(title);
     }
@@ -96,7 +95,7 @@ public class NameFragment extends BaseMakerFragment {
                 .setPositiveButton("确定", (dialog, selectedColor, allColors) -> {
                     curColor = selectedColor;
                     colorPicker.setBackgroundColor(selectedColor);
-                    ((HeroNameTextView) nameView).setInnerColor(selectedColor);
+                    nameView.setInnerColor(selectedColor);
                     String colorStr = ColorUtil.int2HexColor(selectedColor);
                     if (colorStr != null) {
                         colorEditText.setText(colorStr);
@@ -156,18 +155,28 @@ public class NameFragment extends BaseMakerFragment {
         switch (view.getId()) {
             case R.id.btn_add: {
                 fontSize++;
-                tvFontSize.setText(String.valueOf(fontSize));
-                nameView.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
+                etFontSize.setText(String.valueOf(fontSize));
                 break;
             }
             case R.id.btn_reduce: {
                 fontSize--;
-                tvFontSize.setText(String.valueOf(fontSize));
-                nameView.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
+                etFontSize.setText(String.valueOf(fontSize));
                 break;
             }
         }
-        Hawk.put(KEY_NAME_FONT_SIZE, fontSize);
+    }
+
+    @OnTextChanged(R.id.et_font_size)
+    void setFontSize(CharSequence size) {
+        if (!TextUtils.isEmpty(size)) {
+            try {
+                fontSize = Integer.parseInt(size.toString());
+                nameView.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
+                Hawk.put(KEY_NAME_FONT_SIZE, fontSize);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @OnTextChanged(R.id.et_font_color)
@@ -177,7 +186,7 @@ public class NameFragment extends BaseMakerFragment {
                 try {
                     int colorInt = Color.parseColor(color.toString());
                     colorPicker.setBackgroundColor(colorInt);
-                    ((HeroNameTextView) nameView).setInnerColor(colorInt);
+                    nameView.setInnerColor(colorInt);
                     curColor = colorInt;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -214,6 +223,24 @@ public class NameFragment extends BaseMakerFragment {
         }
     }
 
+    @OnCheckedChanged({R.id.cb_layer_1, R.id.cb_layer_2, R.id.cb_layer_3})
+    void switchLayer(CompoundButton view, boolean checked) {
+        switch (view.getId()) {
+            case R.id.cb_layer_1: {
+                nameView.setLayer1(checked);
+                break;
+            }
+            case R.id.cb_layer_2: {
+                nameView.setLayer2(checked);
+                break;
+            }
+            case R.id.cb_layer_3: {
+                nameView.setLayer3(checked);
+                break;
+            }
+        }
+    }
+
     @OnCheckedChanged(R.id.cb_horizontal_name)
     void setHorizontalName(boolean checked) {
         if (checked) {
@@ -227,8 +254,8 @@ public class NameFragment extends BaseMakerFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if (activity != null) {
-            nameView = activity.getCmName();
+        if (activity != null && activity.getCmName() instanceof HeroNameTextView) {
+            nameView = (HeroNameTextView) activity.getCmName();
         }
     }
 

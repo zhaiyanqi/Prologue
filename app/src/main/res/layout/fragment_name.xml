@@ -72,12 +72,16 @@
                     android:layout_height="25dp"
                     android:src="@drawable/ic_remove" />
 
-                <TextView
-                    android:id="@+id/tv_font_size"
+                <EditText
+                    android:id="@+id/et_font_size"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:width="40dp"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLines="1"
                     android:textSize="18sp" />
 
                 <ImageView
@@ -191,12 +195,47 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/font_spacing_description" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/line6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line5">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/cb_layer_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/layer_1" />
+            </LinearLayout>
+
+
+            <CheckBox
+                android:id="@+id/cb_layer_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/layer_2" />
+
+            <CheckBox
+                android:id="@+id/cb_layer_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/layer_3" />
 
         </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </androidx.core.widget.NestedScrollView>
 

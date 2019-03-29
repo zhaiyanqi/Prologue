@@ -27,8 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/empty"
-            android:scaleType="fitXY"
-            android:src="@drawable/wei" />
+            android:scaleType="fitXY" />
 
         <com.github.chrisbanes.photoview.PhotoView
             android:id="@+id/hero_maker_hero_out_img"
@@ -44,7 +43,6 @@
             android:layout_marginTop="17dp"
             android:contentDescription="@string/empty"
             android:scaleType="fitXY"
-            android:src="@drawable/wei_logo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

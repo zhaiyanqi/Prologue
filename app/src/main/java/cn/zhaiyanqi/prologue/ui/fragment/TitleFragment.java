@@ -49,8 +49,8 @@ public class TitleFragment extends BaseMakerFragment {
     private TextView titleView;
     private boolean autoTrans2T = true;
 
-    @BindView(R.id.tv_font_size)
-    TextView tvFontSize;
+    @BindView(R.id.et_font_size)
+    EditText etFontSize;
     @BindView(R.id.color_picker)
     View colorPicker;
     @BindView(R.id.et_font_color)
@@ -80,8 +80,7 @@ public class TitleFragment extends BaseMakerFragment {
         int selection = Hawk.get(KEY_FONT_INDEX, 1);
         fontSpinner.setSelection(selection);
         fontSize = Hawk.get(KEY_TITLE_FONT_SIZE, (int) titleView.getTextSize());
-        tvFontSize.setText(String.valueOf(fontSize));
-        titleView.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
+        etFontSize.setText(String.valueOf(fontSize));
         String title = Hawk.get(KEY_TITLE_CONTENT, "");
         etTitle.setText(title);
     }
@@ -139,18 +138,28 @@ public class TitleFragment extends BaseMakerFragment {
         switch (view.getId()) {
             case R.id.btn_add: {
                 fontSize++;
-                tvFontSize.setText(String.valueOf(fontSize));
-                titleView.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
+                etFontSize.setText(String.valueOf(fontSize));
                 break;
             }
             case R.id.btn_reduce: {
                 fontSize--;
-                tvFontSize.setText(String.valueOf(fontSize));
-                titleView.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
+                etFontSize.setText(String.valueOf(fontSize));
                 break;
             }
         }
-        Hawk.put(KEY_TITLE_FONT_SIZE, fontSize);
+    }
+
+    @OnTextChanged(R.id.et_font_size)
+    void setFontSize(CharSequence size) {
+        if (!TextUtils.isEmpty(size)) {
+            try {
+                fontSize = Integer.parseInt(size.toString());
+                titleView.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
+                Hawk.put(KEY_TITLE_FONT_SIZE, fontSize);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @OnTextChanged(R.id.et_font_color)

@@ -96,5 +96,8 @@
     <string name="default_hp">5</string>
     <string name="hp_height">勾玉高度</string>
     <string name="hp_width">勾玉宽度</string>
+    <string name="layer_1">图层一</string>
+    <string name="layer_2">图层二</string>
+    <string name="layer_3">图层三</string>
 
 </resources>
