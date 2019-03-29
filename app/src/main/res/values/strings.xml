@@ -100,8 +100,12 @@
     <string name="layer_1">图层一</string>
     <string name="layer_2">图层二</string>
     <string name="layer_3">图层三</string>
-    <string name="swidth">宽度</string>
     <string name="s_width">宽度</string>
     <string name="s_height">高度</string>
+    <string name="skill4">技能四</string>
+    <string name="heart">♥</string>
+    <string name="spade">♠</string>
+    <string name="club">♣</string>
+    <string name="diamond">♦</string>
 
 </resources>
