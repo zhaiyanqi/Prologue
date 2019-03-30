@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -42,6 +43,13 @@ public class CardMakerActivity extends AppCompatActivity {
     TabLayout tabLayout;
     @BindView(R.id.card_maker_view_pager)
     ViewPager viewPager;
+
+    @BindView(R.id.skill1_group)
+    Group skill1Group;
+    @BindView(R.id.skill2_group)
+    Group skill2Group;
+    @BindView(R.id.skill3_group)
+    Group skill3Group;
 
     //武将牌的元素
     @BindView(R.id.root_layout)
@@ -113,6 +121,18 @@ public class CardMakerActivity extends AppCompatActivity {
         cardWrapper.layout(0, 0, w, h);
         cardWrapper.draw(canvas);
         return returnedBitmap;
+    }
+
+    public Group getSkill1Group() {
+        return skill1Group;
+    }
+
+    public Group getSkill2Group() {
+        return skill2Group;
+    }
+
+    public Group getSkill3Group() {
+        return skill3Group;
     }
 
     public HeroGroup getGroup() {

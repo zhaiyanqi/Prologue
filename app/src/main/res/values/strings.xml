@@ -107,5 +107,7 @@
     <string name="spade">♠</string>
     <string name="club">♣</string>
     <string name="diamond">♦</string>
+    <string name="bold">粗体</string>
+    <string name="new_line">换行</string>
 
 </resources>

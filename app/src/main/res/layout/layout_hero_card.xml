@@ -140,6 +140,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/skill1_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="hero_maker_skill_1_bar,hero_maker_skill_1_name,hero_maker_skill_1_text" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/skill2_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="hero_maker_skill_2_bar,hero_maker_skill_2_name,hero_maker_skill_2_text" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/skill3_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="hero_maker_skill_3_bar,hero_maker_skill_3_name,hero_maker_skill_3_text" />
+
         <!--skill1-->
         <ImageView
             android:id="@+id/hero_maker_skill_1_bar"
@@ -149,7 +170,6 @@
             android:layout_marginTop="10dp"
             android:contentDescription="@string/empty"
             android:scaleType="fitXY"
-            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_board" />
 
@@ -159,7 +179,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorBlack"
             android:textSize="12sp"
-            android:visibility="gone"
+            android:text="@string/hero_group"
             app:layout_constraintBottom_toBottomOf="@+id/hero_maker_skill_1_bar"
             app:layout_constraintEnd_toEndOf="@+id/hero_maker_skill_1_bar"
             app:layout_constraintHorizontal_bias="0.45"
@@ -175,7 +195,7 @@
             android:layout_marginTop="8dp"
             android:textColor="@color/colorBlack"
             android:textSize="9sp"
-            android:visibility="gone"
+            android:text="@string/hero_group"
             app:layout_constraintStart_toStartOf="@+id/hero_maker_skill_board"
             app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_board"
             tools:ignore="SmallSp" />
@@ -189,7 +209,6 @@
             android:layout_marginTop="30dp"
             android:contentDescription="@string/empty"
             android:scaleType="fitXY"
-            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_board" />
 
@@ -199,7 +218,6 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorBlack"
             android:textSize="12sp"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/hero_maker_skill_2_bar"
             app:layout_constraintEnd_toEndOf="@+id/hero_maker_skill_2_bar"
             app:layout_constraintHorizontal_bias="0.45"
@@ -215,7 +233,6 @@
             android:layout_marginTop="30dp"
             android:textColor="@color/colorBlack"
             android:textSize="9sp"
-            android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/hero_maker_skill_board"
             app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_board"
             tools:ignore="SmallSp" />
@@ -229,7 +246,6 @@
             android:layout_marginTop="50dp"
             android:contentDescription="@string/empty"
             android:scaleType="fitXY"
-            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_board" />
 
@@ -239,7 +255,6 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorBlack"
             android:textSize="12sp"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/hero_maker_skill_3_bar"
             app:layout_constraintEnd_toEndOf="@+id/hero_maker_skill_3_bar"
             app:layout_constraintHorizontal_bias="0.45"
@@ -255,7 +270,6 @@
             android:layout_marginTop="50dp"
             android:textColor="@color/colorBlack"
             android:textSize="9sp"
-            android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/hero_maker_skill_board"
             app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_board"
             tools:ignore="SmallSp" />
