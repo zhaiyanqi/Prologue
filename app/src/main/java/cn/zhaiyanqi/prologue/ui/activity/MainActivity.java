@@ -59,5 +59,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         imageView,
                         getString(transitionId));
         ActivityCompat.startActivity(this, intent, options.toBundle());
+        ActivityCompat.finishAfterTransition(this);
     }
 }

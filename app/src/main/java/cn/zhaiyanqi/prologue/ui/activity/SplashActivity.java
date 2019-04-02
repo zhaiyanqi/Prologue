@@ -37,7 +37,7 @@ public class SplashActivity extends AppCompatActivity {
                     if (granted) {
                         scanExtraFonts();
                     } else {
-                        new Handler().postDelayed(this::delayAction, 500);
+                        new Handler().postDelayed(this::delayAction, 100);
                         Toast.makeText(this, R.string.no_permission, Toast.LENGTH_SHORT).show();
                     }
                 });

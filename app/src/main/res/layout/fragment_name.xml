@@ -133,8 +133,7 @@
                 android:id="@+id/spinner_font"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:entries="@array/font_spinner_values" />
+                android:layout_marginStart="10dp" />
 
             <TextView
                 android:layout_width="wrap_content"

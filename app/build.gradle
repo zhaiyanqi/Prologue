@@ -55,6 +55,7 @@ dependencies {
 
     //color picker
     implementation 'com.github.QuadFlask:colorpicker:0.0.13'
+    implementation 'com.jaredrummler:colorpicker:1.1.0'
 
     //自由缩放的photoview
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'

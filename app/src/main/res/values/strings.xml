@@ -59,7 +59,9 @@
     <string name="adjust_position">调整位置</string>
     <string name="other_info">高级选项</string>
     <string name="step_len">步长</string>
-    <string name="skill1_bar">技能一底板</string>
+    <string name="skill1_bar">技一底板</string>
+    <string name="skill2_bar">技二底板</string>
+    <string name="skill3_bar">技三底板</string>
     <string name="skill1">技能一</string>
     <string name="skill2">技能二</string>
     <string name="skill3">技能三</string>
@@ -109,5 +111,9 @@
     <string name="diamond">♦</string>
     <string name="bold">粗体</string>
     <string name="new_line">换行</string>
+    <string name="name_font_size">技能名字号</string>
+    <string name="name_font">技能名字体</string>
+    <string name="info_font_size">描述字号</string>
+    <string name="info_font">描述字体</string>
 
 </resources>

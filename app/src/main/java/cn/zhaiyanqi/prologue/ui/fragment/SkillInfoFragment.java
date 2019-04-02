@@ -3,6 +3,7 @@ package cn.zhaiyanqi.prologue.ui.fragment;
 
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnFocusChange;
+import butterknife.OnTextChanged;
 import cn.zhaiyanqi.prologue.R;
 import cn.zhaiyanqi.prologue.ui.fragment.base.BaseMakerFragment;
 
@@ -37,6 +39,36 @@ public class SkillInfoFragment extends BaseMakerFragment {
         return view;
     }
 
+    @OnTextChanged(R.id.et_skill1_name)
+    void setSkill1Name(CharSequence text) {
+        activity.getCmSkill1Name().setText(Html.fromHtml(text.toString()));
+    }
+
+    @OnTextChanged(R.id.et_skill1_info)
+    void setSkill1Text(CharSequence text) {
+        activity.getCmSkill1Text().setText(Html.fromHtml(text.toString()));
+    }
+
+    @OnTextChanged(R.id.et_skill2_name)
+    void setSkill2Name(CharSequence text) {
+        activity.getCmSkill2Name().setText(Html.fromHtml(text.toString()));
+    }
+
+    @OnTextChanged(R.id.et_skill2_info)
+    void setSkill2Text(CharSequence text) {
+        activity.getCmSkill2Text().setText(Html.fromHtml(text.toString()));
+    }
+
+    @OnTextChanged(R.id.et_skill3_name)
+    void setSkill3Name(CharSequence text) {
+        activity.getCmSkill3Name().setText(Html.fromHtml(text.toString()));
+    }
+
+    @OnTextChanged(R.id.et_skill3_info)
+    void setSkill3Text(CharSequence text) {
+        activity.getCmSkill3Text().setText(Html.fromHtml(text.toString()));
+    }
+    
     @OnClick({R.id.btn_heart, R.id.btn_spade, R.id.btn_club, R.id.btn_diamond})
     void insertSuit(Button button) {
         if (curEdittext == null) return;
@@ -106,7 +138,6 @@ public class SkillInfoFragment extends BaseMakerFragment {
             curEdittext = view;
         }
     }
-
 
     @NonNull
     @Override

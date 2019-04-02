@@ -42,10 +42,26 @@ public class TemplateFragment extends BaseMakerFragment {
     static final String KEY_GROUP_MARGIN_TOP = "card_maker_group_margin_top";
     static final String KEY_GROUP_WIDTH = "card_maker_group_width";
     static final String KEY_GROUP_HEIGHT = "card_maker_group_height";
+
     static final String KEY_SKILL_BOARD_MARGIN_LEFT = "card_maker_skill_board_margin_left";
     static final String KEY_SKILL_BOARD_MARGIN_TOP = "card_maker_skill_board_margin_top";
     static final String KEY_SKILL_BOARD_WIDTH = "card_maker_skill_board_width";
     static final String KEY_SKILL_BOARD_HEIGHT = "card_maker_skill_board_height";
+
+    static final String KEY_SKILL_1_BAR_MARGIN_LEFT = "KEY_SKILL_1_BAR_MARGIN_LEFT";
+    static final String KEY_SKILL_1_BAR_MARGIN_TOP = "KEY_SKILL_1_BAR_MARGIN_TOP";
+    static final String KEY_SKILL_1_BAR_WIDTH = "KEY_SKILL_1_BAR_WIDTH";
+    static final String KEY_SKILL_1_BAR_HEIGHT = "KEY_SKILL_1_BAR_HEIGHT";
+
+    static final String KEY_SKILL_2_BAR_MARGIN_LEFT = "KEY_SKILL_2_BAR_MARGIN_LEFT";
+    static final String KEY_SKILL_2_BAR_MARGIN_TOP = "KEY_SKILL_2_BAR_MARGIN_TOP";
+    static final String KEY_SKILL_2_BAR_WIDTH = "KEY_SKILL_2_BAR_WIDTH";
+    static final String KEY_SKILL_2_BAR_HEIGHT = "KEY_SKILL_2_BAR_HEIGHT";
+
+    static final String KEY_SKILL_3_BAR_MARGIN_LEFT = "KEY_SKILL_3_BAR_MARGIN_LEFT";
+    static final String KEY_SKILL_3_BAR_MARGIN_TOP = "KEY_SKILL_3_BAR_MARGIN_TOP";
+    static final String KEY_SKILL_3_BAR_WIDTH = "KEY_SKILL_3_BAR_WIDTH";
+    static final String KEY_SKILL_3_BAR_HEIGHT = "KEY_SKILL_3_BAR_HEIGHT";
 
 
     @BindView(R.id.tv_custom_frame)
@@ -68,6 +84,7 @@ public class TemplateFragment extends BaseMakerFragment {
     private ImageView cmFrame, cmGroup, cmSkillBoard;
     private Uri frameUri, groupUri, photoUri, skillBoardUri;
     private ImageView ivHp1, ivHp2, ivHp3, ivHp4, ivHp5;
+    private ImageView ivSkill1Bar, ivSkill2Bar, ivSkill3Bar, ivSkill4Bar;
     private LinearLayout ivHpLayout;
     private PhotoView photoView, outPhotoView;
     private boolean outFrame;
@@ -101,6 +118,29 @@ public class TemplateFragment extends BaseMakerFragment {
         layoutParams2.width = Hawk.get(KEY_SKILL_BOARD_WIDTH, layoutParams2.width);
         layoutParams2.height = Hawk.get(KEY_SKILL_BOARD_HEIGHT, layoutParams2.height);
         cmSkillBoard.requestLayout();
+
+        //skillbar
+        ConstraintLayout.LayoutParams skill1Params = (ConstraintLayout.LayoutParams) ivSkill1Bar.getLayoutParams();
+        skill1Params.leftMargin = Hawk.get(KEY_SKILL_1_BAR_MARGIN_LEFT, skill1Params.leftMargin);
+        skill1Params.topMargin = Hawk.get(KEY_SKILL_1_BAR_MARGIN_TOP, skill1Params.topMargin);
+        skill1Params.width = Hawk.get(KEY_SKILL_1_BAR_WIDTH, skill1Params.width);
+        skill1Params.height = Hawk.get(KEY_SKILL_1_BAR_HEIGHT, skill1Params.height);
+        ivSkill1Bar.requestLayout();
+
+        ConstraintLayout.LayoutParams skill2Params = (ConstraintLayout.LayoutParams) ivSkill2Bar.getLayoutParams();
+        skill2Params.leftMargin = Hawk.get(KEY_SKILL_2_BAR_MARGIN_LEFT, skill2Params.leftMargin);
+        skill2Params.topMargin = Hawk.get(KEY_SKILL_2_BAR_MARGIN_TOP, skill2Params.topMargin);
+        skill2Params.width = Hawk.get(KEY_SKILL_2_BAR_WIDTH, skill2Params.width);
+        skill2Params.height = Hawk.get(KEY_SKILL_2_BAR_HEIGHT, skill2Params.height);
+        ivSkill2Bar.requestLayout();
+
+        ConstraintLayout.LayoutParams skill3Params = (ConstraintLayout.LayoutParams) ivSkill3Bar.getLayoutParams();
+        skill3Params.leftMargin = Hawk.get(KEY_SKILL_3_BAR_MARGIN_LEFT, skill3Params.leftMargin);
+        skill3Params.topMargin = Hawk.get(KEY_SKILL_3_BAR_MARGIN_TOP, skill3Params.topMargin);
+        skill3Params.width = Hawk.get(KEY_SKILL_3_BAR_WIDTH, skill3Params.width);
+        skill3Params.height = Hawk.get(KEY_SKILL_3_BAR_HEIGHT, skill3Params.height);
+        ivSkill3Bar.requestLayout();
+
     }
 
     @OnCheckedChanged({R.id.cb_show_frame, R.id.cb_show_logo,
@@ -256,9 +296,9 @@ public class TemplateFragment extends BaseMakerFragment {
         Glide.with(this).load(R.drawable.wei).transition(withCrossFade()).into(cmFrame);
         Glide.with(this).load(R.drawable.wei_logo).transition(withCrossFade()).into(cmGroup);
         Glide.with(this).load(R.drawable.wei_skill_board).transition(withCrossFade()).into(cmSkillBoard);
-//        Glide.with(this).load(R.drawable.wei_skill_bar).transition(withCrossFade()).into(ivSkill1Bar);
-//        Glide.with(this).load(R.drawable.wei_skill_bar).transition(withCrossFade()).into(ivSkill2Bar);
-//        Glide.with(this).load(R.drawable.wei_skill_bar).transition(withCrossFade()).into(ivSkill3Bar);
+        Glide.with(this).load(R.drawable.wei_skill_bar).transition(withCrossFade()).into(ivSkill1Bar);
+        Glide.with(this).load(R.drawable.wei_skill_bar).transition(withCrossFade()).into(ivSkill2Bar);
+        Glide.with(this).load(R.drawable.wei_skill_bar).transition(withCrossFade()).into(ivSkill3Bar);
         Glide.with(this).load(R.drawable.wei_hp).transition(withCrossFade()).into(ivHp1);
         Glide.with(this).load(R.drawable.wei_hp).transition(withCrossFade()).into(ivHp2);
         Glide.with(this).load(R.drawable.wei_hp).transition(withCrossFade()).into(ivHp3);
@@ -272,9 +312,9 @@ public class TemplateFragment extends BaseMakerFragment {
         Glide.with(this).load(R.drawable.shu).transition(withCrossFade()).into(cmFrame);
         Glide.with(this).load(R.drawable.shu_logo).transition(withCrossFade()).into(cmGroup);
         Glide.with(this).load(R.drawable.shu_skill_board).transition(withCrossFade()).into(cmSkillBoard);
-//        Glide.with(this).load(R.drawable.shu_skill_bar).transition(withCrossFade()).into(ivSkill1Bar);
-//        Glide.with(this).load(R.drawable.shu_skill_bar).transition(withCrossFade()).into(ivSkill2Bar);
-//        Glide.with(this).load(R.drawable.shu_skill_bar).transition(withCrossFade()).into(ivSkill3Bar);
+        Glide.with(this).load(R.drawable.shu_skill_bar).transition(withCrossFade()).into(ivSkill1Bar);
+        Glide.with(this).load(R.drawable.shu_skill_bar).transition(withCrossFade()).into(ivSkill2Bar);
+        Glide.with(this).load(R.drawable.shu_skill_bar).transition(withCrossFade()).into(ivSkill3Bar);
         Glide.with(this).load(R.drawable.shu_hp).transition(withCrossFade()).into(ivHp1);
         Glide.with(this).load(R.drawable.shu_hp).transition(withCrossFade()).into(ivHp2);
         Glide.with(this).load(R.drawable.shu_hp).transition(withCrossFade()).into(ivHp3);
@@ -288,9 +328,9 @@ public class TemplateFragment extends BaseMakerFragment {
         Glide.with(this).load(R.drawable.wu).transition(withCrossFade()).into(cmFrame);
         Glide.with(this).load(R.drawable.wu_logo).transition(withCrossFade()).into(cmGroup);
         Glide.with(this).load(R.drawable.wu_skill_board).transition(withCrossFade()).into(cmSkillBoard);
-//        Glide.with(this).load(R.drawable.wu_skill_bar).transition(withCrossFade()).into(ivSkill1Bar);
-//        Glide.with(this).load(R.drawable.wu_skill_bar).transition(withCrossFade()).into(ivSkill2Bar);
-//        Glide.with(this).load(R.drawable.wu_skill_bar).transition(withCrossFade()).into(ivSkill3Bar);
+        Glide.with(this).load(R.drawable.wu_skill_bar).transition(withCrossFade()).into(ivSkill1Bar);
+        Glide.with(this).load(R.drawable.wu_skill_bar).transition(withCrossFade()).into(ivSkill2Bar);
+        Glide.with(this).load(R.drawable.wu_skill_bar).transition(withCrossFade()).into(ivSkill3Bar);
         Glide.with(this).load(R.drawable.wu_hp).transition(withCrossFade()).into(ivHp1);
         Glide.with(this).load(R.drawable.wu_hp).transition(withCrossFade()).into(ivHp2);
         Glide.with(this).load(R.drawable.wu_hp).transition(withCrossFade()).into(ivHp3);
@@ -304,9 +344,9 @@ public class TemplateFragment extends BaseMakerFragment {
         Glide.with(this).load(R.drawable.qun).transition(withCrossFade()).into(cmFrame);
         Glide.with(this).load(R.drawable.qun_logo).transition(withCrossFade()).into(cmGroup);
         Glide.with(this).load(R.drawable.qun_skill_board).transition(withCrossFade()).into(cmSkillBoard);
-//        Glide.with(this).load(R.drawable.qun_skill_bar).transition(withCrossFade()).into(ivSkill1Bar);
-//        Glide.with(this).load(R.drawable.qun_skill_bar).transition(withCrossFade()).into(ivSkill2Bar);
-//        Glide.with(this).load(R.drawable.qun_skill_bar).transition(withCrossFade()).into(ivSkill3Bar);
+        Glide.with(this).load(R.drawable.qun_skill_bar).transition(withCrossFade()).into(ivSkill1Bar);
+        Glide.with(this).load(R.drawable.qun_skill_bar).transition(withCrossFade()).into(ivSkill2Bar);
+        Glide.with(this).load(R.drawable.qun_skill_bar).transition(withCrossFade()).into(ivSkill3Bar);
         Glide.with(this).load(R.drawable.qun_hp).transition(withCrossFade()).into(ivHp1);
         Glide.with(this).load(R.drawable.qun_hp).transition(withCrossFade()).into(ivHp2);
         Glide.with(this).load(R.drawable.qun_hp).transition(withCrossFade()).into(ivHp3);
@@ -320,9 +360,9 @@ public class TemplateFragment extends BaseMakerFragment {
         Glide.with(this).load(R.drawable.god).transition(withCrossFade()).into(cmFrame);
         Glide.with(this).load(R.drawable.god_logo).transition(withCrossFade()).into(cmGroup);
         Glide.with(this).load(R.drawable.god_skill_board).transition(withCrossFade()).into(cmSkillBoard);
-//        Glide.with(this).load(R.drawable.god_skill_bar).transition(withCrossFade()).into(ivSkill1Bar);
-//        Glide.with(this).load(R.drawable.god_skill_bar).transition(withCrossFade()).into(ivSkill2Bar);
-//        Glide.with(this).load(R.drawable.god_skill_bar).transition(withCrossFade()).into(ivSkill3Bar);
+        Glide.with(this).load(R.drawable.god_skill_bar).transition(withCrossFade()).into(ivSkill1Bar);
+        Glide.with(this).load(R.drawable.god_skill_bar).transition(withCrossFade()).into(ivSkill2Bar);
+        Glide.with(this).load(R.drawable.god_skill_bar).transition(withCrossFade()).into(ivSkill3Bar);
         Glide.with(this).load(R.drawable.god_hp).transition(withCrossFade()).into(ivHp1);
         Glide.with(this).load(R.drawable.god_hp).transition(withCrossFade()).into(ivHp2);
         Glide.with(this).load(R.drawable.god_hp).transition(withCrossFade()).into(ivHp3);
@@ -346,6 +386,10 @@ public class TemplateFragment extends BaseMakerFragment {
             ivHp3 = activity.getCmHp3();
             ivHp4 = activity.getCmHp4();
             ivHp5 = activity.getCmHp5();
+            ivSkill1Bar = activity.getCmSkill1Bar();
+            ivSkill2Bar = activity.getCmSkill2Bar();
+            ivSkill3Bar = activity.getCmSkill3Bar();
+//            ivSkill1Bar = activity.getCmSkill1Bar();
         }
     }
 

@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.material.tabs.TabLayout;
+import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +35,12 @@ import cn.zhaiyanqi.prologue.ui.fragment.ExportFragment;
 import cn.zhaiyanqi.prologue.ui.fragment.HpFragment;
 import cn.zhaiyanqi.prologue.ui.fragment.NameFragment;
 import cn.zhaiyanqi.prologue.ui.fragment.SkillInfoFragment;
+import cn.zhaiyanqi.prologue.ui.fragment.SkillsFragment;
 import cn.zhaiyanqi.prologue.ui.fragment.TemplateFragment;
 import cn.zhaiyanqi.prologue.ui.fragment.TitleFragment;
 
-public class CardMakerActivity extends AppCompatActivity {
+public class CardMakerActivity extends AppCompatActivity
+        implements ColorPickerDialogListener {
 
     @BindView(R.id.tabLayout)
     TabLayout tabLayout;
@@ -80,10 +83,29 @@ public class CardMakerActivity extends AppCompatActivity {
     ImageView cmHp4;
     @BindView(R.id.iv_hp_5)
     ImageView cmHp5;
+    @BindView(R.id.hero_maker_skill_1_bar)
+    ImageView cmSkill1Bar;
+    @BindView(R.id.hero_maker_skill_2_bar)
+    ImageView cmSkill2Bar;
+    @BindView(R.id.hero_maker_skill_3_bar)
+    ImageView cmSkill3Bar;
+    @BindView(R.id.hero_maker_skill_1_name)
+    TextView cmSkill1Name;
+    @BindView(R.id.hero_maker_skill_2_name)
+    TextView cmSkill2Name;
+    @BindView(R.id.hero_maker_skill_3_name)
+    TextView cmSkill3Name;
+    @BindView(R.id.hero_maker_skill_1_text)
+    TextView cmSkill1Text;
+    @BindView(R.id.hero_maker_skill_2_text)
+    TextView cmSkill2Text;
+    @BindView(R.id.hero_maker_skill_3_text)
+    TextView cmSkill3Text;
 
     private ViewPagerAdapter adapter;
     private long exitTime;
     private HeroGroup group;
+    private SkillsFragment skillsFragment;
 
     @BindView(R.id.hero_card_wrapper)
     ConstraintLayout cardLayout;
@@ -104,7 +126,8 @@ public class CardMakerActivity extends AppCompatActivity {
         adapter.addItem(new TitleFragment());
         adapter.addItem(new NameFragment());
         adapter.addItem(new HpFragment());
-//        adapter.addItem(new SkillsFragment());
+        skillsFragment = new SkillsFragment();
+        adapter.addItem(skillsFragment);
         adapter.addItem(new SkillInfoFragment());
         adapter.addItem(new AdjustFragment());
         adapter.addItem(new ExportFragment());
@@ -121,6 +144,42 @@ public class CardMakerActivity extends AppCompatActivity {
         cardWrapper.layout(0, 0, w, h);
         cardWrapper.draw(canvas);
         return returnedBitmap;
+    }
+
+    public TextView getCmSkill1Name() {
+        return cmSkill1Name;
+    }
+
+    public TextView getCmSkill2Name() {
+        return cmSkill2Name;
+    }
+
+    public TextView getCmSkill3Name() {
+        return cmSkill3Name;
+    }
+
+    public TextView getCmSkill1Text() {
+        return cmSkill1Text;
+    }
+
+    public TextView getCmSkill2Text() {
+        return cmSkill2Text;
+    }
+
+    public TextView getCmSkill3Text() {
+        return cmSkill3Text;
+    }
+
+    public ImageView getCmSkill1Bar() {
+        return cmSkill1Bar;
+    }
+
+    public ImageView getCmSkill2Bar() {
+        return cmSkill2Bar;
+    }
+
+    public ImageView getCmSkill3Bar() {
+        return cmSkill3Bar;
     }
 
     public Group getSkill1Group() {
@@ -209,6 +268,17 @@ public class CardMakerActivity extends AppCompatActivity {
         }
 
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onColorSelected(int dialogId, int color) {
+        if (skillsFragment.isAdded()) {
+            skillsFragment.onColorSelected(dialogId, color);
+        }
+    }
+
+    @Override
+    public void onDialogDismissed(int dialogId) {
     }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {

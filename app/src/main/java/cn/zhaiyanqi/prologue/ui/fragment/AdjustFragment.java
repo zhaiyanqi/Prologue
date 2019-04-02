@@ -74,7 +74,8 @@ public class AdjustFragment extends BaseMakerFragment {
         return view;
     }
 
-    @OnClick({R.id.rb_title, R.id.rb_name, R.id.rb_hp, R.id.rb_group, R.id.rb_skill_board})
+    @OnClick({R.id.rb_title, R.id.rb_name, R.id.rb_hp, R.id.rb_group, R.id.rb_skill_board,
+            R.id.rb_skill_1_bar, R.id.rb_skill_2_bar, R.id.rb_skill_3_bar,})
     void changeCurView(View view) {
         llChangeHeight.setVisibility(View.GONE);
         llChangeWidth.setVisibility(View.GONE);
@@ -113,6 +114,36 @@ public class AdjustFragment extends BaseMakerFragment {
                 CUR_VIEW_KEY_MARGIN_TOP = TemplateFragment.KEY_SKILL_BOARD_MARGIN_TOP;
                 CUR_VIEW_KEY_WIDTH = TemplateFragment.KEY_SKILL_BOARD_WIDTH;
                 CUR_VIEW_KEY_HEIGHT = TemplateFragment.KEY_SKILL_BOARD_HEIGHT;
+                llChangeHeight.setVisibility(View.VISIBLE);
+                llChangeWidth.setVisibility(View.VISIBLE);
+                break;
+            }
+            case R.id.rb_skill_1_bar: {
+                curView = activity.getCmSkill1Bar();
+                CUR_VIEW_KEY_MARGIN_LEFT = TemplateFragment.KEY_SKILL_1_BAR_MARGIN_LEFT;
+                CUR_VIEW_KEY_MARGIN_TOP = TemplateFragment.KEY_SKILL_1_BAR_MARGIN_TOP;
+                CUR_VIEW_KEY_WIDTH = TemplateFragment.KEY_SKILL_1_BAR_WIDTH;
+                CUR_VIEW_KEY_HEIGHT = TemplateFragment.KEY_SKILL_1_BAR_HEIGHT;
+                llChangeHeight.setVisibility(View.VISIBLE);
+                llChangeWidth.setVisibility(View.VISIBLE);
+                break;
+            }
+            case R.id.rb_skill_2_bar: {
+                curView = activity.getCmSkill2Bar();
+                CUR_VIEW_KEY_MARGIN_LEFT = TemplateFragment.KEY_SKILL_2_BAR_MARGIN_LEFT;
+                CUR_VIEW_KEY_MARGIN_TOP = TemplateFragment.KEY_SKILL_2_BAR_MARGIN_TOP;
+                CUR_VIEW_KEY_WIDTH = TemplateFragment.KEY_SKILL_2_BAR_WIDTH;
+                CUR_VIEW_KEY_HEIGHT = TemplateFragment.KEY_SKILL_2_BAR_HEIGHT;
+                llChangeHeight.setVisibility(View.VISIBLE);
+                llChangeWidth.setVisibility(View.VISIBLE);
+                break;
+            }
+            case R.id.rb_skill_3_bar: {
+                curView = activity.getCmSkill3Bar();
+                CUR_VIEW_KEY_MARGIN_LEFT = TemplateFragment.KEY_SKILL_3_BAR_MARGIN_LEFT;
+                CUR_VIEW_KEY_MARGIN_TOP = TemplateFragment.KEY_SKILL_3_BAR_MARGIN_TOP;
+                CUR_VIEW_KEY_WIDTH = TemplateFragment.KEY_SKILL_3_BAR_WIDTH;
+                CUR_VIEW_KEY_HEIGHT = TemplateFragment.KEY_SKILL_3_BAR_HEIGHT;
                 llChangeHeight.setVisibility(View.VISIBLE);
                 llChangeWidth.setVisibility(View.VISIBLE);
                 break;
@@ -162,38 +193,32 @@ public class AdjustFragment extends BaseMakerFragment {
     @OnClick({R.id.btn_high, R.id.btn_low, R.id.btn_fat, R.id.btn_thin})
     void adjustView(View view) {
         if (curView != null) {
+            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) curView.getLayoutParams();
             switch (view.getId()) {
                 case R.id.btn_high: {
-                    ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) curView.getLayoutParams();
                     layoutParams.height += moveStepOffset;
-                    curView.requestLayout();
                     Hawk.put(CUR_VIEW_KEY_HEIGHT, layoutParams.height);
                     break;
                 }
                 case R.id.btn_low: {
-                    ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) curView.getLayoutParams();
                     layoutParams.height -= moveStepOffset;
-                    curView.requestLayout();
                     Hawk.put(CUR_VIEW_KEY_HEIGHT, layoutParams.height);
                     break;
                 }
                 case R.id.btn_fat: {
-                    ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) curView.getLayoutParams();
                     layoutParams.width += moveStepOffset;
-                    curView.requestLayout();
                     Hawk.put(CUR_VIEW_KEY_WIDTH, layoutParams.width);
                     break;
                 }
                 case R.id.btn_thin: {
-                    ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) curView.getLayoutParams();
                     layoutParams.width -= moveStepOffset;
-                    curView.requestLayout();
                     Hawk.put(CUR_VIEW_KEY_WIDTH, layoutParams.width);
                     break;
                 }
             }
-            tvWidth.setText(String.valueOf(curView.getWidth()));
-            tvHeight.setText(String.valueOf(curView.getHeight()));
+            tvWidth.setText(String.valueOf(layoutParams.width));
+            tvHeight.setText(String.valueOf(layoutParams.height));
+            curView.requestLayout();
         }
     }
 

@@ -56,6 +56,24 @@
                     android:layout_height="wrap_content"
                     android:text="@string/skill_board" />
 
+                <RadioButton
+                    android:id="@+id/rb_skill_1_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/skill1_bar" />
+
+                <RadioButton
+                    android:id="@+id/rb_skill_2_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/skill1_bar" />
+
+                <RadioButton
+                    android:id="@+id/rb_skill_3_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/skill1_bar" />
+
             </RadioGroup>
         </androidx.core.widget.NestedScrollView>
 

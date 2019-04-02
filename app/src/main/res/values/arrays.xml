@@ -3,5 +3,8 @@
     <string-array name="font_spinner_values">
         <item>武将名</item>
         <item>称号</item>
+        <item>技能名</item>
+        <item>技能描述</item>
+        <item>评语</item>
     </string-array>
 </resources>
