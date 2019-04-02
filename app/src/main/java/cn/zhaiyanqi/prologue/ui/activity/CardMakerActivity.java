@@ -20,6 +20,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
@@ -109,6 +110,9 @@ public class CardMakerActivity extends AppCompatActivity
 
     @BindView(R.id.hero_card_wrapper)
     ConstraintLayout cardLayout;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
 
     @Override

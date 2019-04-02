@@ -51,7 +51,7 @@ public class SplashActivity extends AppCompatActivity {
             if (!created) return;
             MediaScannerConnection.scanFile(this, new String[]{fontDir.getPath()}, null, null);
         }
-        File[] fonts = fontDir.listFiles(pathname -> pathname.getName().endsWith("ttf"));
+        File[] fonts = fontDir.listFiles(pathname -> pathname.getName().endsWith("ttf") || pathname.getName().endsWith("TTF"));
         String[] extraFonts = new String[fonts.length];
         for (int i = 0; i < extraFonts.length; i++) {
             String filename = fonts[i].getName();
@@ -62,7 +62,7 @@ public class SplashActivity extends AppCompatActivity {
         System.arraycopy(App.fontNameArray, 0, newArr, 0, App.fontNameArray.length);
         System.arraycopy(extraFonts, 0, newArr, App.fontNameArray.length, extraFonts.length);
         App.fontNameArray = newArr;
-        new Handler().postDelayed(this::delayAction, 500);
+        new Handler().postDelayed(this::delayAction, 100);
     }
 
     private void delayAction() {

@@ -9,4 +9,5 @@
     <color name="colorBlack">#000000</color>
     <color name="colorTitle">#f4f424</color>
     <color name="colorTransparent">#00000000</color>
+    <color name="colorHub">#f90</color>
 </resources>

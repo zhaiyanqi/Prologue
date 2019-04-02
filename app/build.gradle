@@ -7,7 +7,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
-        versionName "1.01"
+        versionName "1.10"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -57,7 +57,7 @@ dependencies {
     implementation 'com.github.QuadFlask:colorpicker:0.0.13'
     implementation 'com.jaredrummler:colorpicker:1.1.0'
 
-    //自由缩放的photoview
+    //自由缩放的photo view
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
 
     //hawk
