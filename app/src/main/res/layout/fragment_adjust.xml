@@ -63,17 +63,52 @@
                     android:text="@string/skill1_bar" />
 
                 <RadioButton
+                    android:id="@+id/rb_skill_1_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/skill1_name" />
+
+                <RadioButton
+                    android:id="@+id/rb_skill_1_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/skill1_info" />
+
+                <RadioButton
                     android:id="@+id/rb_skill_2_bar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/skill1_bar" />
+                    android:text="@string/skill2_bar" />
+
+                <RadioButton
+                    android:id="@+id/rb_skill_2_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/skill2_name" />
+
+                <RadioButton
+                    android:id="@+id/rb_skill_2_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/skill2_info" />
 
                 <RadioButton
                     android:id="@+id/rb_skill_3_bar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/skill1_bar" />
+                    android:text="@string/skill3_bar" />
 
+                <RadioButton
+                    android:id="@+id/rb_skill_3_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/skill3_name" />
+
+                <RadioButton
+                    android:id="@+id/rb_skill_3_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/skill3_info" />
             </RadioGroup>
         </androidx.core.widget.NestedScrollView>
 

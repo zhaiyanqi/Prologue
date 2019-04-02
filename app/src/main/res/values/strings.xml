@@ -115,5 +115,11 @@
     <string name="name_font">技能名字体</string>
     <string name="info_font_size">描述字号</string>
     <string name="info_font">描述字体</string>
+    <string name="skill1_name">技一名字</string>
+    <string name="skill2_name">技二名字</string>
+    <string name="skill3_name">技三名字</string>
+    <string name="skill1_info">技一描述</string>
+    <string name="skill2_info">技二描述</string>
+    <string name="skill3_info">技三描述</string>
 
 </resources>

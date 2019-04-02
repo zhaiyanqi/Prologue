@@ -75,10 +75,13 @@ public class AdjustFragment extends BaseMakerFragment {
     }
 
     @OnClick({R.id.rb_title, R.id.rb_name, R.id.rb_hp, R.id.rb_group, R.id.rb_skill_board,
-            R.id.rb_skill_1_bar, R.id.rb_skill_2_bar, R.id.rb_skill_3_bar,})
+            R.id.rb_skill_1_bar, R.id.rb_skill_1_name, R.id.rb_skill_1_info,
+            R.id.rb_skill_2_bar, R.id.rb_skill_2_name, R.id.rb_skill_2_info,
+            R.id.rb_skill_3_bar, R.id.rb_skill_3_name, R.id.rb_skill_3_info,})
     void changeCurView(View view) {
         llChangeHeight.setVisibility(View.GONE);
         llChangeWidth.setVisibility(View.GONE);
+        curView = null;
         switch (view.getId()) {
             case R.id.rb_title: {
                 curView = activity.getCmTitle();
@@ -148,6 +151,45 @@ public class AdjustFragment extends BaseMakerFragment {
                 llChangeWidth.setVisibility(View.VISIBLE);
                 break;
             }
+
+            case R.id.rb_skill_1_name: {
+                curView = activity.getCmSkill1Name();
+                CUR_VIEW_KEY_MARGIN_LEFT = SkillInfoFragment.KEY_SKILL_1_MARGIN_LEFT;
+                CUR_VIEW_KEY_MARGIN_TOP = SkillInfoFragment.KEY_SKILL_1_MARGIN_TOP;
+                break;
+            }
+            case R.id.rb_skill_2_name: {
+                curView = activity.getCmSkill2Name();
+                CUR_VIEW_KEY_MARGIN_LEFT = SkillInfoFragment.KEY_SKILL_2_MARGIN_LEFT;
+                CUR_VIEW_KEY_MARGIN_TOP = SkillInfoFragment.KEY_SKILL_2_MARGIN_TOP;
+                break;
+            }
+            case R.id.rb_skill_3_name: {
+                curView = activity.getCmSkill3Name();
+                CUR_VIEW_KEY_MARGIN_LEFT = SkillInfoFragment.KEY_SKILL_3_MARGIN_LEFT;
+                CUR_VIEW_KEY_MARGIN_TOP = SkillInfoFragment.KEY_SKILL_3_MARGIN_TOP;
+                break;
+            }
+
+            case R.id.rb_skill_1_info: {
+                curView = activity.getCmSkill1Text();
+                CUR_VIEW_KEY_MARGIN_LEFT = SkillInfoFragment.KEY_SKILL_1_INFO_MARGIN_LEFT;
+                CUR_VIEW_KEY_MARGIN_TOP = SkillInfoFragment.KEY_SKILL_1_INFO_MARGIN_TOP;
+                break;
+            }
+            case R.id.rb_skill_2_info: {
+                curView = activity.getCmSkill2Text();
+                CUR_VIEW_KEY_MARGIN_LEFT = SkillInfoFragment.KEY_SKILL_2_INFO_MARGIN_LEFT;
+                CUR_VIEW_KEY_MARGIN_TOP = SkillInfoFragment.KEY_SKILL_2_INFO_MARGIN_TOP;
+                break;
+            }
+            case R.id.rb_skill_3_info: {
+                curView = activity.getCmSkill3Text();
+                CUR_VIEW_KEY_MARGIN_LEFT = SkillInfoFragment.KEY_SKILL_3_INFO_MARGIN_LEFT;
+                CUR_VIEW_KEY_MARGIN_TOP = SkillInfoFragment.KEY_SKILL_3_INFO_MARGIN_TOP;
+                break;
+            }
+
         }
         tvWidth.setText(String.valueOf(curView.getWidth()));
         tvHeight.setText(String.valueOf(curView.getHeight()));

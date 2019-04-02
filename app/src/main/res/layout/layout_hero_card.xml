@@ -178,7 +178,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorBlack"
-            android:textSize="12sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@+id/hero_maker_skill_1_bar"
             app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_1_bar" />
 
@@ -211,7 +213,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorBlack"
-            android:textSize="12sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@+id/hero_maker_skill_2_bar"
             app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_2_bar" />
 
@@ -244,7 +248,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorBlack"
-            android:textSize="12sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@+id/hero_maker_skill_3_bar"
             app:layout_constraintTop_toTopOf="@+id/hero_maker_skill_3_bar" />
 

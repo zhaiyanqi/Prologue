@@ -188,7 +188,7 @@ public class SkillsFragment extends BaseMakerFragment {
             activity.getCmSkill1Text().setTypeface(typeface);
             activity.getCmSkill2Text().setTypeface(typeface);
             activity.getCmSkill3Text().setTypeface(typeface);
-            Hawk.put(KEY_SKILL_NAME_FONT_INDEX, position);
+            Hawk.put(KEY_SKILL_INFO_FONT_INDEX, position);
         }
     }
 
@@ -197,14 +197,16 @@ public class SkillsFragment extends BaseMakerFragment {
         switch (view.getId()) {
             case R.id.ll_name_font_color: {
                 ColorPickerDialog.newBuilder()
-                        .setColor(Color.WHITE)
+                        .setColor(nameFontColor)
+                        .setShowAlphaSlider(true)
                         .setDialogId(ID_DIALOG_SELECT_NAME_COLOR)
                         .show(activity);
                 break;
             }
             case R.id.ll_info_font_color: {
                 ColorPickerDialog.newBuilder()
-                        .setColor(Color.WHITE)
+                        .setColor(infoFontColor)
+                        .setShowAlphaSlider(true)
                         .setDialogId(ID_DIALOG_SELECT_INFO_COLOR)
                         .show(activity);
                 break;
@@ -215,19 +217,29 @@ public class SkillsFragment extends BaseMakerFragment {
     public void onColorSelected(int dialogId, int color) {
         switch (dialogId) {
             case ID_DIALOG_SELECT_NAME_COLOR: {
+                nameFontColor = color;
                 String colorStr = ColorUtil.int2HexColor(color);
                 if (colorStr != null) {
                     tvNameFontColor.setText(colorStr);
                 }
                 cpvNamePanel.setColor(color);
+                activity.getCmSkill1Name().setTextColor(color);
+                activity.getCmSkill2Name().setTextColor(color);
+                activity.getCmSkill3Name().setTextColor(color);
+                Hawk.put(NAME_FONT_COLOR_KEY, color);
                 break;
             }
             case ID_DIALOG_SELECT_INFO_COLOR: {
+                infoFontColor = color;
                 String colorStr = ColorUtil.int2HexColor(color);
                 if (colorStr != null) {
                     tvInfoFontColor.setText(colorStr);
                 }
                 cpvInfoPanel.setColor(color);
+                activity.getCmSkill1Text().setTextColor(color);
+                activity.getCmSkill2Text().setTextColor(color);
+                activity.getCmSkill3Text().setTextColor(color);
+                Hawk.put(INFO_FONT_COLOR_KEY, color);
                 break;
             }
         }
