@@ -66,7 +66,8 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void delayAction() {
-        startActivity(new Intent(this, CardMakerActivity.class));
+        startActivity(new Intent(this, FreeActivity.class));
+//        startActivity(new Intent(this, CardMakerActivity.class));
         overridePendingTransition(R.anim.screen_zoom_in, R.anim.screen_zoom_out);
         finish();
     }

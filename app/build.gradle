@@ -63,4 +63,6 @@ dependencies {
     //hawk
     implementation 'com.orhanobut:hawk:2.0.1'
 
+//    implementation 'com.github.kongqw:AndroidRocker:1.0.1'
+    implementation 'me.caibou.android:rockerview:1.0.0'
 }

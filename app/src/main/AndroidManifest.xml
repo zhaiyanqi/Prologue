@@ -15,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity android:name=".ui.activity.FreeActivity" />
         <activity
             android:name=".ui.activity.CardMakerActivity"
             android:theme="@style/AppTheme.NoActionBar"

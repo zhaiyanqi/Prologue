@@ -1,5 +1,6 @@
 package cn.zhaiyanqi.prologue.ui.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
@@ -266,7 +267,8 @@ public class CardMakerActivity extends AppCompatActivity
                 Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
                 exitTime = System.currentTimeMillis();
             } else {
-                finish();
+//                finish();
+                startActivity(new Intent(this, FreeActivity.class));
             }
             return true;
         }

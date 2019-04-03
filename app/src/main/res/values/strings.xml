@@ -123,5 +123,11 @@
     <string name="skill3_info">技三描述</string>
     <string name="string_sanguosha">三国杀</string>
     <string name="string_make_img">制图</string>
+    <string name="width">宽度</string>
+    <string name="height">高度</string>
+    <string name="size">尺寸</string>
+    <string name="wrap_content">原图尺寸</string>
+    <string name="match_parent">填充</string>
+    <string name="custom">自定义</string>
 
 </resources>
