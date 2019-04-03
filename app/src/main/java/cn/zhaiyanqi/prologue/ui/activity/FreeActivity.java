@@ -1,12 +1,13 @@
 package cn.zhaiyanqi.prologue.ui.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
 import java.util.List;
 
-import androidx.appcompat.app.AlertDialog;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,11 +18,13 @@ import butterknife.OnClick;
 import cn.zhaiyanqi.prologue.R;
 import cn.zhaiyanqi.prologue.ui.adapter.ViewAdapter;
 import cn.zhaiyanqi.prologue.ui.bean.ViewBean;
+import cn.zhaiyanqi.prologue.ui.widget.AddImageViewDialog;
 import me.caibou.rockerview.DirectionView;
 
 public class FreeActivity extends AppCompatActivity
         implements DirectionView.DirectionChangeListener {
 
+    private static final int SELECT_IMAGE_REQUEST_CODE = 1;
     @BindView(R.id.main_layout)
     ConstraintLayout mainLayout;
     @BindView(R.id.direct_control)
@@ -32,7 +35,8 @@ public class FreeActivity extends AppCompatActivity
     private ViewAdapter adapter;
     private List<ViewBean> views;
     private ViewBean currentView;
-    private boolean loadingDialog = false;
+    private AddImageViewDialog imageViewDialog = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,15 +101,31 @@ public class FreeActivity extends AppCompatActivity
     }
 
     private void addImageView() {
-        if (loadingDialog) return;
-        loadingDialog = true;
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View view = View.inflate(this, R.layout.layout_add_image_view, null);
-        builder.setView(view);
-        builder.setCancelable(false);
-        builder.setNegativeButton("取消", ((dialog, which) -> dialog.dismiss()));
-        builder.show();
-        loadingDialog = false;
+        imageViewDialog = new AddImageViewDialog(this);
+        imageViewDialog.setImportListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+            intent.putExtra("crop", true);
+            intent.putExtra("return-data", true);
+            startActivityForResult(intent, SELECT_IMAGE_REQUEST_CODE);
+        });
+        imageViewDialog.show();
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && data != null) {
+            switch (requestCode) {
+                case SELECT_IMAGE_REQUEST_CODE: {
+                    if (imageViewDialog != null) {
+                        imageViewDialog.setUri(data.getData());
+                    }
+                    break;
+                }
+            }
+        }
     }
 
     @OnCheckedChanged(R.id.cb_visible)

@@ -1,23 +1,27 @@
 package cn.zhaiyanqi.prologue.ui.widget;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import com.google.android.material.textfield.TextInputEditText;
 
 import androidx.appcompat.app.AlertDialog;
 import cn.zhaiyanqi.prologue.R;
 
 public class AddImageViewDialog {
 
-    private static boolean loadingDialog = false;
     private ScaleType type;
     private AlertDialog.Builder builder;
     private View view;
     private TextView tvPath;
     private ImageView ivImportImage;
     private RadioGroup rbSizeType;
+    private TextInputEditText etWidth, etHeight;
+    private Uri uri;
 
     public AddImageViewDialog(Context context) {
         builder = new AlertDialog.Builder(context);
@@ -33,6 +37,8 @@ public class AddImageViewDialog {
         tvPath = view.findViewById(R.id.tv_image_path);
         ivImportImage = view.findViewById(R.id.iv_set_src_image);
         rbSizeType = view.findViewById(R.id.rb_size);
+        etWidth = view.findViewById(R.id.et_width);
+        etHeight = view.findViewById(R.id.et_height);
     }
 
     private void initListener() {
@@ -40,13 +46,20 @@ public class AddImageViewDialog {
             switch (checkedId) {
                 case R.id.rb_match_parent: {
                     type = ScaleType.MATCH_PARNT;
+                    etWidth.setEnabled(false);
+                    etHeight.setEnabled(false);
                     break;
                 }
                 case R.id.rb_warp_context: {
-                    type = ScaleType.MATCH_PARNT;
+                    type = ScaleType.WARP_CONTENT;
+                    etWidth.setEnabled(false);
+                    etHeight.setEnabled(false);
                     break;
                 }
                 case R.id.rb_custom: {
+                    type = ScaleType.CUSTOM;
+                    etWidth.setEnabled(true);
+                    etHeight.setEnabled(true);
                     break;
                 }
             }
@@ -65,5 +78,18 @@ public class AddImageViewDialog {
 
     public enum ScaleType {
         WARP_CONTENT, MATCH_PARNT, CUSTOM
+    }
+
+    public void setPathText(String string) {
+        tvPath.setText(string);
+    }
+
+    public Uri getUri() {
+        return uri;
+    }
+
+    public void setUri(Uri uri) {
+        this.uri = uri;
+        setPathText(uri.getPath());
     }
 }
