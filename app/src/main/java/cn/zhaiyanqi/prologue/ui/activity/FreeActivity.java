@@ -69,7 +69,6 @@ public class FreeActivity extends AppCompatActivity
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         adapter = new ViewAdapter(views);
-        recyclerView.setAdapter(adapter);
         adapter.setItemSelectedListener(bean -> {
             currentView = bean;
             cbCurViewVisible.setChecked(currentView.getView().getVisibility() != View.GONE);
@@ -77,12 +76,16 @@ public class FreeActivity extends AppCompatActivity
         adapter.setOnSettingsListener(this::showViewSettings);
         adapter.setOnItemRemoveListener(this::removeView);
 
+        recyclerView.setAdapter(adapter);
         mItemTouchHelper = new ItemTouchHelper(new ViewItemHelperCallback(adapter));
         mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     private void removeView(ViewBean bean) {
         mainLayout.removeView(bean.getView());
+        if (currentView == bean) {
+            currentView = null;
+        }
     }
 
     @OnClick({R.id.iv_width_add, R.id.iv_width_reduce,
@@ -140,9 +143,6 @@ public class FreeActivity extends AppCompatActivity
                 break;
             }
             case R.id.tv_full_screen: {
-//                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN
-//                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-//                requestWindowFeature(Window.FEATURE_NO_TITLE);
                 break;
             }
         }
