@@ -75,8 +75,14 @@ public class FreeActivity extends AppCompatActivity
             cbCurViewVisible.setChecked(currentView.getView().getVisibility() != View.GONE);
         });
         adapter.setOnSettingsListener(this::showViewSettings);
+        adapter.setOnItemRemoveListener(this::removeView);
+
         mItemTouchHelper = new ItemTouchHelper(new ViewItemHelperCallback(adapter));
         mItemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    private void removeView(ViewBean bean) {
+        mainLayout.removeView(bean.getView());
     }
 
     @OnClick({R.id.iv_width_add, R.id.iv_width_reduce,

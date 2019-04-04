@@ -22,6 +22,7 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder>
     private List<ViewBean> list;
     private OnItemSelectedListener l1;
     private OnSettingsClickListener l2;
+    private OnItemRemoved l3;
 
     public ViewAdapter(@NonNull List<ViewBean> data) {
         list = data;
@@ -70,10 +71,29 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder>
         this.l2 = l;
     }
 
+    public void setOnItemRemoveListener(OnItemRemoved l) {
+        this.l3 = l;
+    }
+
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
+        int fromOrder = list.get(fromPosition).getOrder();
+        int toOrder = list.get(toPosition).getOrder();
+        list.get(fromPosition).setOrder(toOrder);
+        list.get(toPosition).setOrder(fromOrder);
         Collections.swap(list, fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
+        return true;
+    }
+
+    @Override
+    public boolean onItemRemove(int position) {
+        //1、删除数据
+        ViewBean bean = list.remove(position);
+        notifyItemRemoved(position);
+        if (l3 != null) {
+            l3.onRemove(bean);
+        }
         return true;
     }
 
@@ -83,6 +103,10 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder>
 
     public interface OnSettingsClickListener {
         void onClick(ViewBean bean);
+    }
+
+    public interface OnItemRemoved {
+        void onRemove(ViewBean bean);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

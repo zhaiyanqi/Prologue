@@ -103,6 +103,7 @@ public class ViewBean {
 
     public ViewBean setOrder(int order) {
         this.order = order;
+        this.view.setZ(order);
         return this;
     }
 
