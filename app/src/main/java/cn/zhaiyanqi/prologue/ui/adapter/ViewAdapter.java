@@ -3,21 +3,25 @@ package cn.zhaiyanqi.prologue.ui.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import cn.zhaiyanqi.prologue.R;
 import cn.zhaiyanqi.prologue.ui.bean.ViewBean;
+import cn.zhaiyanqi.prologue.ui.callback.ItemMoveListener;
 
-public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder> {
+public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder>
+        implements ItemMoveListener {
 
     private List<ViewBean> list;
-    private int curPosition = -1;
-    private OnItemSelectedListener l;
+    private OnItemSelectedListener l1;
+    private OnSettingsClickListener l2;
 
     public ViewAdapter(@NonNull List<ViewBean> data) {
         list = data;
@@ -33,19 +37,24 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        ViewBean bean = list.get(position);
         holder.llRoot.setOnClickListener(v -> {
-            curPosition = position;
-            if (l != null) {
-                l.onClick(list.get(position));
+            for (ViewBean bean1 : list) {
+                bean1.setSelected(false);
             }
+            if (l1 != null) {
+                l1.onClick(bean);
+            }
+            bean.setSelected(true);
             notifyDataSetChanged();
         });
+        holder.ivSetting.setOnClickListener(v -> {
+            if (l2 != null) {
+                l2.onClick(list.get(position));
+            }
+        });
         holder.tvName.setText(list.get(position).getName());
-        if (position == curPosition) {
-            holder.llRoot.setSelected(true);
-        } else {
-            holder.llRoot.setSelected(false);
-        }
+        holder.llRoot.setSelected(bean.isSelected());
     }
 
     @Override
@@ -54,10 +63,25 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder> {
     }
 
     public void setItemSelectedListener(OnItemSelectedListener l) {
-        this.l = l;
+        this.l1 = l;
+    }
+
+    public void setOnSettingsListener(OnSettingsClickListener l) {
+        this.l2 = l;
+    }
+
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        Collections.swap(list, fromPosition, toPosition);
+        notifyItemMoved(fromPosition, toPosition);
+        return true;
     }
 
     public interface OnItemSelectedListener {
+        void onClick(ViewBean bean);
+    }
+
+    public interface OnSettingsClickListener {
         void onClick(ViewBean bean);
     }
 
@@ -65,11 +89,13 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder> {
 
         private TextView tvName;
         private LinearLayout llRoot;
+        private ImageView ivSetting;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tv_name);
             llRoot = itemView.findViewById(R.id.ll_root);
+            ivSetting = itemView.findViewById(R.id.iv_setting);
         }
     }
 }

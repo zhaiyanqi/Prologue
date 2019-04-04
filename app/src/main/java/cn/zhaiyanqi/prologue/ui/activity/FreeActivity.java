@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -26,9 +28,9 @@ import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import cn.zhaiyanqi.prologue.R;
-import cn.zhaiyanqi.prologue.enums.SizeType;
 import cn.zhaiyanqi.prologue.ui.adapter.ViewAdapter;
 import cn.zhaiyanqi.prologue.ui.bean.ViewBean;
+import cn.zhaiyanqi.prologue.ui.callback.ViewItemHelperCallback;
 import cn.zhaiyanqi.prologue.ui.widget.AddImageViewDialog;
 import me.caibou.rockerview.DirectionView;
 
@@ -42,12 +44,15 @@ public class FreeActivity extends AppCompatActivity
     DirectionView directionView;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.cb_visible)
+    CheckBox cbCurViewVisible;
 
     private ViewAdapter adapter;
     private List<ViewBean> views;
     private ViewBean currentView;
     private AddImageViewDialog imageViewDialog = null;
     private int viewCount = 0;
+    private ItemTouchHelper mItemTouchHelper;
 
 
     @Override
@@ -65,7 +70,13 @@ public class FreeActivity extends AppCompatActivity
         recyclerView.setLayoutManager(linearLayoutManager);
         adapter = new ViewAdapter(views);
         recyclerView.setAdapter(adapter);
-        adapter.setItemSelectedListener(bean -> currentView = bean);
+        adapter.setItemSelectedListener(bean -> {
+            currentView = bean;
+            cbCurViewVisible.setChecked(currentView.getView().getVisibility() != View.GONE);
+        });
+        adapter.setOnSettingsListener(this::showViewSettings);
+        mItemTouchHelper = new ItemTouchHelper(new ViewItemHelperCallback(adapter));
+        mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     @OnClick({R.id.iv_width_add, R.id.iv_width_reduce,
@@ -77,18 +88,29 @@ public class FreeActivity extends AppCompatActivity
         int step = 10;
         switch (view.getId()) {
             case R.id.iv_width_add: {
-                layoutParams.width += step;
+                if (layoutParams.width < 0) {
+                    layoutParams.width = currentView.getView().getWidth() + step;
+                } else {
+                    layoutParams.width += step;
+                }
                 break;
             }
             case R.id.iv_width_reduce: {
+                if (layoutParams.width <= 0) return;
                 layoutParams.width -= step;
                 break;
             }
             case R.id.iv_height_add: {
-                layoutParams.height += step;
+                if (layoutParams.height < 0) {
+                    layoutParams.height = currentView.getView().getHeight() + step;
+                } else {
+                    layoutParams.height += step;
+                }
+
                 break;
             }
             case R.id.iv_height_reduce: {
+                if (layoutParams.height <= 0) return;
                 layoutParams.height -= step;
                 break;
             }
@@ -96,7 +118,7 @@ public class FreeActivity extends AppCompatActivity
         currentView.getView().requestLayout();
     }
 
-    @OnClick({R.id.iv_add_image_view, R.id.iv_add_text_view, R.id.iv_settings})
+    @OnClick({R.id.iv_add_image_view, R.id.iv_add_text_view, R.id.iv_settings, R.id.tv_full_screen})
     void addCustomView(View view) {
         switch (view.getId()) {
             case R.id.iv_add_image_view: {
@@ -109,7 +131,12 @@ public class FreeActivity extends AppCompatActivity
             }
             case R.id.iv_settings: {
                 changeSettings();
-
+                break;
+            }
+            case R.id.tv_full_screen: {
+//                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN
+//                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+//                requestWindowFeature(Window.FEATURE_NO_TITLE);
                 break;
             }
         }
@@ -148,40 +175,20 @@ public class FreeActivity extends AppCompatActivity
             startActivityForResult(intent, SELECT_IMAGE_REQUEST_CODE);
         });
         imageViewDialog.setPositiveListener((dialog, which) ->
-                createImageView(imageViewDialog.getUri(), imageViewDialog.getType(),
+                createImageView(imageViewDialog.getUri(),
                         imageViewDialog.getWidth(), imageViewDialog.getHeight()));
         imageViewDialog.show();
 
     }
 
-    private void createImageView(Uri uri, SizeType scaleType, int width, int height) {
-        ImageView view = new ImageView(this);
-        mainLayout.addView(view);
-        ConstraintLayout.LayoutParams layoutParams =
-                (ConstraintLayout.LayoutParams) view.getLayoutParams();
-        layoutParams.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
-        layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
-        view.setScaleType(ImageView.ScaleType.FIT_XY);
-        switch (scaleType) {
-            case MATCH_PARENT: {
-                layoutParams.width = ConstraintLayout.LayoutParams.MATCH_PARENT;
-                layoutParams.height = ConstraintLayout.LayoutParams.MATCH_PARENT;
-                break;
-            }
-            case WARP_CONTENT: {
-                layoutParams.width = ConstraintLayout.LayoutParams.WRAP_CONTENT;
-                layoutParams.height = ConstraintLayout.LayoutParams.WRAP_CONTENT;
-                break;
-            }
-            case CUSTOM: {
-                layoutParams.width = width;
-                layoutParams.height = height;
-                break;
-            }
-        }
-        view.requestLayout();
-        Glide.with(this).load(uri).into(view);
-        currentView = new ViewBean("test", view);
+    private void createImageView(Uri uri, int width, int height) {
+        addView(new ViewBean()
+                .setView(new ImageView(this))
+                .setScaleType(ImageView.ScaleType.FIT_XY)
+                .setWidth(width)
+                .setHeight(height)
+                .setName("自定义View")
+                .setUri(uri));
     }
 
     @Override
@@ -308,4 +315,19 @@ public class FreeActivity extends AppCompatActivity
                     .into(view);
         }
     }
+
+
+    private void showViewSettings(ViewBean bean) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = View.inflate(this, R.layout.layout_view_settings, null);
+        builder.setView(view);
+        builder.setCancelable(false);
+        builder.setTitle(bean.getName() + "参数");
+        builder.setNegativeButton("取消", ((dialog, which) -> dialog.dismiss()));
+        builder.setPositiveButton("确定", (dialog, which) -> {
+
+        });
+        builder.show();
+    }
+
 }

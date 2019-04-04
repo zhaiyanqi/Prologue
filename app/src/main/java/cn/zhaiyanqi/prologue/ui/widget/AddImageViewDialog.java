@@ -13,12 +13,11 @@ import android.widget.TextView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import cn.zhaiyanqi.prologue.R;
-import cn.zhaiyanqi.prologue.enums.SizeType;
 
 public class AddImageViewDialog {
 
-    private SizeType type = SizeType.WARP_CONTENT;
     private AlertDialog.Builder builder;
     private View view;
     private TextView tvPath;
@@ -45,25 +44,28 @@ public class AddImageViewDialog {
         rbSizeType = view.findViewById(R.id.rb_size);
         etWidth = view.findViewById(R.id.et_width);
         etHeight = view.findViewById(R.id.et_height);
+        width = ConstraintLayout.LayoutParams.MATCH_PARENT;
+        height = ConstraintLayout.LayoutParams.MATCH_PARENT;
     }
 
     private void initListener() {
         rbSizeType.setOnCheckedChangeListener((group, checkedId) -> {
             switch (checkedId) {
                 case R.id.rb_match_parent: {
-                    type = SizeType.MATCH_PARENT;
                     etWidth.setEnabled(false);
                     etHeight.setEnabled(false);
+                    width = ConstraintLayout.LayoutParams.MATCH_PARENT;
+                    height = ConstraintLayout.LayoutParams.MATCH_PARENT;
                     break;
                 }
                 case R.id.rb_warp_context: {
-                    type = SizeType.WARP_CONTENT;
                     etWidth.setEnabled(false);
                     etHeight.setEnabled(false);
+                    width = ConstraintLayout.LayoutParams.WRAP_CONTENT;
+                    height = ConstraintLayout.LayoutParams.WRAP_CONTENT;
                     break;
                 }
                 case R.id.rb_custom: {
-                    type = SizeType.CUSTOM;
                     etWidth.setEnabled(true);
                     etHeight.setEnabled(true);
                     break;
@@ -144,7 +146,4 @@ public class AddImageViewDialog {
         return height;
     }
 
-    public SizeType getType() {
-        return type;
-    }
 }

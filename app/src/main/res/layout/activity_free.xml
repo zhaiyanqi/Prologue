@@ -24,11 +24,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
+
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
 
@@ -63,8 +65,18 @@
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/tv_full_screen"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_full_screen" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginEnd="15dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"

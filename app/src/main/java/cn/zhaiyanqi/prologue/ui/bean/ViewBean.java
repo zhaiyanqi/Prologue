@@ -14,14 +14,18 @@ public class ViewBean {
     private int height;
     private int order;
     private ImageView.ScaleType scaleType;
+    private boolean selected;
 
     public ViewBean() {
+        this.view = null;
+        this.name = null;
+        this.resId = -1;
+        this.uri = null;
+        this.width = 0;
+        this.height = 0;
+        this.order = -1;
     }
 
-    public ViewBean(String name, View view) {
-        this.name = name;
-        this.view = view;
-    }
 
     public ImageView.ScaleType getScaleType() {
         return scaleType;
@@ -100,5 +104,13 @@ public class ViewBean {
     public ViewBean setOrder(int order) {
         this.order = order;
         return this;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }
