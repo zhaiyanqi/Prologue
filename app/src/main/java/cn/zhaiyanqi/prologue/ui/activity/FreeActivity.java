@@ -3,6 +3,8 @@ package cn.zhaiyanqi.prologue.ui.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -81,11 +83,29 @@ public class FreeActivity extends AppCompatActivity
         mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    private void removeView(ViewBean bean) {
-        mainLayout.removeView(bean.getView());
-        if (currentView == bean) {
-            currentView = null;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_free_activity, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.action_hero_template: {
+                addTemplate();
+                break;
+            }
+            case R.id.action_card_template: {
+                break;
+            }
+            case R.id.action_about: {
+                break;
+            }
         }
+        return true;
     }
 
     @OnClick({R.id.iv_width_add, R.id.iv_width_reduce,
@@ -162,7 +182,6 @@ public class FreeActivity extends AppCompatActivity
             layoutParams.width = Integer.parseInt(etWidth.getText().toString());
             layoutParams.height = Integer.parseInt(etHeight.getText().toString());
             mainLayout.requestLayout();
-            addTemplate();
         });
         builder.show();
     }
@@ -322,6 +341,12 @@ public class FreeActivity extends AppCompatActivity
         }
     }
 
+    private void removeView(ViewBean bean) {
+        mainLayout.removeView(bean.getView());
+        if (currentView == bean) {
+            currentView = null;
+        }
+    }
 
     private void showViewSettings(ViewBean bean) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -335,5 +360,6 @@ public class FreeActivity extends AppCompatActivity
         });
         builder.show();
     }
+
 
 }

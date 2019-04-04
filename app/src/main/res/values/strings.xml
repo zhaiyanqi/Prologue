@@ -129,5 +129,7 @@
     <string name="wrap_content">原图尺寸</string>
     <string name="match_parent">填充</string>
     <string name="custom">自定义</string>
+    <string name="action_hero_template">武将模板</string>
+    <string name="action_card_template">卡牌模板</string>
 
 </resources>
