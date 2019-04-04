@@ -1,7 +1,10 @@
 package cn.zhaiyanqi.prologue.ui.widget;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
@@ -11,10 +14,11 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import androidx.appcompat.app.AlertDialog;
 import cn.zhaiyanqi.prologue.R;
+import cn.zhaiyanqi.prologue.enums.SizeType;
 
 public class AddImageViewDialog {
 
-    private ScaleType type;
+    private SizeType type = SizeType.WARP_CONTENT;
     private AlertDialog.Builder builder;
     private View view;
     private TextView tvPath;
@@ -22,12 +26,14 @@ public class AddImageViewDialog {
     private RadioGroup rbSizeType;
     private TextInputEditText etWidth, etHeight;
     private Uri uri;
+    private int width, height;
 
     public AddImageViewDialog(Context context) {
         builder = new AlertDialog.Builder(context);
         view = View.inflate(context, R.layout.layout_add_image_view, null);
         builder.setView(view);
         builder.setCancelable(false);
+        builder.setTitle("请选择导入参数");
         builder.setNegativeButton("取消", ((dialog, which) -> dialog.dismiss()));
         initView();
         initListener();
@@ -45,22 +51,59 @@ public class AddImageViewDialog {
         rbSizeType.setOnCheckedChangeListener((group, checkedId) -> {
             switch (checkedId) {
                 case R.id.rb_match_parent: {
-                    type = ScaleType.MATCH_PARNT;
+                    type = SizeType.MATCH_PARENT;
                     etWidth.setEnabled(false);
                     etHeight.setEnabled(false);
                     break;
                 }
                 case R.id.rb_warp_context: {
-                    type = ScaleType.WARP_CONTENT;
+                    type = SizeType.WARP_CONTENT;
                     etWidth.setEnabled(false);
                     etHeight.setEnabled(false);
                     break;
                 }
                 case R.id.rb_custom: {
-                    type = ScaleType.CUSTOM;
+                    type = SizeType.CUSTOM;
                     etWidth.setEnabled(true);
                     etHeight.setEnabled(true);
                     break;
+                }
+            }
+        });
+        etWidth.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    width = Integer.parseInt(s.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        etHeight.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    height = Integer.parseInt(s.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -72,15 +115,15 @@ public class AddImageViewDialog {
         }
     }
 
+    public void setPositiveListener(DialogInterface.OnClickListener l) {
+        builder.setPositiveButton("确定", l);
+    }
+
     public void show() {
         builder.show();
     }
 
-    public enum ScaleType {
-        WARP_CONTENT, MATCH_PARNT, CUSTOM
-    }
-
-    public void setPathText(String string) {
+    private void setPathText(String string) {
         tvPath.setText(string);
     }
 
@@ -91,5 +134,17 @@ public class AddImageViewDialog {
     public void setUri(Uri uri) {
         this.uri = uri;
         setPathText(uri.getPath());
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public SizeType getType() {
+        return type;
     }
 }

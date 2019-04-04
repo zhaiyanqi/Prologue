@@ -1,21 +1,32 @@
 package cn.zhaiyanqi.prologue.ui.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
+import com.orhanobut.hawk.Hawk;
+
+import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import cn.zhaiyanqi.prologue.R;
+import cn.zhaiyanqi.prologue.enums.SizeType;
 import cn.zhaiyanqi.prologue.ui.adapter.ViewAdapter;
 import cn.zhaiyanqi.prologue.ui.bean.ViewBean;
 import cn.zhaiyanqi.prologue.ui.widget.AddImageViewDialog;
@@ -36,6 +47,7 @@ public class FreeActivity extends AppCompatActivity
     private List<ViewBean> views;
     private ViewBean currentView;
     private AddImageViewDialog imageViewDialog = null;
+    private int viewCount = 0;
 
 
     @Override
@@ -48,10 +60,12 @@ public class FreeActivity extends AppCompatActivity
 
     private void initView() {
         directionView.setDirectionChangeListener(this);
-//        views = new ArrayList<>();
-//        adapter = new ViewAdapter(views);
-//        recyclerView.setAdapter(adapter);
-        addView();
+        views = new ArrayList<>();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        adapter = new ViewAdapter(views);
+        recyclerView.setAdapter(adapter);
+        adapter.setItemSelectedListener(bean -> currentView = bean);
     }
 
     @OnClick({R.id.iv_width_add, R.id.iv_width_reduce,
@@ -82,7 +96,7 @@ public class FreeActivity extends AppCompatActivity
         currentView.getView().requestLayout();
     }
 
-    @OnClick({R.id.iv_add_image_view, R.id.iv_add_text_view})
+    @OnClick({R.id.iv_add_image_view, R.id.iv_add_text_view, R.id.iv_settings})
     void addCustomView(View view) {
         switch (view.getId()) {
             case R.id.iv_add_image_view: {
@@ -93,7 +107,31 @@ public class FreeActivity extends AppCompatActivity
                 addTextView();
                 break;
             }
+            case R.id.iv_settings: {
+                changeSettings();
+
+                break;
+            }
         }
+    }
+
+    private void changeSettings() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = View.inflate(this, R.layout.layout_main_layout_settings, null);
+        builder.setView(view);
+        builder.setCancelable(false);
+        builder.setTitle("请设置主布局参数");
+        final EditText etWidth = view.findViewById(R.id.et_width);
+        final EditText etHeight = view.findViewById(R.id.et_height);
+        builder.setNegativeButton("取消", ((dialog, which) -> dialog.dismiss()));
+        builder.setPositiveButton("确定", (dialog, which) -> {
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mainLayout.getLayoutParams();
+            layoutParams.width = Integer.parseInt(etWidth.getText().toString());
+            layoutParams.height = Integer.parseInt(etHeight.getText().toString());
+            mainLayout.requestLayout();
+            addTemplate();
+        });
+        builder.show();
     }
 
     private void addTextView() {
@@ -109,8 +147,41 @@ public class FreeActivity extends AppCompatActivity
             intent.putExtra("return-data", true);
             startActivityForResult(intent, SELECT_IMAGE_REQUEST_CODE);
         });
+        imageViewDialog.setPositiveListener((dialog, which) ->
+                createImageView(imageViewDialog.getUri(), imageViewDialog.getType(),
+                        imageViewDialog.getWidth(), imageViewDialog.getHeight()));
         imageViewDialog.show();
 
+    }
+
+    private void createImageView(Uri uri, SizeType scaleType, int width, int height) {
+        ImageView view = new ImageView(this);
+        mainLayout.addView(view);
+        ConstraintLayout.LayoutParams layoutParams =
+                (ConstraintLayout.LayoutParams) view.getLayoutParams();
+        layoutParams.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
+        layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+        view.setScaleType(ImageView.ScaleType.FIT_XY);
+        switch (scaleType) {
+            case MATCH_PARENT: {
+                layoutParams.width = ConstraintLayout.LayoutParams.MATCH_PARENT;
+                layoutParams.height = ConstraintLayout.LayoutParams.MATCH_PARENT;
+                break;
+            }
+            case WARP_CONTENT: {
+                layoutParams.width = ConstraintLayout.LayoutParams.WRAP_CONTENT;
+                layoutParams.height = ConstraintLayout.LayoutParams.WRAP_CONTENT;
+                break;
+            }
+            case CUSTOM: {
+                layoutParams.width = width;
+                layoutParams.height = height;
+                break;
+            }
+        }
+        view.requestLayout();
+        Glide.with(this).load(uri).into(view);
+        currentView = new ViewBean("test", view);
     }
 
     @Override
@@ -132,20 +203,6 @@ public class FreeActivity extends AppCompatActivity
     void setViewVisible(boolean checked) {
         if (currentView == null || currentView.getView() == null) return;
         currentView.getView().setVisibility(checked ? View.VISIBLE : View.GONE);
-    }
-
-    private void addView() {
-        View view = new View(this);
-        view.setBackgroundColor(Color.BLUE);
-        mainLayout.addView(view);
-        ConstraintLayout.LayoutParams layoutParams =
-                (ConstraintLayout.LayoutParams) view.getLayoutParams();
-        layoutParams.width = 100;
-        layoutParams.height = 100;
-        layoutParams.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
-        layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
-        view.requestLayout();
-        currentView = new ViewBean("test", view);
     }
 
     @Override
@@ -194,5 +251,61 @@ public class FreeActivity extends AppCompatActivity
         }
         currentView.getView().requestLayout();
 //        adapter.notifyDataSetChanged();
+    }
+
+    public void addTemplate() {
+        ViewBean bean = new ViewBean()
+                .setView(new ImageView(this))
+                .setWidth(ConstraintLayout.LayoutParams.MATCH_PARENT)
+                .setHeight(ConstraintLayout.LayoutParams.MATCH_PARENT)
+                .setScaleType(ImageView.ScaleType.FIT_XY)
+                .setUri(R.drawable.wei)
+                .setOrder(viewCount++)
+                .setName("边框");
+        addView(bean);
+        ViewBean bean2 = new ViewBean()
+                .setView(new ImageView(this))
+                .setWidth(Hawk.get("势力_width", 206))
+                .setHeight(Hawk.get("势力_height", 255))
+                .setUri(R.drawable.wei_logo)
+                .setScaleType(ImageView.ScaleType.FIT_XY)
+                .setOrder(viewCount++)
+                .setName("势力");
+        addView(bean2);
+        ViewBean bean3 = new ViewBean()
+                .setView(new ImageView(this))
+                .setWidth(Hawk.get("技能背板_width", 699))
+                .setHeight(Hawk.get("技能背板_height", 247))
+                .setScaleType(ImageView.ScaleType.FIT_XY)
+                .setUri(R.drawable.wei_skill_board)
+                .setOrder(viewCount++)
+                .setName("技能背板");
+        addView(bean3);
+    }
+
+    private void addView(@NonNull ViewBean bean) {
+        views.add(bean);
+        adapter.notifyDataSetChanged();
+        View view1 = bean.getView();
+        if (view1 instanceof ImageView) {
+            ImageView view = (ImageView) view1;
+            mainLayout.addView(bean.getView());
+            ConstraintLayout.LayoutParams layoutParams =
+                    (ConstraintLayout.LayoutParams) view.getLayoutParams();
+            layoutParams.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
+            layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+            layoutParams.leftMargin = Hawk.get(bean.getName() + "_leftMargin", 0);
+            layoutParams.topMargin = Hawk.get(bean.getName() + "_topMargin", 0);
+            layoutParams.width = bean.getWidth();
+            layoutParams.height = bean.getHeight();
+            if (bean.getScaleType() != null) {
+                view.setScaleType(bean.getScaleType());
+            }
+            view.requestLayout();
+            Glide.with(this)
+                    .load(bean.getUri() != null ?
+                            bean.getUri() : bean.getResId())
+                    .into(view);
+        }
     }
 }
