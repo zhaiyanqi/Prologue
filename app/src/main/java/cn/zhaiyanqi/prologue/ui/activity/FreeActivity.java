@@ -193,6 +193,8 @@ public class FreeActivity extends AppCompatActivity
         builder.setTitle("请设置主布局参数");
         final EditText etWidth = view.findViewById(R.id.et_width);
         final EditText etHeight = view.findViewById(R.id.et_height);
+        etWidth.setText(String.valueOf(mainLayout.getWidth()));
+        etHeight.setText(String.valueOf(mainLayout.getHeight()));
         builder.setNegativeButton("取消", ((dialog, which) -> dialog.dismiss()));
         builder.setPositiveButton("确定", (dialog, which) -> {
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mainLayout.getLayoutParams();
