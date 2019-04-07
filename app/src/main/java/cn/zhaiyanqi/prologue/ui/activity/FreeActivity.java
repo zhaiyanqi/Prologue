@@ -3,6 +3,7 @@ package cn.zhaiyanqi.prologue.ui.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
+import com.lxj.xpopup.XPopup;
 import com.orhanobut.hawk.Hawk;
 
 import java.util.ArrayList;
@@ -22,8 +24,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,8 +32,8 @@ import butterknife.OnClick;
 import cn.zhaiyanqi.prologue.R;
 import cn.zhaiyanqi.prologue.ui.adapter.ViewAdapter;
 import cn.zhaiyanqi.prologue.ui.bean.ViewBean;
-import cn.zhaiyanqi.prologue.ui.callback.ViewItemHelperCallback;
 import cn.zhaiyanqi.prologue.ui.widget.AddImageViewDialog;
+import cn.zhaiyanqi.prologue.ui.widget.ViewPopupView;
 import me.caibou.rockerview.DirectionView;
 
 public class FreeActivity extends AppCompatActivity
@@ -54,8 +54,7 @@ public class FreeActivity extends AppCompatActivity
     private ViewBean currentView;
     private AddImageViewDialog imageViewDialog = null;
     private int viewCount = 0;
-    private ItemTouchHelper mItemTouchHelper;
-
+    private int step = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +67,6 @@ public class FreeActivity extends AppCompatActivity
     private void initView() {
         directionView.setDirectionChangeListener(this);
         views = new ArrayList<>();
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
         adapter = new ViewAdapter(views);
         adapter.setItemSelectedListener(bean -> {
             currentView = bean;
@@ -77,10 +74,6 @@ public class FreeActivity extends AppCompatActivity
         });
         adapter.setOnSettingsListener(this::showViewSettings);
         adapter.setOnItemRemoveListener(this::removeView);
-
-        recyclerView.setAdapter(adapter);
-        mItemTouchHelper = new ItemTouchHelper(new ViewItemHelperCallback(adapter));
-        mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override
@@ -114,7 +107,6 @@ public class FreeActivity extends AppCompatActivity
         if (currentView == null) return;
         ConstraintLayout.LayoutParams layoutParams =
                 (ConstraintLayout.LayoutParams) currentView.getView().getLayoutParams();
-        int step = 10;
         switch (view.getId()) {
             case R.id.iv_width_add: {
                 if (layoutParams.width < 0) {
@@ -147,7 +139,8 @@ public class FreeActivity extends AppCompatActivity
         currentView.getView().requestLayout();
     }
 
-    @OnClick({R.id.iv_add_image_view, R.id.iv_add_text_view, R.id.iv_settings, R.id.tv_full_screen})
+    @OnClick({R.id.iv_add_image_view, R.id.iv_add_text_view,
+            R.id.iv_settings, R.id.tv_full_screen, R.id.iv_move_setting})
     void addCustomView(View view) {
         switch (view.getId()) {
             case R.id.iv_add_image_view: {
@@ -162,10 +155,34 @@ public class FreeActivity extends AppCompatActivity
                 changeSettings();
                 break;
             }
+            case R.id.iv_move_setting: {
+                changePadSettings();
+                break;
+            }
             case R.id.tv_full_screen: {
+                new XPopup.Builder(this)
+                        .autoDismiss(true)
+                        .dismissOnTouchOutside(true)
+                        .asCustom(new ViewPopupView(this, adapter))
+                        .show();
                 break;
             }
         }
+    }
+
+    private void changePadSettings() {
+        String hint = String.valueOf(Hawk.get("KEY_STEP_LENGTH", 1));
+        new XPopup.Builder(this)
+                .asInputConfirm("设置", "请输入单次移动步长。", hint, text -> {
+                    if (!TextUtils.isEmpty(text)) {
+                        try {
+                            step = Integer.parseInt(text);
+                            Hawk.put("KEY_STEP_LENGTH", step);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).show();
     }
 
     private void changeSettings() {
@@ -242,7 +259,6 @@ public class FreeActivity extends AppCompatActivity
         if (currentView == null) return;
         ConstraintLayout.LayoutParams layoutParams =
                 (ConstraintLayout.LayoutParams) currentView.getView().getLayoutParams();
-        int step = 30;
         switch (direction) {
             case UP: {
                 layoutParams.topMargin -= step;
@@ -282,7 +298,6 @@ public class FreeActivity extends AppCompatActivity
             }
         }
         currentView.getView().requestLayout();
-//        adapter.notifyDataSetChanged();
     }
 
     public void addTemplate() {
@@ -360,6 +375,4 @@ public class FreeActivity extends AppCompatActivity
         });
         builder.show();
     }
-
-
 }
