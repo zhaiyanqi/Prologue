@@ -39,6 +39,13 @@ import me.caibou.rockerview.DirectionView;
 public class FreeActivity extends AppCompatActivity
         implements DirectionView.DirectionChangeListener {
 
+    private static final String[] groups = {"魏", "蜀", "吴", "群", "神"};
+    private static final String[] perfabList = {"边框", "势力", "称号", "武将名",
+            "勾玉(身份)", "勾玉x1(国战)", "勾玉x0.5(国战)", "技能名背板", "技能描述背板"};
+    private final int[] groupResIds = {R.drawable.wei, R.drawable.shu, R.drawable.wu, R.drawable.qun, R.drawable.god};
+    private final int[] logoResIds = {R.drawable.wei_logo, R.drawable.shu_logo, R.drawable.wu_logo, R.drawable.qun_logo, R.drawable.god_logo};
+
+
     private static final int SELECT_IMAGE_REQUEST_CODE = 1;
     @BindView(R.id.main_layout)
     ConstraintLayout mainLayout;
@@ -58,6 +65,8 @@ public class FreeActivity extends AppCompatActivity
     private PadSettingPopup padSettingPopup;
     private CenterListPopupView groupSelectPopup;
     private CenterListPopupView customViewPopup;
+    private final int[] skillBoardResIds = {R.drawable.wei_skill_board, R.drawable.shu_skill_board, R.drawable.wu_skill_board, R.drawable.qun_skill_board, R.drawable.god_skill_board};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,10 +81,6 @@ public class FreeActivity extends AppCompatActivity
         mStep = Hawk.get(HawkKey.MOVE_STEP_LENGTH, 5);
         sStep = Hawk.get(HawkKey.SCALE_STEP_LENGTH, 5);
     }
-
-    private final int[] groupResIds = {R.drawable.wei, R.drawable.shu, R.drawable.wu, R.drawable.qun, R.drawable.god};
-    private final int[] logoResIds = {R.drawable.wei_logo, R.drawable.shu_logo, R.drawable.wu_logo, R.drawable.qun_logo, R.drawable.god_logo};
-    private final int[] skillBoardResIds = {R.drawable.wei_skill_board, R.drawable.shu_skill_board, R.drawable.wu_skill_board, R.drawable.qun_skill_board, R.drawable.god_skill_board};
 
     private void initView() {
         directionView.setDirectionChangeListener(this);
@@ -257,6 +262,67 @@ public class FreeActivity extends AppCompatActivity
         return true;
     }
 
+    private CenterListPopupView perfabPopup;
+
+    private void addPerfabView(String text) {
+        switch (text) {
+            case "边框": {
+                new XPopup.Builder(this).asCenterList("请选择一个势力:", groups, (position, t) -> {
+                    if (position >= 0) {
+                        String name = groups[position];
+                        addView(new ViewBean()
+                                .setView(new ImageView(this))
+                                .setWidth(ConstraintLayout.LayoutParams.MATCH_PARENT)
+                                .setHeight(ConstraintLayout.LayoutParams.MATCH_PARENT)
+                                .setScaleType(ImageView.ScaleType.FIT_XY)
+                                .setUri(groupResIds[position])
+                                .setName(name + "·边框"));
+                    }
+                }).show();
+                break;
+            }
+            case "势力": {
+                new XPopup.Builder(this).asCenterList("请选择一个势力:", groups, (position, t) -> {
+                    if (position >= 0) {
+                        String name = groups[position];
+                        addView(new ViewBean()
+                                .setView(new ImageView(this))
+                                .setWidth(Hawk.get(name + "·势力_width", 206))
+                                .setHeight(Hawk.get(name + "·势力_height", 255))
+                                .setUri(logoResIds[position])
+                                .setScaleType(ImageView.ScaleType.FIT_XY)
+                                .setName(name + "·势力"));
+                    }
+                }).show();
+                break;
+            }
+            case "技能描述背板": {
+                new XPopup.Builder(this).asCenterList("请选择一个势力:", groups, (position, t) -> {
+                    if (position >= 0) {
+                        String name = groups[position];
+                        addView(new ViewBean()
+                                .setView(new ImageView(this))
+                                .setWidth(Hawk.get(name + "·技能背板_width", 699))
+                                .setHeight(Hawk.get(name + "·技能背板_height", 247))
+                                .setScaleType(ImageView.ScaleType.FIT_XY)
+                                .setUri(skillBoardResIds[position])
+                                .setName(name + "·技能背板"));
+                    }
+                }).show();
+                break;
+            }
+            case "武将名": {
+                break;
+            }
+            case "勾玉(身份)": {
+                break;
+            }
+            case "勾玉x1(国战)": {
+                break;
+            }
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
@@ -281,6 +347,21 @@ public class FreeActivity extends AppCompatActivity
                                     }
                                 });
                 customViewPopup.show();
+                break;
+            }
+            case R.id.action_import_perfab: {
+                perfabPopup = new XPopup.Builder(this)
+                        .asCenterList("导入一个预制组件:", perfabList,
+                                (position, text) -> {
+                                    if (position >= 0) {
+                                        addPerfabView(text);
+                                    }
+                                });
+                perfabPopup.show();
+                break;
+            }
+            case R.id.action_history: {
+                startActivity(new Intent(this, CardMakerActivity.class));
                 break;
             }
         }

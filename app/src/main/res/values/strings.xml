@@ -141,5 +141,7 @@
     <string name="main_layout_width">主布局宽度</string>
     <string name="view_name">控件名</string>
     <string name="add_view">添加控件</string>
+    <string name="add_perfab">添加预制组件</string>
+    <string name="action_history">旧版入口</string>
 
 </resources>
