@@ -139,5 +139,6 @@
     <string name="setting">设置</string>
     <string name="main_layout_height">主布局高度</string>
     <string name="main_layout_width">主布局宽度</string>
+    <string name="view_name">控件名</string>
 
 </resources>

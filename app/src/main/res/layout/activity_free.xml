@@ -61,7 +61,7 @@
                         android:src="@drawable/ic_list" />
 
                     <ImageView
-                        android:id="@+id/iv_move_setting"
+                        android:id="@+id/iv_pad_setting"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="bottom"
@@ -166,16 +166,6 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:src="@drawable/ic_add_image_view" />
-
-                <ImageView
-                    android:id="@+id/iv_add_text_view"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="5dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:src="@drawable/ic_add_text_view" />
 
             </LinearLayout>
 
