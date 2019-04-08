@@ -3,19 +3,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.activity.FreeActivity">
     <item
-        android:id="@+id/action_hero_template"
+        android:id="@+id/action_import_custom_view"
+        android:icon="@drawable/ic_add_view"
         android:orderInCategory="100"
+        android:title="@string/add_view"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_hero_template"
+        android:orderInCategory="101"
         android:title="@string/action_hero_template"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_card_template"
-        android:orderInCategory="100"
+        android:orderInCategory="102"
         android:title="@string/action_card_template"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_export"
+        android:orderInCategory="103"
+        android:title="@string/export"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_about"
-        android:orderInCategory="100"
+        android:orderInCategory="104"
         android:title="@string/action_about"
         app:showAsAction="never" />
 </menu>

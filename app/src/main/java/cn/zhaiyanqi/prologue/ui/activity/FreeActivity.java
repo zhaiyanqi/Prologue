@@ -32,7 +32,7 @@ import cn.zhaiyanqi.prologue.ui.bean.ViewBean;
 import cn.zhaiyanqi.prologue.ui.widget.AddImageViewDialog;
 import cn.zhaiyanqi.prologue.ui.widget.ConfigImagePopup;
 import cn.zhaiyanqi.prologue.ui.widget.PadSettingPopup;
-import cn.zhaiyanqi.prologue.ui.widget.ViewPopupView;
+import cn.zhaiyanqi.prologue.ui.widget.PopupListView;
 import cn.zhaiyanqi.prologue.utils.HawkKey;
 import me.caibou.rockerview.DirectionView;
 
@@ -54,9 +54,10 @@ public class FreeActivity extends AppCompatActivity
     private int sStep = 5;
 
     //popup view
-    private ViewPopupView popupView;
+    private PopupListView popupView;
     private PadSettingPopup padSettingPopup;
     private CenterListPopupView groupSelectPopup;
+    private CenterListPopupView customViewPopup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,11 +107,11 @@ public class FreeActivity extends AppCompatActivity
                         });
     }
 
-    @OnClick({R.id.iv_add_image_view, R.id.iv_pad_setting, R.id.iv_show_list})
+    @OnClick({R.id.iv_pad_setting, R.id.iv_show_list})
     void onViewClick(View view) {
         switch (view.getId()) {
             case R.id.iv_show_list: {
-                popupView = new ViewPopupView(this, adapter);
+                popupView = new PopupListView(this, adapter);
                 popupView.setTitle("当前选中控件:" + (currentView == null ? "无" : currentView.getName()));
                 new XPopup.Builder(this)
                         .autoDismiss(true)
@@ -122,9 +123,6 @@ public class FreeActivity extends AppCompatActivity
             }
             case R.id.iv_pad_setting: {
                 showPadSettings();
-                break;
-            }
-            case R.id.iv_add_image_view: {
                 break;
             }
         }
@@ -139,6 +137,15 @@ public class FreeActivity extends AppCompatActivity
         layoutParams.width = bean.getMainLayoutWidth();
         layoutParams.height = bean.getMainLayoutHeight();
         mainLayout.requestLayout();
+    }
+
+    private void addCustomView(String text) {
+        switch (text) {
+            case "图片": {
+                addImageView();
+                break;
+            }
+        }
     }
 
     private void addHeroTemplate(int position, String text) {
@@ -169,8 +176,9 @@ public class FreeActivity extends AppCompatActivity
 
     private void showViewSettings(ViewBean bean) {
         if (popupView != null) {
+            ConfigImagePopup popup = new ConfigImagePopup(this, bean);
             BasePopupView basePopupView = new XPopup.Builder(this)
-                    .asCustom(new ConfigImagePopup(this, bean));
+                    .asCustom(popup);
             popupView.dismissWith(basePopupView::show);
         }
     }
@@ -212,9 +220,8 @@ public class FreeActivity extends AppCompatActivity
         views.add(bean);
         bean.setOrder(views.indexOf(bean));
         adapter.notifyDataSetChanged();
-        View view1 = bean.getView();
-        if (view1 instanceof ImageView) {
-            ImageView view = (ImageView) view1;
+        if (bean.getView() instanceof ImageView) {
+            ImageView view = (ImageView) bean.getView();
             mainLayout.addView(bean.getView());
             ConstraintLayout.LayoutParams layoutParams =
                     (ConstraintLayout.LayoutParams) view.getLayoutParams();
@@ -229,8 +236,7 @@ public class FreeActivity extends AppCompatActivity
             }
             view.requestLayout();
             Glide.with(this)
-                    .load(bean.getUri() != null ?
-                            bean.getUri() : bean.getResId())
+                    .load(bean.getUri() != null ? bean.getUri() : bean.getResId())
                     .into(view);
         }
     }
@@ -264,6 +270,17 @@ public class FreeActivity extends AppCompatActivity
                 break;
             }
             case R.id.action_about: {
+                break;
+            }
+            case R.id.action_import_custom_view: {
+                customViewPopup = new XPopup.Builder(this)
+                        .asCenterList("请选择一个控件类型:", new String[]{"图片", "文字", "描边文字", "其他"},
+                                (position, text) -> {
+                                    if (position >= 0) {
+                                        customViewPopup.dismissWith(() -> addCustomView(text));
+                                    }
+                                });
+                customViewPopup.show();
                 break;
             }
         }

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.lxj.xpopup.core.CenterPopupView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import cn.zhaiyanqi.prologue.R;
 import cn.zhaiyanqi.prologue.ui.bean.ViewBean;
 
@@ -18,6 +19,7 @@ public class ConfigImagePopup extends CenterPopupView {
     private ViewBean bean;
     private TextView tvTitle;
     private EditText etName, etWidth, etHeight;
+    private TextView tvCancel, tvConfirm;
 
     public ConfigImagePopup(@NonNull Context context, ViewBean bean) {
         super(context);
@@ -29,6 +31,7 @@ public class ConfigImagePopup extends CenterPopupView {
         super.onCreate();
         initView();
         initData();
+        initListener();
     }
 
     private void initData() {
@@ -46,6 +49,25 @@ public class ConfigImagePopup extends CenterPopupView {
         etWidth = findViewById(R.id.et_width);
         etHeight = findViewById(R.id.et_height);
         etName = findViewById(R.id.et_name);
+        tvCancel = findViewById(R.id.tv_cancel);
+        tvConfirm = findViewById(R.id.tv_confirm);
+    }
+
+    private void initListener() {
+        tvCancel.setOnClickListener(v -> {
+            dismiss();
+        });
+        tvConfirm.setOnClickListener(v -> {
+            bean.setName(etName.getText().toString());
+            View view = bean.getView();
+            if (view == null) return;
+            ConstraintLayout.LayoutParams params =
+                    (ConstraintLayout.LayoutParams) view.getLayoutParams();
+            params.width = Integer.parseInt(etWidth.getText().toString());
+            params.height = Integer.parseInt(etHeight.getText().toString());
+            view.requestLayout();
+            dismiss();
+        });
     }
 
     @Override
