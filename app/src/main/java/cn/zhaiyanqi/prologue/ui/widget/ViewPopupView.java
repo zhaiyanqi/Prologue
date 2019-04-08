@@ -3,6 +3,8 @@ package cn.zhaiyanqi.prologue.ui.widget;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.text.TextUtils;
+import android.widget.TextView;
 
 import com.lxj.xpopup.core.BottomPopupView;
 import com.lxj.xpopup.util.XPopupUtils;
@@ -22,6 +24,8 @@ public class ViewPopupView extends BottomPopupView {
     RecyclerView recyclerView;
     private ViewAdapter adapter;
     private ItemTouchHelper mItemTouchHelper;
+    private TextView tvTitle;
+    private String title;
 
     public ViewPopupView(@NonNull Context context, ViewAdapter adapter) {
         super(context);
@@ -38,6 +42,10 @@ public class ViewPopupView extends BottomPopupView {
     protected void onCreate() {
         super.onCreate();
         recyclerView = findViewById(R.id.recyclerView);
+        tvTitle = findViewById(R.id.tv_title);
+        if (!TextUtils.isEmpty(title)) {
+            tvTitle.setText(title);
+        }
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         DividerItemDecoration decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         decoration.setDrawable(new ColorDrawable(getResources().getColor(R.color._xpopup_list_divider)));
@@ -54,5 +62,16 @@ public class ViewPopupView extends BottomPopupView {
     @Override
     public int getMinimumHeight() {
         return (int) (XPopupUtils.getWindowHeight(getContext()) * .3f);
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setTvTitle(String text) {
+        if (!TextUtils.isEmpty(text) && tvTitle != null) {
+            String string = "当前选中控件:" + text;
+            tvTitle.setText(string);
+        }
     }
 }

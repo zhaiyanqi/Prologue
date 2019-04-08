@@ -3,6 +3,7 @@ package cn.zhaiyanqi.prologue.ui.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -51,11 +52,15 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder>
         });
         holder.ivSetting.setOnClickListener(v -> {
             if (l2 != null) {
-                l2.onClick(list.get(position));
+                l2.onClick(bean);
             }
         });
-        holder.tvName.setText(list.get(position).getName());
+        holder.tvName.setText(bean.getName());
         holder.llRoot.setSelected(bean.isSelected());
+        holder.cbVisible.setChecked(bean.getView().getVisibility() == View.VISIBLE);
+        holder.cbVisible.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            bean.getView().setVisibility(isChecked ? View.VISIBLE : View.GONE);
+        });
     }
 
     @Override
@@ -88,7 +93,6 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder>
 
     @Override
     public boolean onItemRemove(int position) {
-        //1、删除数据
         ViewBean bean = list.remove(position);
         notifyItemRemoved(position);
         if (l3 != null) {
@@ -114,12 +118,14 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder>
         private TextView tvName;
         private LinearLayout llRoot;
         private ImageView ivSetting;
+        private CheckBox cbVisible;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tv_name);
             llRoot = itemView.findViewById(R.id.ll_root);
             ivSetting = itemView.findViewById(R.id.iv_setting);
+            cbVisible = itemView.findViewById(R.id.cb_visible_);
         }
     }
 }

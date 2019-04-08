@@ -132,5 +132,12 @@
     <string name="action_hero_template">武将模板</string>
     <string name="action_card_template">卡牌模板</string>
     <string name="all_view_element">全部视图元素</string>
+    <string name="once_move_step_length">单次移动步长</string>
+    <string name="once_scale_step_length">单次缩放大小</string>
+    <string name="cancel">取消</string>
+    <string name="sure">确定</string>
+    <string name="setting">设置</string>
+    <string name="main_layout_height">主布局高度</string>
+    <string name="main_layout_width">主布局宽度</string>
 
 </resources>

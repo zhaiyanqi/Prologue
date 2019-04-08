@@ -66,5 +66,7 @@ dependencies {
     //implementation 'com.github.kongqw:AndroidRocker:1.0.1'
     implementation 'me.caibou.android:rockerview:1.0.0'
 
+    //popup view
     implementation 'com.lxj:xpopup:1.6.7'
+
 }

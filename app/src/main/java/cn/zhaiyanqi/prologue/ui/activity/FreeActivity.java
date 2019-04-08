@@ -3,17 +3,15 @@ package cn.zhaiyanqi.prologue.ui.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.impl.CenterListPopupView;
 import com.orhanobut.hawk.Hawk;
 
 import java.util.ArrayList;
@@ -24,16 +22,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import cn.zhaiyanqi.prologue.R;
 import cn.zhaiyanqi.prologue.ui.adapter.ViewAdapter;
+import cn.zhaiyanqi.prologue.ui.bean.PadSettingBean;
 import cn.zhaiyanqi.prologue.ui.bean.ViewBean;
 import cn.zhaiyanqi.prologue.ui.widget.AddImageViewDialog;
+import cn.zhaiyanqi.prologue.ui.widget.PadSettingPopup;
 import cn.zhaiyanqi.prologue.ui.widget.ViewPopupView;
+import cn.zhaiyanqi.prologue.utils.HawkKey;
 import me.caibou.rockerview.DirectionView;
 
 public class FreeActivity extends AppCompatActivity
@@ -44,24 +43,32 @@ public class FreeActivity extends AppCompatActivity
     ConstraintLayout mainLayout;
     @BindView(R.id.direct_control)
     DirectionView directionView;
-    @BindView(R.id.recycler_view)
-    RecyclerView recyclerView;
-    @BindView(R.id.cb_visible)
-    CheckBox cbCurViewVisible;
 
     private ViewAdapter adapter;
     private List<ViewBean> views;
     private ViewBean currentView;
     private AddImageViewDialog imageViewDialog = null;
     private int viewCount = 0;
-    private int step = 1;
+    private int mStep = 5;
+    private int sStep = 5;
+
+    //popup view
+    private ViewPopupView popupView;
+    private PadSettingPopup padSettingPopup;
+    private CenterListPopupView groupSelectPopup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_free);
         ButterKnife.bind(this);
+        initData();
         initView();
+    }
+
+    private void initData() {
+        mStep = Hawk.get(HawkKey.MOVE_STEP_LENGTH, 5);
+        sStep = Hawk.get(HawkKey.SCALE_STEP_LENGTH, 5);
     }
 
     private void initView() {
@@ -70,10 +77,38 @@ public class FreeActivity extends AppCompatActivity
         adapter = new ViewAdapter(views);
         adapter.setItemSelectedListener(bean -> {
             currentView = bean;
-            cbCurViewVisible.setChecked(currentView.getView().getVisibility() != View.GONE);
+            if (popupView != null) {
+                popupView.setTvTitle(currentView.getName());
+            }
         });
         adapter.setOnSettingsListener(this::showViewSettings);
         adapter.setOnItemRemoveListener(this::removeView);
+
+        //popup view
+        padSettingPopup = new PadSettingPopup(this)
+                .setMoveStep(mStep)
+                .setScaleStep(sStep)
+                .setLayoutWidth(mainLayout.getWidth())
+                .setLayoutHeight(mainLayout.getHeight())
+                .setConfirmListener(this::setPadSettings);
+
+        groupSelectPopup = new XPopup.Builder(this)
+                .asCenterList("请选择一个势力模板:", new String[]{"魏", "蜀", "吴", "群", "神"},
+                        (position, text) -> {
+                            groupSelectPopup.dismissWith(this::addHeroTemplete);
+                        });
+    }
+
+    private void setPadSettings(PadSettingBean bean) {
+        this.mStep = bean.getMoveStep();
+        this.sStep = bean.getScaleStep();
+        Hawk.put(HawkKey.MOVE_STEP_LENGTH, mStep);
+        Hawk.put(HawkKey.SCALE_STEP_LENGTH, sStep);
+
+        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mainLayout.getLayoutParams();
+        layoutParams.width = bean.getMainLayoutWidth();
+        layoutParams.height = bean.getMainLayoutHeight();
+        mainLayout.requestLayout();
     }
 
     @Override
@@ -110,60 +145,58 @@ public class FreeActivity extends AppCompatActivity
         switch (view.getId()) {
             case R.id.iv_width_add: {
                 if (layoutParams.width < 0) {
-                    layoutParams.width = currentView.getView().getWidth() + step;
+                    layoutParams.width = currentView.getView().getWidth() + sStep;
                 } else {
-                    layoutParams.width += step;
+                    layoutParams.width += sStep;
                 }
                 break;
             }
             case R.id.iv_width_reduce: {
                 if (layoutParams.width <= 0) return;
-                layoutParams.width -= step;
+                layoutParams.width -= sStep;
                 break;
             }
             case R.id.iv_height_add: {
                 if (layoutParams.height < 0) {
-                    layoutParams.height = currentView.getView().getHeight() + step;
+                    layoutParams.height = currentView.getView().getHeight() + sStep;
                 } else {
-                    layoutParams.height += step;
+                    layoutParams.height += sStep;
                 }
 
                 break;
             }
             case R.id.iv_height_reduce: {
                 if (layoutParams.height <= 0) return;
-                layoutParams.height -= step;
+                layoutParams.height -= sStep;
                 break;
             }
         }
         currentView.getView().requestLayout();
     }
 
-    @OnClick({R.id.iv_add_image_view, R.id.iv_add_text_view,
-            R.id.iv_settings, R.id.tv_full_screen, R.id.iv_move_setting})
+    @OnClick({R.id.iv_add_image_view, R.id.iv_add_text_view, R.id.iv_move_setting, R.id.iv_show_list})
     void addCustomView(View view) {
         switch (view.getId()) {
             case R.id.iv_add_image_view: {
-                addImageView();
+                selectViewType();
                 break;
             }
             case R.id.iv_add_text_view: {
                 addTextView();
                 break;
             }
-            case R.id.iv_settings: {
-                changeSettings();
-                break;
-            }
             case R.id.iv_move_setting: {
                 changePadSettings();
                 break;
             }
-            case R.id.tv_full_screen: {
+            case R.id.iv_show_list: {
+                popupView = new ViewPopupView(this, adapter);
+                popupView.setTitle("当前选中控件:" + (currentView == null ? "无" : currentView.getName()));
                 new XPopup.Builder(this)
                         .autoDismiss(true)
                         .dismissOnTouchOutside(true)
-                        .asCustom(new ViewPopupView(this, adapter))
+                        .enableDrag(false)
+                        .asCustom(popupView)
                         .show();
                 break;
             }
@@ -171,42 +204,25 @@ public class FreeActivity extends AppCompatActivity
     }
 
     private void changePadSettings() {
-        String hint = String.valueOf(Hawk.get("KEY_STEP_LENGTH", 1));
         new XPopup.Builder(this)
-                .asInputConfirm("设置", "请输入单次移动步长。", hint, text -> {
-                    if (!TextUtils.isEmpty(text)) {
-                        try {
-                            step = Integer.parseInt(text);
-                            Hawk.put("KEY_STEP_LENGTH", step);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).show();
-    }
-
-    private void changeSettings() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View view = View.inflate(this, R.layout.layout_main_layout_settings, null);
-        builder.setView(view);
-        builder.setCancelable(false);
-        builder.setTitle("请设置主布局参数");
-        final EditText etWidth = view.findViewById(R.id.et_width);
-        final EditText etHeight = view.findViewById(R.id.et_height);
-        etWidth.setText(String.valueOf(mainLayout.getWidth()));
-        etHeight.setText(String.valueOf(mainLayout.getHeight()));
-        builder.setNegativeButton("取消", ((dialog, which) -> dialog.dismiss()));
-        builder.setPositiveButton("确定", (dialog, which) -> {
-            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mainLayout.getLayoutParams();
-            layoutParams.width = Integer.parseInt(etWidth.getText().toString());
-            layoutParams.height = Integer.parseInt(etHeight.getText().toString());
-            mainLayout.requestLayout();
-        });
-        builder.show();
+                .asCustom(padSettingPopup.setLayoutWidth(mainLayout.getWidth())
+                        .setLayoutHeight(mainLayout.getHeight()))
+                .show();
     }
 
     private void addTextView() {
 
+    }
+
+
+    private void selectViewType() {
+        new XPopup.Builder(this)
+                .asCenterList("请选择一项",
+                        new String[]{"条目1", "条目2", "条目3", "条目4"},
+                        (position, text) -> {
+                            addImageView();
+                        })
+                .show();
     }
 
     private void addImageView() {
@@ -250,12 +266,6 @@ public class FreeActivity extends AppCompatActivity
         }
     }
 
-    @OnCheckedChanged(R.id.cb_visible)
-    void setViewVisible(boolean checked) {
-        if (currentView == null || currentView.getView() == null) return;
-        currentView.getView().setVisibility(checked ? View.VISIBLE : View.GONE);
-    }
-
     @Override
     public void onDirectChange(DirectionView.Direction direction) {
         if (currentView == null) return;
@@ -263,39 +273,39 @@ public class FreeActivity extends AppCompatActivity
                 (ConstraintLayout.LayoutParams) currentView.getView().getLayoutParams();
         switch (direction) {
             case UP: {
-                layoutParams.topMargin -= step;
+                layoutParams.topMargin -= mStep;
                 break;
             }
             case UP_AND_LEFT: {
-                layoutParams.topMargin -= step;
-                layoutParams.leftMargin -= step;
+                layoutParams.topMargin -= mStep;
+                layoutParams.leftMargin -= mStep;
                 break;
             }
             case LEFT: {
-                layoutParams.leftMargin -= step;
+                layoutParams.leftMargin -= mStep;
                 break;
             }
             case DOWN_AND_LEFT: {
-                layoutParams.leftMargin -= step;
-                layoutParams.topMargin += step;
+                layoutParams.leftMargin -= mStep;
+                layoutParams.topMargin += mStep;
                 break;
             }
             case DOWN: {
-                layoutParams.topMargin += step;
+                layoutParams.topMargin += mStep;
                 break;
             }
             case DOWN_AND_RIGHT: {
-                layoutParams.topMargin += step;
-                layoutParams.leftMargin += step;
+                layoutParams.topMargin += mStep;
+                layoutParams.leftMargin += mStep;
                 break;
             }
             case RIGHT: {
-                layoutParams.leftMargin += step;
+                layoutParams.leftMargin += mStep;
                 break;
             }
             case UP_AND_RIGHT: {
-                layoutParams.topMargin -= step;
-                layoutParams.leftMargin += step;
+                layoutParams.topMargin -= mStep;
+                layoutParams.leftMargin += mStep;
                 break;
             }
         }
@@ -303,6 +313,10 @@ public class FreeActivity extends AppCompatActivity
     }
 
     public void addTemplate() {
+        groupSelectPopup.show();
+    }
+
+    private void addHeroTemplete() {
         ViewBean bean = new ViewBean()
                 .setView(new ImageView(this))
                 .setWidth(ConstraintLayout.LayoutParams.MATCH_PARENT)
@@ -362,6 +376,8 @@ public class FreeActivity extends AppCompatActivity
         mainLayout.removeView(bean.getView());
         if (currentView == bean) {
             currentView = null;
+            popupView.setTvTitle("无");
+
         }
     }
 
@@ -375,6 +391,8 @@ public class FreeActivity extends AppCompatActivity
         builder.setPositiveButton("确定", (dialog, which) -> {
 
         });
-        builder.show();
+        if (popupView != null) {
+            popupView.dismissWith(builder::show);
+        }
     }
 }

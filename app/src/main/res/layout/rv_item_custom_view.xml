@@ -19,9 +19,19 @@
             android:gravity="center_vertical"
             android:padding="5dp">
 
+            <CheckBox
+                android:id="@+id/cb_visible_"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/visible_selector"
+                android:button="@null"
+                android:checked="true" />
+
             <TextView
                 android:id="@+id/tv_name"
                 android:layout_width="0dp"
+                android:layout_marginStart="10dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
