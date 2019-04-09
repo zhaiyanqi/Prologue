@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -40,8 +41,7 @@ public class FreeActivity extends AppCompatActivity
         implements DirectionView.DirectionChangeListener {
 
     private static final String[] groups = {"魏", "蜀", "吴", "群", "神"};
-    private static final String[] perfabList = {"边框", "势力", "称号", "武将名",
-            "勾玉(身份)", "勾玉x1(国战)", "勾玉x0.5(国战)", "技能名背板", "技能描述背板"};
+    private static final String[] perfabList = {"边框", "势力", "称号", "武将名", "勾玉(身份)", "勾玉x1(国战)", "勾玉x0.5(国战)", "技能名背板", "技能描述背板"};
     private final int[] groupResIds = {R.drawable.wei, R.drawable.shu, R.drawable.wu, R.drawable.qun, R.drawable.god};
     private final int[] logoResIds = {R.drawable.wei_logo, R.drawable.shu_logo, R.drawable.wu_logo, R.drawable.qun_logo, R.drawable.god_logo};
 
@@ -82,35 +82,7 @@ public class FreeActivity extends AppCompatActivity
         sStep = Hawk.get(HawkKey.SCALE_STEP_LENGTH, 5);
     }
 
-    private void initView() {
-        directionView.setDirectionChangeListener(this);
-        views = new ArrayList<>();
-        adapter = new ViewAdapter(views);
-        adapter.setItemSelectedListener(bean -> {
-            currentView = bean;
-            if (popupView != null) {
-                popupView.setTvTitle(currentView.getName());
-            }
-        });
-        adapter.setOnSettingsListener(this::showViewSettings);
-        adapter.setOnItemRemoveListener(this::removeView);
-
-        //popup view
-        padSettingPopup = new PadSettingPopup(this)
-                .setMoveStep(mStep)
-                .setScaleStep(sStep)
-                .setLayoutWidth(mainLayout.getWidth())
-                .setLayoutHeight(mainLayout.getHeight())
-                .setConfirmListener(this::setPadSettings);
-
-        groupSelectPopup = new XPopup.Builder(this)
-                .asCenterList("请选择一个势力模板:", new String[]{"魏", "蜀", "吴", "群", "神"},
-                        (position, text) -> {
-                            if (position >= 0) {
-                                groupSelectPopup.dismissWith(() -> addHeroTemplate(position, text));
-                            }
-                        });
-    }
+    private int lastX, lastY;
 
     @OnClick({R.id.iv_pad_setting, R.id.iv_show_list})
     void onViewClick(View view) {
@@ -262,8 +234,6 @@ public class FreeActivity extends AppCompatActivity
         return true;
     }
 
-    private CenterListPopupView perfabPopup;
-
     private void addPerfabView(String text) {
         switch (text) {
             case "边框": {
@@ -323,6 +293,82 @@ public class FreeActivity extends AppCompatActivity
         }
     }
 
+    View.OnTouchListener l = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    lastX = (int) event.getX();
+                    lastY = (int) event.getY();
+//                    AnimatorSet setDown = new AnimatorSet();
+//                    setDown.playTogether(
+//                            ObjectAnimator.ofFloat(v, "scaleX", 1f, 1.5f),
+//                            ObjectAnimator.ofFloat(v, "scaleY", 1f, 1.5f),
+//                            ObjectAnimator.ofFloat(v, "alpha", 1f, 0.5f)
+//                    );
+//                    setDown.start();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    int offsetX = (int) event.getX() - lastX;//计算滑动的距离
+                    int offsetY = (int) event.getY() - lastY;
+                    ConstraintLayout.LayoutParams params =
+                            (ConstraintLayout.LayoutParams) v.getLayoutParams();
+                    params.leftMargin += offsetX;
+                    params.topMargin += offsetY;
+                    v.requestLayout();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    int offsetX1 = (int) event.getX() - lastX;//计算滑动的距离
+                    int offsetY1 = (int) event.getY() - lastY;
+                    ConstraintLayout.LayoutParams params1 =
+                            (ConstraintLayout.LayoutParams) v.getLayoutParams();
+                    params1.leftMargin += offsetX1;
+                    params1.topMargin += offsetY1;
+                    v.requestLayout();
+//                    AnimatorSet setUp = new AnimatorSet();
+//                    setUp.playTogether(
+//                            ObjectAnimator.ofFloat(v, "scaleX", 1.5f, 1f),
+//                            ObjectAnimator.ofFloat(v, "scaleY", 1.5f, 1f),
+//                            ObjectAnimator.ofFloat(v, "alpha", 0.5f, 1f)
+//                    );
+//                    setUp.start();
+                    break;
+            }
+            return true;
+        }
+    };
+
+    private void initView() {
+        directionView.setDirectionChangeListener(this);
+        views = new ArrayList<>();
+        adapter = new ViewAdapter(views);
+        adapter.setItemSelectedListener(bean -> {
+            currentView = bean;
+            if (popupView != null) {
+                popupView.setTvTitle(currentView.getName());
+            }
+        });
+        adapter.setOnSettingsListener(this::showViewSettings);
+        adapter.setOnItemRemoveListener(this::removeView);
+
+        //popup view
+        padSettingPopup = new PadSettingPopup(this)
+                .setMoveStep(mStep)
+                .setScaleStep(sStep)
+                .setLayoutWidth(mainLayout.getWidth())
+                .setLayoutHeight(mainLayout.getHeight())
+                .setConfirmListener(this::setPadSettings);
+
+        groupSelectPopup = new XPopup.Builder(this)
+                .asCenterList("请选择一个势力模板:", groups,
+                        (position, text) -> {
+                            if (position >= 0) {
+                                groupSelectPopup.dismissWith(() -> addHeroTemplate(position, text));
+                            }
+                        });
+
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
@@ -338,7 +384,7 @@ public class FreeActivity extends AppCompatActivity
             case R.id.action_about: {
                 break;
             }
-            case R.id.action_import_custom_view: {
+            case R.id.action_custom_view: {
                 customViewPopup = new XPopup.Builder(this)
                         .asCenterList("请选择一个控件类型:", new String[]{"图片", "文字", "描边文字", "其他"},
                                 (position, text) -> {
@@ -349,15 +395,14 @@ public class FreeActivity extends AppCompatActivity
                 customViewPopup.show();
                 break;
             }
-            case R.id.action_import_perfab: {
-                perfabPopup = new XPopup.Builder(this)
+            case R.id.action_perfab: {
+                new XPopup.Builder(this)
                         .asCenterList("导入一个预制组件:", perfabList,
                                 (position, text) -> {
                                     if (position >= 0) {
                                         addPerfabView(text);
                                     }
-                                });
-                perfabPopup.show();
+                                }).show();
                 break;
             }
             case R.id.action_history: {

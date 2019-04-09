@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.activity.FreeActivity">
     <item
-        android:id="@+id/action_import_custom_view"
+        android:id="@+id/action_custom_view"
         android:icon="@drawable/ic_add_custom_view"
         android:orderInCategory="100"
         android:title="@string/add_view"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_import_perfab"
+        android:id="@+id/action_perfab"
         android:icon="@drawable/ic_add_view"
         android:orderInCategory="100"
         android:title="@string/add_perfab"
