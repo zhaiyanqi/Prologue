@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -81,8 +80,6 @@ public class FreeActivity extends AppCompatActivity
         mStep = Hawk.get(HawkKey.MOVE_STEP_LENGTH, 5);
         sStep = Hawk.get(HawkKey.SCALE_STEP_LENGTH, 5);
     }
-
-    private int lastX, lastY;
 
     @OnClick({R.id.iv_pad_setting, R.id.iv_show_list})
     void onViewClick(View view) {
@@ -293,51 +290,6 @@ public class FreeActivity extends AppCompatActivity
         }
     }
 
-    View.OnTouchListener l = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    lastX = (int) event.getX();
-                    lastY = (int) event.getY();
-//                    AnimatorSet setDown = new AnimatorSet();
-//                    setDown.playTogether(
-//                            ObjectAnimator.ofFloat(v, "scaleX", 1f, 1.5f),
-//                            ObjectAnimator.ofFloat(v, "scaleY", 1f, 1.5f),
-//                            ObjectAnimator.ofFloat(v, "alpha", 1f, 0.5f)
-//                    );
-//                    setDown.start();
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    int offsetX = (int) event.getX() - lastX;//计算滑动的距离
-                    int offsetY = (int) event.getY() - lastY;
-                    ConstraintLayout.LayoutParams params =
-                            (ConstraintLayout.LayoutParams) v.getLayoutParams();
-                    params.leftMargin += offsetX;
-                    params.topMargin += offsetY;
-                    v.requestLayout();
-                    break;
-                case MotionEvent.ACTION_UP:
-                    int offsetX1 = (int) event.getX() - lastX;//计算滑动的距离
-                    int offsetY1 = (int) event.getY() - lastY;
-                    ConstraintLayout.LayoutParams params1 =
-                            (ConstraintLayout.LayoutParams) v.getLayoutParams();
-                    params1.leftMargin += offsetX1;
-                    params1.topMargin += offsetY1;
-                    v.requestLayout();
-//                    AnimatorSet setUp = new AnimatorSet();
-//                    setUp.playTogether(
-//                            ObjectAnimator.ofFloat(v, "scaleX", 1.5f, 1f),
-//                            ObjectAnimator.ofFloat(v, "scaleY", 1.5f, 1f),
-//                            ObjectAnimator.ofFloat(v, "alpha", 0.5f, 1f)
-//                    );
-//                    setUp.start();
-                    break;
-            }
-            return true;
-        }
-    };
-
     private void initView() {
         directionView.setDirectionChangeListener(this);
         views = new ArrayList<>();
@@ -366,7 +318,6 @@ public class FreeActivity extends AppCompatActivity
                                 groupSelectPopup.dismissWith(() -> addHeroTemplate(position, text));
                             }
                         });
-
     }
 
     @Override
@@ -431,47 +382,46 @@ public class FreeActivity extends AppCompatActivity
     @Override
     public void onDirectChange(DirectionView.Direction direction) {
         if (currentView == null) return;
-        ConstraintLayout.LayoutParams layoutParams =
-                (ConstraintLayout.LayoutParams) currentView.getView().getLayoutParams();
+        View view = currentView.getView();
         switch (direction) {
             case UP: {
-                layoutParams.topMargin -= mStep;
+                view.setY(view.getTop() - mStep);
                 break;
             }
             case UP_AND_LEFT: {
-                layoutParams.topMargin -= mStep;
-                layoutParams.leftMargin -= mStep;
+                view.setY(view.getTop() - mStep);
+                view.setX(view.getLeft() - mStep);
                 break;
             }
             case LEFT: {
-                layoutParams.leftMargin -= mStep;
+                view.setX(view.getLeft() - mStep);
                 break;
             }
             case DOWN_AND_LEFT: {
-                layoutParams.leftMargin -= mStep;
-                layoutParams.topMargin += mStep;
+                view.setY(view.getTop() + mStep);
+                view.setX(view.getLeft() - mStep);
                 break;
             }
             case DOWN: {
-                layoutParams.topMargin += mStep;
+                view.setY(view.getTop() + mStep);
                 break;
             }
             case DOWN_AND_RIGHT: {
-                layoutParams.topMargin += mStep;
-                layoutParams.leftMargin += mStep;
+                view.setY(view.getTop() + mStep);
+                view.setX(view.getLeft() + mStep);
                 break;
             }
             case RIGHT: {
-                layoutParams.leftMargin += mStep;
+                view.setX(view.getLeft() + mStep);
                 break;
             }
             case UP_AND_RIGHT: {
-                layoutParams.topMargin -= mStep;
-                layoutParams.leftMargin += mStep;
+                view.setY(view.getTop() - mStep);
+                view.setX(view.getLeft() + mStep);
                 break;
             }
         }
-        currentView.getView().requestLayout();
+        mainLayout.invalidate();
     }
 
     @OnClick({R.id.iv_width_add, R.id.iv_width_reduce,
@@ -509,6 +459,7 @@ public class FreeActivity extends AppCompatActivity
                 break;
             }
         }
-        currentView.getView().requestLayout();
+//        currentView.getView().requestLayout();
+        mainLayout.invalidate();
     }
 }

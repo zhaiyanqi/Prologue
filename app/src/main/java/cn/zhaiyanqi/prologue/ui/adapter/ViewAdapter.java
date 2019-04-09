@@ -24,6 +24,7 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder>
     private OnItemSelectedListener l1;
     private OnSettingsClickListener l2;
     private OnItemRemoved l3;
+    private OnItemSwaped l4;
 
     public ViewAdapter(@NonNull List<ViewBean> data) {
         list = data;
@@ -80,14 +81,23 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder>
         this.l3 = l;
     }
 
+    public void setOnItemSwapListener(OnItemSwaped l) {
+        this.l4 = l;
+    }
+
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
-        int fromOrder = list.get(fromPosition).getOrder();
-        int toOrder = list.get(toPosition).getOrder();
-        list.get(fromPosition).setOrder(toOrder);
-        list.get(toPosition).setOrder(fromOrder);
+        View from = list.get(fromPosition).getView();
+        View to = list.get(fromPosition).getView();
+//        int fromOrder = list.get(fromPosition).getOrder();
+//        int toOrder = list.get(toPosition).getOrder();
+//        list.get(fromPosition).setOrder(toOrder);
+//        list.get(toPosition).setOrder(fromOrder);
         Collections.swap(list, fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
+        if (l4 != null) {
+            l4.onSwap(from, to);
+        }
         return true;
     }
 
@@ -111,6 +121,10 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder>
 
     public interface OnItemRemoved {
         void onRemove(ViewBean bean);
+    }
+
+    public interface OnItemSwaped {
+        void onSwap(View from, View to);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
