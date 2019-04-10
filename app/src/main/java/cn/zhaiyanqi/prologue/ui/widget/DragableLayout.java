@@ -6,6 +6,10 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.customview.widget.ViewDragHelper;
@@ -89,8 +93,14 @@ public class DragableLayout extends ConstraintLayout {
 
         @Override
         public int getOrderedChildIndex(int index) {
-            int ret = (int) getChildAt(index).getZ();
-            return ret < getChildCount() && ret >= 0 ? ret : index;
+            int count = getChildCount();
+            int size = (int) (count / 0.75) + 1;
+            List<View> list = new ArrayList<>(size);
+            for (int i = 0; i < count; i++) {
+                list.add(getChildAt(i));
+            }
+            Collections.sort(list, (o1, o2) -> (int) (o1.getZ() - o2.getZ()));
+            return list.indexOf(getChildAt(index));
         }
     }
 }

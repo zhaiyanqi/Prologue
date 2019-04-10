@@ -14,7 +14,6 @@ public class ViewBean {
     private Uri uri;
     private int width;
     private int height;
-    private int order;
     private ImageView.ScaleType scaleType;
     private boolean selected;
     private ImportViewType type;
@@ -26,7 +25,6 @@ public class ViewBean {
         this.uri = null;
         this.width = 0;
         this.height = 0;
-        this.order = -1;
     }
 
 
@@ -101,11 +99,10 @@ public class ViewBean {
     }
 
     public int getOrder() {
-        return order;
+        return (int) view.getZ();
     }
 
     public ViewBean setOrder(int order) {
-        this.order = order;
         this.view.setZ(order);
         return this;
     }

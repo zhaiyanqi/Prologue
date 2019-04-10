@@ -195,11 +195,11 @@ public class FreeActivity extends AppCompatActivity
 
     private void addView(@NonNull ViewBean bean) {
         views.add(bean);
-        bean.setOrder(views.indexOf(bean));
         adapter.notifyDataSetChanged();
         if (bean.getView() instanceof ImageView) {
             ImageView view = (ImageView) bean.getView();
             mainLayout.addView(bean.getView());
+            bean.setOrder(mainLayout.indexOfChild(view));
             ConstraintLayout.LayoutParams layoutParams =
                     (ConstraintLayout.LayoutParams) view.getLayoutParams();
             layoutParams.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
@@ -329,6 +329,7 @@ public class FreeActivity extends AppCompatActivity
         });
         adapter.setOnSettingsListener(this::showViewSettings);
         adapter.setOnItemRemoveListener(this::removeView);
+        adapter.setOnItemSwapListener(this::swapView);
 
         mainLayout.setViewSelectedListener(this::onViewSelected);
 
@@ -347,6 +348,14 @@ public class FreeActivity extends AppCompatActivity
                                 groupSelectPopup.dismissWith(() -> addHeroTemplate(position, text));
                             }
                         });
+    }
+
+    private void swapView(View from, View to) {
+//        int indexOfFrom = mainLayout.indexOfChild(from);
+//        int indexOfTo = mainLayout.indexOfChild(to);
+//        mainLayout.bringChildToFront(to, indexOfFrom);
+//        mainLayout.addView(from, indexOfTo);
+//        mainLayout.bringChildToFront();
     }
 
     private void onViewSelected(View view) {
