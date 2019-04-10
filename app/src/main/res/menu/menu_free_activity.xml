@@ -25,20 +25,26 @@
         android:orderInCategory="102"
         android:title="@string/action_card_template"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_layout_setting"
+        android:orderInCategory="103"
+        android:title="@string/action_layout_settings"
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_export"
-        android:orderInCategory="103"
+        android:orderInCategory="104"
         android:title="@string/export"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_about"
-        android:orderInCategory="104"
+        android:orderInCategory="105"
         android:title="@string/action_about"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_history"
-        android:orderInCategory="104"
+        android:orderInCategory="106"
         android:title="@string/action_history"
         app:showAsAction="never" />
 </menu>

@@ -69,4 +69,7 @@ dependencies {
     //popup view
     implementation 'com.lxj:xpopup:1.6.7'
 
+    implementation 'com.github.MikeOrtiz:TouchImageView:2.2.0' // Android X
+
+
 }

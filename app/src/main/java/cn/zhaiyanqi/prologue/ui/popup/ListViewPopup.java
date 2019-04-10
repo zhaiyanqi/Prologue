@@ -1,4 +1,4 @@
-package cn.zhaiyanqi.prologue.ui.widget;
+package cn.zhaiyanqi.prologue.ui.popup;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -21,7 +21,7 @@ import cn.zhaiyanqi.prologue.ui.adapter.ViewAdapter;
 import cn.zhaiyanqi.prologue.ui.callback.ViewItemHelperCallback;
 
 @SuppressLint("ViewConstructor")
-public class PopupListView extends BottomPopupView {
+public class ListViewPopup extends BottomPopupView {
 
     RecyclerView recyclerView;
     private ViewAdapter adapter;
@@ -30,7 +30,7 @@ public class PopupListView extends BottomPopupView {
     private String title;
     private ImageView ivHelp;
 
-    public PopupListView(@NonNull Context context, ViewAdapter adapter) {
+    public ListViewPopup(@NonNull Context context, ViewAdapter adapter) {
         super(context);
         this.adapter = adapter;
         mItemTouchHelper = new ItemTouchHelper(new ViewItemHelperCallback(adapter));

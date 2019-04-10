@@ -146,5 +146,6 @@
     <string name="cur_view_empty">当前控件:</string>
     <string name="none">无</string>
     <string name="free_scale">缩放</string>
+    <string name="action_layout_settings">主布局设置</string>
 
 </resources>

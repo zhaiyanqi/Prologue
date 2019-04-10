@@ -1,7 +1,6 @@
 package cn.zhaiyanqi.prologue.ui.activity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,9 +9,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.github.chrisbanes.photoview.PhotoView;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.impl.CenterListPopupView;
@@ -33,12 +32,12 @@ import cn.zhaiyanqi.prologue.ui.adapter.ViewAdapter;
 import cn.zhaiyanqi.prologue.ui.bean.IllustrationPopupBean;
 import cn.zhaiyanqi.prologue.ui.bean.PadSettingBean;
 import cn.zhaiyanqi.prologue.ui.bean.ViewBean;
-import cn.zhaiyanqi.prologue.ui.widget.AddImageViewDialog;
-import cn.zhaiyanqi.prologue.ui.widget.ConfigImagePopup;
+import cn.zhaiyanqi.prologue.ui.popup.ConfigImagePopup;
+import cn.zhaiyanqi.prologue.ui.popup.IllustrationPopup;
+import cn.zhaiyanqi.prologue.ui.popup.ListViewPopup;
+import cn.zhaiyanqi.prologue.ui.popup.PadSettingPopup;
 import cn.zhaiyanqi.prologue.ui.widget.DragableLayout;
-import cn.zhaiyanqi.prologue.ui.widget.IllustrationPopup;
-import cn.zhaiyanqi.prologue.ui.widget.PadSettingPopup;
-import cn.zhaiyanqi.prologue.ui.widget.PopupListView;
+import cn.zhaiyanqi.prologue.ui.widget.PinchImageView;
 import cn.zhaiyanqi.prologue.utils.HawkKey;
 import me.caibou.rockerview.DirectionView;
 
@@ -70,12 +69,11 @@ public class FreeActivity extends AppCompatActivity
     private ViewAdapter adapter;
     private List<ViewBean> views;
     private ViewBean currentView;
-    private AddImageViewDialog imageViewDialog = null;
     private int mStep = 5;
     private int sStep = 5;
 
     //popup view
-    private PopupListView popupView;
+    private ListViewPopup popupView;
     private PadSettingPopup padSettingPopup;
     private CenterListPopupView groupSelectPopup;
     private CenterListPopupView customViewPopup;
@@ -100,12 +98,7 @@ public class FreeActivity extends AppCompatActivity
         directionView.setDirectionChangeListener(this);
         views = new ArrayList<>();
         adapter = new ViewAdapter(views);
-        adapter.setItemSelectedListener(bean -> {
-            currentView = bean;
-            if (popupView != null) {
-                popupView.setTvTitle(currentView.getName());
-            }
-        });
+        adapter.setItemSelectedListener(this::selectView);
         adapter.setOnSettingsListener(this::showViewSettings);
         adapter.setOnItemRemoveListener(this::removeView);
         adapter.setOnItemSwapListener(this::swapView);
@@ -120,13 +113,12 @@ public class FreeActivity extends AppCompatActivity
                 .setLayoutHeight(mainLayout.getHeight())
                 .setConfirmListener(this::setPadSettings);
 
-        groupSelectPopup = new XPopup.Builder(this)
-                .asCenterList("请选择一个势力模板:", groups,
-                        (position, text) -> {
-                            if (position >= 0) {
-                                groupSelectPopup.dismissWith(() -> addHeroTemplate(position, text));
-                            }
-                        });
+        groupSelectPopup = new XPopup.Builder(this).asCenterList("请选择一个势力模板:", groups,
+                (position, text) -> {
+                    if (position >= 0) {
+                        groupSelectPopup.dismissWith(() -> addHeroTemplate(position, text));
+                    }
+                });
         illustrationPopup = new IllustrationPopup(this).setSelectImageListener(() -> {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
@@ -136,15 +128,32 @@ public class FreeActivity extends AppCompatActivity
         }).setConfirmListener(this::createIllustration);
     }
 
+    private void selectView(ViewBean bean) {
+        currentView = bean;
+        tvCurView.setText(bean.getName());
+        View view = bean.getView();
+        if (view instanceof PinchImageView) {
+            llScale.setVisibility(View.VISIBLE);
+            switchScale.setChecked(view.isEnabled());
+            switchScale.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                view.setEnabled(isChecked);
+            });
+        } else {
+            llScale.setVisibility(View.GONE);
+        }
+        if (popupView != null) {
+            popupView.setTvTitle(currentView.getName());
+        }
+    }
+
     private void createIllustration(IllustrationPopupBean bean) {
-        PhotoView photoView = new PhotoView(this);
-        photoView.setImageURI(bean.getUri());
-        photoView.setEnabled(false);
-        photoView.setSaveEnabled(true);
+        PinchImageView imageView = new PinchImageView(this);
+        imageView.setImageURI(bean.getUri());
+        imageView.setEnabled(false);
         addView(new ViewBean()
-                .setView(photoView)
-                .setWidth(ConstraintLayout.LayoutParams.MATCH_PARENT)
-                .setHeight(ConstraintLayout.LayoutParams.MATCH_PARENT)
+                .setView(imageView)
+                .setWidth(ConstraintLayout.LayoutParams.WRAP_CONTENT)
+                .setHeight(ConstraintLayout.LayoutParams.WRAP_CONTENT)
                 .setUri(bean.getUri())
                 .setName("插画"));
     }
@@ -153,7 +162,7 @@ public class FreeActivity extends AppCompatActivity
     void onViewClick(View view) {
         switch (view.getId()) {
             case R.id.iv_show_list: {
-                popupView = new PopupListView(this, adapter);
+                popupView = new ListViewPopup(this, adapter);
                 popupView.setTitle("当前选中控件:" + (currentView == null ? "无" : currentView.getName()));
                 new XPopup.Builder(this)
                         .autoDismiss(true)
@@ -164,10 +173,20 @@ public class FreeActivity extends AppCompatActivity
                 break;
             }
             case R.id.iv_pad_setting: {
-                showPadSettings();
+                showCurViewSettings();
                 break;
             }
         }
+    }
+
+    private void showCurViewSettings() {
+        if (currentView != null) {
+            new XPopup.Builder(this)
+                    .asCustom(new ConfigImagePopup(this, currentView)).show();
+        } else {
+            Toast.makeText(this, "未选择控件", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private void setPadSettings(PadSettingBean bean) {
@@ -184,7 +203,6 @@ public class FreeActivity extends AppCompatActivity
     private void addCustomView(String text) {
         switch (text) {
             case "图片": {
-                addImageView();
                 break;
             }
         }
@@ -229,32 +247,6 @@ public class FreeActivity extends AppCompatActivity
                 .asCustom(padSettingPopup.setLayoutWidth(mainLayout.getWidth())
                         .setLayoutHeight(mainLayout.getHeight()))
                 .show();
-    }
-
-    private void addImageView() {
-        imageViewDialog = new AddImageViewDialog(this);
-        imageViewDialog.setImportListener(view -> {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/*");
-            intent.putExtra("crop", true);
-            intent.putExtra("return-data", true);
-            startActivityForResult(intent, SELECT_IMAGE_REQUEST_CODE);
-        });
-        imageViewDialog.setPositiveListener((dialog, which) ->
-                createImageView(imageViewDialog.getUri(),
-                        imageViewDialog.getWidth(), imageViewDialog.getHeight()));
-        imageViewDialog.show();
-
-    }
-
-    private void createImageView(Uri uri, int width, int height) {
-        addView(new ViewBean()
-                .setView(new ImageView(this))
-                .setScaleType(ImageView.ScaleType.FIT_XY)
-                .setWidth(width)
-                .setHeight(height)
-                .setName("自定义View")
-                .setUri(uri));
     }
 
     private void addView(@NonNull ViewBean bean) {
@@ -353,8 +345,8 @@ public class FreeActivity extends AppCompatActivity
                         String name = groups[position];
                         addView(new ViewBean()
                                 .setView(new ImageView(this))
-                                .setWidth(Hawk.get(name + "·勾玉(身份)_width", 206))
-                                .setHeight(Hawk.get(name + "·勾玉(身份)_height", 255))
+                                .setWidth(Hawk.get(name + "·勾玉(身份)_width", 53))
+                                .setHeight(Hawk.get(name + "·勾玉(身份)_height", 64))
                                 .setUri(hpStdResIds[position])
                                 .setScaleType(ImageView.ScaleType.FIT_XY)
                                 .setName(name + "·勾玉(身份)"));
@@ -368,11 +360,11 @@ public class FreeActivity extends AppCompatActivity
                         String name = groups[position];
                         addView(new ViewBean()
                                 .setView(new ImageView(this))
-                                .setWidth(Hawk.get(name + "·勾玉(国战)_width", 206))
-                                .setHeight(Hawk.get(name + "·勾玉(国战)_height", 255))
-                                .setUri(hpStdResIds[position])
+                                .setWidth(Hawk.get(name + "·勾玉(国战)_width", 48))
+                                .setHeight(Hawk.get(name + "·勾玉(国战)_height", 42))
+                                .setUri(hpGuozhanResIds[position])
                                 .setScaleType(ImageView.ScaleType.FIT_XY)
-                                .setName(name + "·勾玉(身份)"));
+                                .setName(name + "·勾玉(国战)"));
                     }
                 }).show();
                 break;
@@ -399,16 +391,16 @@ public class FreeActivity extends AppCompatActivity
                 currentView = bean;
                 currentView.setSelected(true);
                 tvCurView.setText(bean.getName());
-                if (view instanceof PhotoView) {
-                    llScale.setVisibility(View.VISIBLE);
-                    switchScale.setChecked(view.isEnabled());
-                    switchScale.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                        view.setEnabled(isChecked);
-                    });
-                } else {
-                    llScale.setVisibility(View.GONE);
-                }
             }
+        }
+        if (view instanceof PinchImageView) {
+            llScale.setVisibility(View.VISIBLE);
+            switchScale.setChecked(view.isEnabled());
+            switchScale.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                view.setEnabled(isChecked);
+            });
+        } else {
+            llScale.setVisibility(View.GONE);
         }
     }
 
@@ -452,6 +444,10 @@ public class FreeActivity extends AppCompatActivity
                 startActivity(new Intent(this, CardMakerActivity.class));
                 break;
             }
+            case R.id.action_layout_setting: {
+                showPadSettings();
+                break;
+            }
         }
         return true;
     }
@@ -461,12 +457,6 @@ public class FreeActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && data != null) {
             switch (requestCode) {
-                case SELECT_IMAGE_REQUEST_CODE: {
-                    if (imageViewDialog != null) {
-                        imageViewDialog.setUri(data.getData());
-                    }
-                    break;
-                }
                 case SELECT_ILLUSTRATION_IMAGE_REQUEST_CODE: {
                     if (illustrationPopup != null) {
                         illustrationPopup.setUri(data.getData());

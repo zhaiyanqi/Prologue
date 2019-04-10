@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class ViewItemHelperCallback extends ItemTouchHelper.Callback {
 
 
-    ItemMoveListener mItemMoveListener;
+    private ItemMoveListener mItemMoveListener;
 
     public ViewItemHelperCallback(ItemMoveListener itemMoveListener) {
         mItemMoveListener = itemMoveListener;
@@ -15,13 +15,8 @@ public class ViewItemHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-        // 如果你不想上下拖动，可以将 dragFlags = 0
         int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
-
-        // 如果你不想左右滑动，可以将 swipeFlags = 0
         int swipeFlags = ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
-
-        //最终的动作标识（flags）必须要用makeMovementFlags()方法生成
         return makeMovementFlags(dragFlags, swipeFlags);
     }
 
@@ -39,6 +34,4 @@ public class ViewItemHelperCallback extends ItemTouchHelper.Callback {
     public boolean isLongPressDragEnabled() {
         return true;
     }
-
-
 }
