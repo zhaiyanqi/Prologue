@@ -6,4 +6,5 @@ public class HawkKey {
     public static final String MOVE_STEP_LENGTH = "MOVE_STEP_LENGTH";
     public static final String SCALE_STEP_LENGTH = "SCALE_STEP_LENGTH";
 
+    public static final String SHOW_TOUCH_SCALE_ANIMATION = "SHOW_TOUCH_SCALE_ANIMATION";
 }

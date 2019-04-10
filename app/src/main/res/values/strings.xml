@@ -143,5 +143,8 @@
     <string name="add_view">添加控件</string>
     <string name="add_perfab">添加预制组件</string>
     <string name="action_history">旧版入口</string>
+    <string name="cur_view_empty">当前控件:</string>
+    <string name="none">无</string>
+    <string name="free_scale">缩放</string>
 
 </resources>

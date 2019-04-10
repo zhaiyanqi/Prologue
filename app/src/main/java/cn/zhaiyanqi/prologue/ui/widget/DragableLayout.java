@@ -8,14 +8,18 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.orhanobut.hawk.Hawk;
+
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.customview.widget.ViewDragHelper;
+import cn.zhaiyanqi.prologue.utils.HawkKey;
 
 public class DragableLayout extends ConstraintLayout {
 
     private ViewDragHelper dragHelper;
     private OnViewSelected l;
+    private boolean showAnimation;
 
     public DragableLayout(Context context) {
         super(context);
@@ -38,6 +42,12 @@ public class DragableLayout extends ConstraintLayout {
 
     private void initCallback() {
         dragHelper = ViewDragHelper.create(this, 1.0f, new Callback());
+        showAnimation = Hawk.get(HawkKey.SHOW_TOUCH_SCALE_ANIMATION, true);
+    }
+
+    public void setShowAnimation(boolean showAnimation) {
+        this.showAnimation = showAnimation;
+        Hawk.put(HawkKey.SHOW_TOUCH_SCALE_ANIMATION, showAnimation);
     }
 
     @Override
@@ -65,13 +75,16 @@ public class DragableLayout extends ConstraintLayout {
 
         @Override
         public void onViewCaptured(@NonNull View capturedChild, int activePointerId) {
-            AnimatorSet setDown = new AnimatorSet();
-            setDown.playTogether(
-                    ObjectAnimator.ofFloat(capturedChild, "scaleX", 1f, 1.3f),
-                    ObjectAnimator.ofFloat(capturedChild, "scaleY", 1f, 1.3f),
-                    ObjectAnimator.ofFloat(capturedChild, "alpha", 1f, 0.6f)
-            );
-            setDown.start();
+            if (showAnimation) {
+                AnimatorSet setDown = new AnimatorSet();
+                setDown.playTogether(
+                        ObjectAnimator.ofFloat(capturedChild, "scaleX", 1f, 1.1f),
+                        ObjectAnimator.ofFloat(capturedChild, "scaleY", 1f, 1.1f),
+                        ObjectAnimator.ofFloat(capturedChild, "alpha", 1f, 0.6f)
+                );
+                setDown.start();
+            }
+
             if (l != null) {
                 l.onSelect(capturedChild);
             }
@@ -94,13 +107,15 @@ public class DragableLayout extends ConstraintLayout {
             params.topMargin = view.getTop();
             view.requestLayout();
             invalidate();
-            AnimatorSet setUp = new AnimatorSet();
-            setUp.playTogether(
-                    ObjectAnimator.ofFloat(view, "scaleX", 1.3f, 1f),
-                    ObjectAnimator.ofFloat(view, "scaleY", 1.3f, 1f),
-                    ObjectAnimator.ofFloat(view, "alpha", 0.6f, 1f)
-            );
-            setUp.start();
+            if (showAnimation) {
+                AnimatorSet setUp = new AnimatorSet();
+                setUp.playTogether(
+                        ObjectAnimator.ofFloat(view, "scaleX", 1.1f, 1f),
+                        ObjectAnimator.ofFloat(view, "scaleY", 1.1f, 1f),
+                        ObjectAnimator.ofFloat(view, "alpha", 0.6f, 1f)
+                );
+                setUp.start();
+            }
         }
     }
 }

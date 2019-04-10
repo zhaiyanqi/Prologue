@@ -34,6 +34,15 @@ public class ConfigImagePopup extends CenterPopupView {
         initListener();
     }
 
+    private void initView() {
+        tvTitle = findViewById(R.id.tv_title);
+        etWidth = findViewById(R.id.et_width);
+        etHeight = findViewById(R.id.et_height);
+        etName = findViewById(R.id.et_name);
+        tvCancel = findViewById(R.id.tv_cancel);
+        tvConfirm = findViewById(R.id.tv_confirm);
+    }
+
     private void initData() {
         tvTitle.setText(bean.getName());
         etName.setText(bean.getName());
@@ -42,15 +51,6 @@ public class ConfigImagePopup extends CenterPopupView {
             etWidth.setText(String.valueOf(view.getWidth()));
             etHeight.setText(String.valueOf(view.getHeight()));
         }
-    }
-
-    private void initView() {
-        tvTitle = findViewById(R.id.tv_title);
-        etWidth = findViewById(R.id.et_width);
-        etHeight = findViewById(R.id.et_height);
-        etName = findViewById(R.id.et_name);
-        tvCancel = findViewById(R.id.tv_cancel);
-        tvConfirm = findViewById(R.id.tv_confirm);
     }
 
     private void initListener() {
