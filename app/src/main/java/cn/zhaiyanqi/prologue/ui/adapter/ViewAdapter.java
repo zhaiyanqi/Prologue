@@ -87,12 +87,14 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder>
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
-        View from = list.get(fromPosition).getView();
-        View to = list.get(fromPosition).getView();
-//        int fromOrder = list.get(fromPosition).getOrder();
-//        int toOrder = list.get(toPosition).getOrder();
-//        list.get(fromPosition).setOrder(toOrder);
-//        list.get(toPosition).setOrder(fromOrder);
+        ViewBean fBean = list.get(fromPosition);
+        ViewBean tBean = list.get(toPosition);
+        View from = fBean.getView();
+        View to = tBean.getView();
+        int fromOrder = fBean.getOrder();
+        int toOrder = tBean.getOrder();
+        fBean.setOrder(toOrder);
+        tBean.setOrder(fromOrder);
         Collections.swap(list, fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
         if (l4 != null) {

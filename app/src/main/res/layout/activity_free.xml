@@ -10,11 +10,14 @@
 
     <cn.zhaiyanqi.prologue.ui.widget.DragableLayout
         android:id="@+id/main_layout"
-        android:layout_width="256dp"
-        android:layout_height="359.5dp"
+        android:layout_width="373dp"
+        android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
-        android:elevation="10dp" />
+        android:layout_weight="1"
+        android:maxWidth="1024px"
+        android:maxHeight="1438px"
+        tools:ignore="PxUsage" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

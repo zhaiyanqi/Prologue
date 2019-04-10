@@ -13,6 +13,7 @@ import androidx.customview.widget.ViewDragHelper;
 public class DragableLayout extends ConstraintLayout {
 
     private ViewDragHelper dragHelper;
+    private OnViewSelected l;
 
     public DragableLayout(Context context) {
         super(context);
@@ -29,6 +30,9 @@ public class DragableLayout extends ConstraintLayout {
         initCallback();
     }
 
+    public void setViewSelectedListener(OnViewSelected l) {
+        this.l = l;
+    }
 
     private void initCallback() {
         dragHelper = ViewDragHelper.create(this, 1.0f, new Callback());
@@ -46,11 +50,22 @@ public class DragableLayout extends ConstraintLayout {
         return true;
     }
 
+    public interface OnViewSelected {
+        void onSelect(View view);
+    }
+
     private class Callback extends ViewDragHelper.Callback {
 
         @Override
         public boolean tryCaptureView(@NonNull View child, int pointerId) {
             return true;
+        }
+
+        @Override
+        public void onViewCaptured(@NonNull View capturedChild, int activePointerId) {
+            if (l != null) {
+                l.onSelect(capturedChild);
+            }
         }
 
         @Override
@@ -65,14 +80,17 @@ public class DragableLayout extends ConstraintLayout {
 
         @Override
         public void onViewReleased(@NonNull View view, float xvel, float yvel) {
-            view.setX(view.getLeft());
-            view.setY(view.getTop());
+            ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) view.getLayoutParams();
+            params.leftMargin = view.getLeft();
+            params.topMargin = view.getTop();
+            view.requestLayout();
             invalidate();
         }
 
         @Override
         public int getOrderedChildIndex(int index) {
-            return super.getOrderedChildIndex(index);
+            int ret = (int) getChildAt(index).getZ();
+            return ret < getChildCount() && ret >= 0 ? ret : index;
         }
     }
 }

@@ -31,6 +31,7 @@ import cn.zhaiyanqi.prologue.ui.bean.PadSettingBean;
 import cn.zhaiyanqi.prologue.ui.bean.ViewBean;
 import cn.zhaiyanqi.prologue.ui.widget.AddImageViewDialog;
 import cn.zhaiyanqi.prologue.ui.widget.ConfigImagePopup;
+import cn.zhaiyanqi.prologue.ui.widget.DragableLayout;
 import cn.zhaiyanqi.prologue.ui.widget.PadSettingPopup;
 import cn.zhaiyanqi.prologue.ui.widget.PopupListView;
 import cn.zhaiyanqi.prologue.utils.HawkKey;
@@ -41,13 +42,15 @@ public class FreeActivity extends AppCompatActivity
 
     private static final String[] groups = {"魏", "蜀", "吴", "群", "神"};
     private static final String[] perfabList = {"边框", "势力", "称号", "武将名", "勾玉(身份)", "勾玉x1(国战)", "勾玉x0.5(国战)", "技能名背板", "技能描述背板"};
-    private final int[] groupResIds = {R.drawable.wei, R.drawable.shu, R.drawable.wu, R.drawable.qun, R.drawable.god};
-    private final int[] logoResIds = {R.drawable.wei_logo, R.drawable.shu_logo, R.drawable.wu_logo, R.drawable.qun_logo, R.drawable.god_logo};
-
+    private static final int[] groupResIds = {R.drawable.wei, R.drawable.shu, R.drawable.wu, R.drawable.qun, R.drawable.god};
+    private static final int[] logoResIds = {R.drawable.wei_logo, R.drawable.shu_logo, R.drawable.wu_logo, R.drawable.qun_logo, R.drawable.god_logo};
+    private static final int[] hpStdResIds = {R.drawable.wei_hp, R.drawable.shu_hp, R.drawable.wu_hp, R.drawable.qun_hp, R.drawable.god_hp};
+    private static final int[] hpGuozhanResIds = {R.drawable.wei_hp_double, R.drawable.shu_hp_double, R.drawable.wu_hp_double, R.drawable.qun_hp_double, R.drawable.god_hp_double};
+    private static final int[] hpGuozhanHalfResIds = {R.drawable.wei_hp_half, R.drawable.shu_hp_half, R.drawable.wu_hp_half, R.drawable.qun_hp_half, R.drawable.god_hp_half};
 
     private static final int SELECT_IMAGE_REQUEST_CODE = 1;
     @BindView(R.id.main_layout)
-    ConstraintLayout mainLayout;
+    DragableLayout mainLayout;
     @BindView(R.id.direct_control)
     DirectionView directionView;
 
@@ -282,9 +285,33 @@ public class FreeActivity extends AppCompatActivity
                 break;
             }
             case "勾玉(身份)": {
+                new XPopup.Builder(this).asCenterList("请选择一个势力:", groups, (position, t) -> {
+                    if (position >= 0) {
+                        String name = groups[position];
+                        addView(new ViewBean()
+                                .setView(new ImageView(this))
+                                .setWidth(Hawk.get(name + "·勾玉(身份)_width", 206))
+                                .setHeight(Hawk.get(name + "·勾玉(身份)_height", 255))
+                                .setUri(hpStdResIds[position])
+                                .setScaleType(ImageView.ScaleType.FIT_XY)
+                                .setName(name + "·勾玉(身份)"));
+                    }
+                }).show();
                 break;
             }
             case "勾玉x1(国战)": {
+                new XPopup.Builder(this).asCenterList("请选择一个势力:", groups, (position, t) -> {
+                    if (position >= 0) {
+                        String name = groups[position];
+                        addView(new ViewBean()
+                                .setView(new ImageView(this))
+                                .setWidth(Hawk.get(name + "·勾玉(国战)_width", 206))
+                                .setHeight(Hawk.get(name + "·勾玉(国战)_height", 255))
+                                .setUri(hpStdResIds[position])
+                                .setScaleType(ImageView.ScaleType.FIT_XY)
+                                .setName(name + "·勾玉(身份)"));
+                    }
+                }).show();
                 break;
             }
         }
@@ -303,6 +330,8 @@ public class FreeActivity extends AppCompatActivity
         adapter.setOnSettingsListener(this::showViewSettings);
         adapter.setOnItemRemoveListener(this::removeView);
 
+        mainLayout.setViewSelectedListener(this::onViewSelected);
+
         //popup view
         padSettingPopup = new PadSettingPopup(this)
                 .setMoveStep(mStep)
@@ -318,6 +347,16 @@ public class FreeActivity extends AppCompatActivity
                                 groupSelectPopup.dismissWith(() -> addHeroTemplate(position, text));
                             }
                         });
+    }
+
+    private void onViewSelected(View view) {
+        for (ViewBean bean : views) {
+            bean.setSelected(false);
+            if (bean.getView() == view) {
+                currentView = bean;
+                currentView.setSelected(true);
+            }
+        }
     }
 
     @Override
@@ -383,45 +422,48 @@ public class FreeActivity extends AppCompatActivity
     public void onDirectChange(DirectionView.Direction direction) {
         if (currentView == null) return;
         View view = currentView.getView();
+        ConstraintLayout.LayoutParams params =
+                (ConstraintLayout.LayoutParams) view.getLayoutParams();
+
         switch (direction) {
             case UP: {
-                view.setY(view.getTop() - mStep);
+                params.topMargin -= mStep;
                 break;
             }
             case UP_AND_LEFT: {
-                view.setY(view.getTop() - mStep);
-                view.setX(view.getLeft() - mStep);
+                params.topMargin -= mStep;
+                params.leftMargin -= mStep;
                 break;
             }
             case LEFT: {
-                view.setX(view.getLeft() - mStep);
+                params.leftMargin -= mStep;
                 break;
             }
             case DOWN_AND_LEFT: {
-                view.setY(view.getTop() + mStep);
-                view.setX(view.getLeft() - mStep);
+                params.topMargin += mStep;
+                params.leftMargin -= mStep;
                 break;
             }
             case DOWN: {
-                view.setY(view.getTop() + mStep);
+                params.topMargin += mStep;
                 break;
             }
             case DOWN_AND_RIGHT: {
-                view.setY(view.getTop() + mStep);
-                view.setX(view.getLeft() + mStep);
+                params.topMargin += mStep;
+                params.leftMargin += mStep;
                 break;
             }
             case RIGHT: {
-                view.setX(view.getLeft() + mStep);
+                params.leftMargin += mStep;
                 break;
             }
             case UP_AND_RIGHT: {
-                view.setY(view.getTop() - mStep);
-                view.setX(view.getLeft() + mStep);
+                params.topMargin -= mStep;
+                params.leftMargin += mStep;
                 break;
             }
         }
-        mainLayout.invalidate();
+        view.requestLayout();
     }
 
     @OnClick({R.id.iv_width_add, R.id.iv_width_reduce,
@@ -459,7 +501,6 @@ public class FreeActivity extends AppCompatActivity
                 break;
             }
         }
-//        currentView.getView().requestLayout();
-        mainLayout.invalidate();
+        currentView.getView().requestLayout();
     }
 }
