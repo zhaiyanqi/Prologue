@@ -147,7 +147,6 @@ public class FreeActivity extends AppCompatActivity
                 .setHeight(Hawk.get(text + "·技能背板_height", 247))
                 .setScaleType(ImageView.ScaleType.FIT_XY)
                 .setUri(skillBoardResIds[position])
-                .setOrder(viewCount++)
                 .setName(text + "·技能背板"));
     }
 
@@ -199,7 +198,6 @@ public class FreeActivity extends AppCompatActivity
         if (bean.getView() instanceof ImageView) {
             ImageView view = (ImageView) bean.getView();
             mainLayout.addView(bean.getView());
-            bean.setOrder(mainLayout.indexOfChild(view));
             ConstraintLayout.LayoutParams layoutParams =
                     (ConstraintLayout.LayoutParams) view.getLayoutParams();
             layoutParams.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
@@ -350,12 +348,11 @@ public class FreeActivity extends AppCompatActivity
                         });
     }
 
-    private void swapView(View from, View to) {
-//        int indexOfFrom = mainLayout.indexOfChild(from);
-//        int indexOfTo = mainLayout.indexOfChild(to);
-//        mainLayout.bringChildToFront(to, indexOfFrom);
-//        mainLayout.addView(from, indexOfTo);
-//        mainLayout.bringChildToFront();
+    private void swapView() {
+        for (ViewBean bean : views) {
+            mainLayout.bringChildToFront(bean.getView());
+        }
+        mainLayout.invalidate();
     }
 
     private void onViewSelected(View view) {

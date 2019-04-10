@@ -98,15 +98,6 @@ public class ViewBean {
         return this;
     }
 
-    public int getOrder() {
-        return (int) view.getZ();
-    }
-
-    public ViewBean setOrder(int order) {
-        this.view.setZ(order);
-        return this;
-    }
-
     public boolean isSelected() {
         return selected;
     }

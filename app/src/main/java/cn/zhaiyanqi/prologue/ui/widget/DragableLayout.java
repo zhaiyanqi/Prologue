@@ -1,14 +1,12 @@
 package cn.zhaiyanqi.prologue.ui.widget;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -67,6 +65,13 @@ public class DragableLayout extends ConstraintLayout {
 
         @Override
         public void onViewCaptured(@NonNull View capturedChild, int activePointerId) {
+            AnimatorSet setDown = new AnimatorSet();
+            setDown.playTogether(
+                    ObjectAnimator.ofFloat(capturedChild, "scaleX", 1f, 1.3f),
+                    ObjectAnimator.ofFloat(capturedChild, "scaleY", 1f, 1.3f),
+                    ObjectAnimator.ofFloat(capturedChild, "alpha", 1f, 0.6f)
+            );
+            setDown.start();
             if (l != null) {
                 l.onSelect(capturedChild);
             }
@@ -89,18 +94,13 @@ public class DragableLayout extends ConstraintLayout {
             params.topMargin = view.getTop();
             view.requestLayout();
             invalidate();
-        }
-
-        @Override
-        public int getOrderedChildIndex(int index) {
-            int count = getChildCount();
-            int size = (int) (count / 0.75) + 1;
-            List<View> list = new ArrayList<>(size);
-            for (int i = 0; i < count; i++) {
-                list.add(getChildAt(i));
-            }
-            Collections.sort(list, (o1, o2) -> (int) (o1.getZ() - o2.getZ()));
-            return list.indexOf(getChildAt(index));
+            AnimatorSet setUp = new AnimatorSet();
+            setUp.playTogether(
+                    ObjectAnimator.ofFloat(view, "scaleX", 1.3f, 1f),
+                    ObjectAnimator.ofFloat(view, "scaleY", 1.3f, 1f),
+                    ObjectAnimator.ofFloat(view, "alpha", 0.6f, 1f)
+            );
+            setUp.start();
         }
     }
 }
