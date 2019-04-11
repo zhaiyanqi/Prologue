@@ -70,7 +70,7 @@
     <string name="action_about">关于</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="auto_transfer_traditional">自动转繁体(实验性)</string>
+    <string name="auto_transfer_traditional">自动转繁体</string>
     <string name="font_size">字号</string>
     <string name="font">字体</string>
     <string name="font_color">字体颜色</string>
@@ -147,5 +147,7 @@
     <string name="none">无</string>
     <string name="free_scale">缩放</string>
     <string name="action_layout_settings">主布局设置</string>
+    <string name="add_title">添加称号</string>
+    <string name="text">文字</string>
 
 </resources>

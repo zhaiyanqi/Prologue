@@ -22,6 +22,7 @@ import androidx.appcompat.widget.AppCompatImageView;
  *
  * @author clifford
  */
+@SuppressWarnings("all")
 public class PinchImageView extends AppCompatImageView {
 
 

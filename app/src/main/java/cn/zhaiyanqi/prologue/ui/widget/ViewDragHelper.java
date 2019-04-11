@@ -41,6 +41,7 @@ import androidx.core.view.ViewCompat;
  * of useful operations and state tracking for allowing a user to drag and reposition
  * views within their parent ViewGroup.
  */
+@SuppressWarnings("all")
 public class ViewDragHelper {
     /**
      * A null/invalid pointer ID.

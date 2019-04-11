@@ -36,6 +36,7 @@ import cn.zhaiyanqi.prologue.ui.popup.ConfigImagePopup;
 import cn.zhaiyanqi.prologue.ui.popup.IllustrationPopup;
 import cn.zhaiyanqi.prologue.ui.popup.ListViewPopup;
 import cn.zhaiyanqi.prologue.ui.popup.PadSettingPopup;
+import cn.zhaiyanqi.prologue.ui.popup.TitleTextPopup;
 import cn.zhaiyanqi.prologue.ui.widget.DragableLayout;
 import cn.zhaiyanqi.prologue.ui.widget.PinchImageView;
 import cn.zhaiyanqi.prologue.utils.HawkKey;
@@ -45,7 +46,7 @@ public class FreeActivity extends AppCompatActivity
         implements DirectionView.DirectionChangeListener {
 
     private static final String[] groups = {"魏", "蜀", "吴", "群", "神"};
-    private static final String[] perfabList = {"边框", "势力", "称号", "武将名", "插画", "勾玉(身份)", "勾玉x1(国战)", "勾玉x0.5(国战)", "技能名背板", "技能描述背板"};
+    private static final String[] perfabList = {"武将模板", "卡牌模板", "边框", "势力", "称号", "武将名", "插画", "勾玉(身份)", "勾玉x1(国战)", "勾玉x0.5(国战)", "技能名背板", "技能描述背板"};
     private static final int[] groupResIds = {R.drawable.wei, R.drawable.shu, R.drawable.wu, R.drawable.qun, R.drawable.god};
     private static final int[] logoResIds = {R.drawable.wei_logo, R.drawable.shu_logo, R.drawable.wu_logo, R.drawable.qun_logo, R.drawable.god_logo};
     private static final int[] hpStdResIds = {R.drawable.wei_hp, R.drawable.shu_hp, R.drawable.wu_hp, R.drawable.qun_hp, R.drawable.god_hp};
@@ -78,7 +79,7 @@ public class FreeActivity extends AppCompatActivity
     private CenterListPopupView groupSelectPopup;
     private CenterListPopupView customViewPopup;
     private IllustrationPopup illustrationPopup;
-
+    private TitleTextPopup titleTextPopup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,25 +88,26 @@ public class FreeActivity extends AppCompatActivity
         ButterKnife.bind(this);
         initData();
         initView();
+        initPopup();
     }
 
     private void initData() {
+        views = new ArrayList<>();
         mStep = Hawk.get(HawkKey.MOVE_STEP_LENGTH, 5);
         sStep = Hawk.get(HawkKey.SCALE_STEP_LENGTH, 5);
     }
 
     private void initView() {
         directionView.setDirectionChangeListener(this);
-        views = new ArrayList<>();
         adapter = new ViewAdapter(views);
         adapter.setItemSelectedListener(this::selectView);
         adapter.setOnSettingsListener(this::showViewSettings);
         adapter.setOnItemRemoveListener(this::removeView);
         adapter.setOnItemSwapListener(this::swapView);
-
         mainLayout.setViewSelectedListener(this::onViewSelected);
+    }
 
-        //popup view
+    private void initPopup() {
         padSettingPopup = new PadSettingPopup(this)
                 .setMoveStep(mStep)
                 .setScaleStep(sStep)
@@ -126,6 +128,8 @@ public class FreeActivity extends AppCompatActivity
             intent.putExtra("return-data", true);
             startActivityForResult(intent, SELECT_ILLUSTRATION_IMAGE_REQUEST_CODE);
         }).setConfirmListener(this::createIllustration);
+
+        titleTextPopup = new TitleTextPopup(this);
     }
 
     private void selectView(ViewBean bean) {
@@ -135,9 +139,9 @@ public class FreeActivity extends AppCompatActivity
         if (view instanceof PinchImageView) {
             llScale.setVisibility(View.VISIBLE);
             switchScale.setChecked(view.isEnabled());
-            switchScale.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                view.setEnabled(isChecked);
-            });
+            switchScale.setOnCheckedChangeListener((buttonView, isChecked) ->
+                    view.setEnabled(isChecked)
+            );
         } else {
             llScale.setVisibility(View.GONE);
         }
@@ -291,6 +295,14 @@ public class FreeActivity extends AppCompatActivity
 
     private void addPerfabView(String text) {
         switch (text) {
+            case "武将模板": {
+                groupSelectPopup.setCheckedPosition(-1);
+                groupSelectPopup.show();
+                break;
+            }
+            case "卡牌模板": {
+                break;
+            }
             case "边框": {
                 new XPopup.Builder(this).asCenterList("请选择一个势力:", groups, (position, t) -> {
                     if (position >= 0) {
@@ -321,6 +333,11 @@ public class FreeActivity extends AppCompatActivity
                 }).show();
                 break;
             }
+            case "称号": {
+                new XPopup.Builder(this).asCustom(titleTextPopup).show();
+                break;
+            }
+
             case "技能描述背板": {
                 new XPopup.Builder(this).asCenterList("请选择一个势力:", groups, (position, t) -> {
                     if (position >= 0) {
@@ -396,9 +413,8 @@ public class FreeActivity extends AppCompatActivity
         if (view instanceof PinchImageView) {
             llScale.setVisibility(View.VISIBLE);
             switchScale.setChecked(view.isEnabled());
-            switchScale.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                view.setEnabled(isChecked);
-            });
+            switchScale.setOnCheckedChangeListener((buttonView, isChecked) ->
+                    view.setEnabled(isChecked));
         } else {
             llScale.setVisibility(View.GONE);
         }
@@ -408,14 +424,6 @@ public class FreeActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
-            case R.id.action_hero_template: {
-                groupSelectPopup.setCheckedPosition(-1);
-                groupSelectPopup.show();
-                break;
-            }
-            case R.id.action_card_template: {
-                break;
-            }
             case R.id.action_about: {
                 break;
             }
