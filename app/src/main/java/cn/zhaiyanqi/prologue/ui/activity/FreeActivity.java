@@ -38,6 +38,8 @@ import cn.zhaiyanqi.prologue.ui.popup.IllustrationPopup;
 import cn.zhaiyanqi.prologue.ui.popup.ListViewPopup;
 import cn.zhaiyanqi.prologue.ui.popup.NameTextPopup;
 import cn.zhaiyanqi.prologue.ui.popup.PadSettingPopup;
+import cn.zhaiyanqi.prologue.ui.popup.SkillInfoPopup;
+import cn.zhaiyanqi.prologue.ui.popup.SkillNamePopup;
 import cn.zhaiyanqi.prologue.ui.popup.TitleTextPopup;
 import cn.zhaiyanqi.prologue.ui.widget.DragableLayout;
 import cn.zhaiyanqi.prologue.ui.widget.PinchImageView;
@@ -48,7 +50,7 @@ public class FreeActivity extends AppCompatActivity
         implements DirectionView.DirectionChangeListener, ColorPickerDialogListener {
 
     private static final String[] groups = {"魏", "蜀", "吴", "群", "神"};
-    private static final String[] perfabList = {"武将模板", "卡牌模板", "边框", "势力", "称号", "武将名", "插画", "勾玉(身份)", "勾玉x1(国战)", "勾玉x0.5(国战)", "技能名背板", "技能描述背板"};
+    private static final String[] perfabList = {"武将模板", "卡牌模板", "边框", "势力", "称号", "武将名", "插画", "勾玉(身份)", "勾玉x1(国战)", "勾玉x0.5(国战)", "技能名", "技能名背板", "技能描述", "技能描述背板"};
     private static final int[] groupResIds = {R.drawable.wei, R.drawable.shu, R.drawable.wu, R.drawable.qun, R.drawable.god};
     private static final int[] logoResIds = {R.drawable.wei_logo, R.drawable.shu_logo, R.drawable.wu_logo, R.drawable.qun_logo, R.drawable.god_logo};
     private static final int[] hpStdResIds = {R.drawable.wei_hp, R.drawable.shu_hp, R.drawable.wu_hp, R.drawable.qun_hp, R.drawable.god_hp};
@@ -85,6 +87,8 @@ public class FreeActivity extends AppCompatActivity
     private IllustrationPopup illustrationPopup;
     private TitleTextPopup titleTextPopup;
     private NameTextPopup nameTextPopup;
+    private SkillNamePopup skillNamePopup;
+    private SkillInfoPopup skillInfoPopup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +141,10 @@ public class FreeActivity extends AppCompatActivity
         titleTextPopup = new TitleTextPopup(this)
                 .setConfirmListener(this::addTextView);
         nameTextPopup = new NameTextPopup(this)
+                .setConfirmListener(this::addTextView);
+        skillNamePopup = new SkillNamePopup(this)
+                .setConfirmListener(this::addTextView);
+        skillInfoPopup = new SkillInfoPopup(this)
                 .setConfirmListener(this::addTextView);
     }
 
@@ -199,8 +207,15 @@ public class FreeActivity extends AppCompatActivity
 
     private void showCurViewSettings() {
         if (currentView != null) {
-            new XPopup.Builder(this)
-                    .asCustom(new ConfigImagePopup(this, currentView)).show();
+            if (currentView.getView() instanceof ImageView) {
+                new XPopup.Builder(this)
+                        .asCustom(new ConfigImagePopup(this, currentView)).show();
+//            } else if (currentView.getView() instanceof TextView) {
+//                new XPopup.Builder(this)
+//                        .asCustom(new ConfigTextPopup(this, currentView)).show();
+            } else {
+                Toast.makeText(this, "除图片以外的其他控件暂时不支持修改", Toast.LENGTH_SHORT).show();
+            }
         } else {
             Toast.makeText(this, "未选择控件", Toast.LENGTH_SHORT).show();
         }
@@ -419,6 +434,11 @@ public class FreeActivity extends AppCompatActivity
                 }).show();
                 break;
             }
+            case "技能名": {
+                new XPopup.Builder(this).asCustom(skillNamePopup)
+                        .show();
+                break;
+            }
             case "技能名背板": {
                 new XPopup.Builder(this).asCenterList("请选择一个势力:", groups, (position, t) -> {
                     if (position >= 0) {
@@ -447,6 +467,11 @@ public class FreeActivity extends AppCompatActivity
                                 .setName(name + "·技能背板"));
                     }
                 }).show();
+                break;
+            }
+            case "技能描述": {
+                new XPopup.Builder(this).asCustom(skillInfoPopup)
+                        .show();
                 break;
             }
         }
@@ -480,7 +505,7 @@ public class FreeActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        super.onOptionsItemSelected(item);
+//        super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             case R.id.action_about: {
                 break;
@@ -585,6 +610,10 @@ public class FreeActivity extends AppCompatActivity
             R.id.iv_height_add, R.id.iv_height_reduce})
     void adjustCurView(View view) {
         if (currentView == null) return;
+        if (!(currentView.getView() instanceof ImageView)) {
+            Toast.makeText(this, "文字类型请通过修改字号调整大小", Toast.LENGTH_SHORT).show();
+            return;
+        }
         ConstraintLayout.LayoutParams layoutParams =
                 (ConstraintLayout.LayoutParams) currentView.getView().getLayoutParams();
         switch (view.getId()) {

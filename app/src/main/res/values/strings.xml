@@ -50,7 +50,7 @@
     <string name="skill_board_up">变高</string>
     <string name="skill_board_down">变矮</string>
     <string name="skill_name">技能名</string>
-    <string name="skill_info">描述</string>
+    <string name="skill_info">技能描述</string>
     <string name="remove_skill">移除技能</string>
     <string name="export_fail">导出失败</string>
     <string name="export_done">导出成功</string>
@@ -77,7 +77,7 @@
     <string name="default_color">#f4f424</string>
     <string name="font_outer_color">描边颜色</string>
     <string name="horizontal_name">横向显示</string>
-    <string name="font_spacing">行间距(上下字体间距)</string>
+    <string name="font_spacing">行间距(上下间距)</string>
     <string name="font_spacing_description">注:如果值为正数表示增加行间距;如果值为负数表示减少行间距.横向显示时可通过添加空格实现间距控制</string>
     <string name="line_space_hint">0~60</string>
     <string name="custom_component">自定义组件</string>
@@ -151,5 +151,7 @@
     <string name="text">文字</string>
     <string name="color">颜色</string>
     <string name="add_name">添加武将名</string>
+    <string name="font_content">文字内容</string>
+    <string name="vertical">纵向显示</string>
 
 </resources>

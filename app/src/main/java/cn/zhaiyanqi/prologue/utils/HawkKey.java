@@ -17,4 +17,15 @@ public class HawkKey {
     public static final String NAME_TEXT_FONT_SIZE = "NAME_TEXT_FONT_SIZE";
     public static final String NAME_TEXT_FONT_COLOR = "NAME_TEXT_FONT_COLOR";
     public static final String NAME_TEXT_SWITCH_TRADITION = "NAME_TEXT_SWITCH_TRADITION";
+
+    public static final String SKILL_NAME_TEXT = "SKILL_NAME_TEXT";
+    public static final String SKILL_NAME_TEXT_FONT_SIZE = "SKILL_NAME_TEXT_FONT_SIZE";
+    public static final String SKILL_NAME_TEXT_SWITCH_TRADITION = "SKILL_NAME_TEXT_SWITCH_TRADITION";
+
+
+    public static final String SKILL_INFO_TEXT = "SKILL_INFO_TEXT";
+    public static final String SKILL_INFO_TEXT_FONT_SIZE = "SKILL_INFO_TEXT_FONT_SIZE";
+    public static final String SKILL_INFO_TEXT_SWITCH_TRADITION = "SKILL_INFO_TEXT_SWITCH_TRADITION";
+
+
 }
