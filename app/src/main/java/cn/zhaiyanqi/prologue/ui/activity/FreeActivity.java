@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.impl.CenterListPopupView;
@@ -35,6 +36,7 @@ import cn.zhaiyanqi.prologue.ui.bean.ViewBean;
 import cn.zhaiyanqi.prologue.ui.popup.ConfigImagePopup;
 import cn.zhaiyanqi.prologue.ui.popup.IllustrationPopup;
 import cn.zhaiyanqi.prologue.ui.popup.ListViewPopup;
+import cn.zhaiyanqi.prologue.ui.popup.NameTextPopup;
 import cn.zhaiyanqi.prologue.ui.popup.PadSettingPopup;
 import cn.zhaiyanqi.prologue.ui.popup.TitleTextPopup;
 import cn.zhaiyanqi.prologue.ui.widget.DragableLayout;
@@ -43,7 +45,7 @@ import cn.zhaiyanqi.prologue.utils.HawkKey;
 import me.caibou.rockerview.DirectionView;
 
 public class FreeActivity extends AppCompatActivity
-        implements DirectionView.DirectionChangeListener {
+        implements DirectionView.DirectionChangeListener, ColorPickerDialogListener {
 
     private static final String[] groups = {"魏", "蜀", "吴", "群", "神"};
     private static final String[] perfabList = {"武将模板", "卡牌模板", "边框", "势力", "称号", "武将名", "插画", "勾玉(身份)", "勾玉x1(国战)", "勾玉x0.5(国战)", "技能名背板", "技能描述背板"};
@@ -53,6 +55,8 @@ public class FreeActivity extends AppCompatActivity
     private static final int[] skillBoardResIds = {R.drawable.wei_skill_board, R.drawable.shu_skill_board, R.drawable.wu_skill_board, R.drawable.qun_skill_board, R.drawable.god_skill_board};
     private static final int[] hpGuozhanResIds = {R.drawable.wei_hp_double, R.drawable.shu_hp_double, R.drawable.wu_hp_double, R.drawable.qun_hp_double, R.drawable.god_hp_double};
     private static final int[] hpGuozhanHalfResIds = {R.drawable.wei_hp_half, R.drawable.shu_hp_half, R.drawable.wu_hp_half, R.drawable.qun_hp_half, R.drawable.god_hp_half};
+    private static final int[] skillBarResIds = {R.drawable.wei_skill_bar, R.drawable.shu_skill_bar, R.drawable.wu_skill_bar, R.drawable.qun_skill_bar, R.drawable.god_skill_bar};
+
 
     private static final int SELECT_IMAGE_REQUEST_CODE = 1;
     private static final int SELECT_ILLUSTRATION_IMAGE_REQUEST_CODE = 2;
@@ -80,6 +84,7 @@ public class FreeActivity extends AppCompatActivity
     private CenterListPopupView customViewPopup;
     private IllustrationPopup illustrationPopup;
     private TitleTextPopup titleTextPopup;
+    private NameTextPopup nameTextPopup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +105,7 @@ public class FreeActivity extends AppCompatActivity
     private void initView() {
         directionView.setDirectionChangeListener(this);
         adapter = new ViewAdapter(views);
-        adapter.setItemSelectedListener(this::selectView);
+        adapter.setItemSelectedListener(this::onViewBeanSelected);
         adapter.setOnSettingsListener(this::showViewSettings);
         adapter.setOnItemRemoveListener(this::removeView);
         adapter.setOnItemSwapListener(this::swapView);
@@ -129,10 +134,19 @@ public class FreeActivity extends AppCompatActivity
             startActivityForResult(intent, SELECT_ILLUSTRATION_IMAGE_REQUEST_CODE);
         }).setConfirmListener(this::createIllustration);
 
-        titleTextPopup = new TitleTextPopup(this);
+        titleTextPopup = new TitleTextPopup(this)
+                .setConfirmListener(this::addTextView);
+        nameTextPopup = new NameTextPopup(this)
+                .setConfirmListener(this::addTextView);
     }
 
-    private void selectView(ViewBean bean) {
+    private void addTextView(TextView textView) {
+        runOnUiThread(() -> addView(new ViewBean()
+                .setName("文字:" + textView.getText().toString())
+                .setView(textView)));
+    }
+
+    private void onViewBeanSelected(ViewBean bean) {
         currentView = bean;
         tvCurView.setText(bean.getName());
         View view = bean.getView();
@@ -274,6 +288,18 @@ public class FreeActivity extends AppCompatActivity
             Glide.with(this)
                     .load(bean.getUri() != null ? bean.getUri() : bean.getResId())
                     .into(view);
+        } else if (bean.getView() instanceof TextView) {
+            TextView view = (TextView) bean.getView();
+            mainLayout.addView(view);
+            ConstraintLayout.LayoutParams layoutParams =
+                    (ConstraintLayout.LayoutParams) view.getLayoutParams();
+            layoutParams.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
+            layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+            layoutParams.width = ConstraintLayout.LayoutParams.WRAP_CONTENT;
+            layoutParams.height = ConstraintLayout.LayoutParams.WRAP_CONTENT;
+            layoutParams.leftMargin = Hawk.get(bean.getName() + "_leftMargin", 0);
+            layoutParams.topMargin = Hawk.get(bean.getName() + "_topMargin", 0);
+            view.requestLayout();
         }
     }
 
@@ -334,26 +360,18 @@ public class FreeActivity extends AppCompatActivity
                 break;
             }
             case "称号": {
-                new XPopup.Builder(this).asCustom(titleTextPopup).show();
-                break;
-            }
-
-            case "技能描述背板": {
-                new XPopup.Builder(this).asCenterList("请选择一个势力:", groups, (position, t) -> {
-                    if (position >= 0) {
-                        String name = groups[position];
-                        addView(new ViewBean()
-                                .setView(new ImageView(this))
-                                .setWidth(Hawk.get(name + "·技能背板_width", 699))
-                                .setHeight(Hawk.get(name + "·技能背板_height", 247))
-                                .setScaleType(ImageView.ScaleType.FIT_XY)
-                                .setUri(skillBoardResIds[position])
-                                .setName(name + "·技能背板"));
-                    }
-                }).show();
+                new XPopup.Builder(this).asCustom(titleTextPopup)
+                        .show();
                 break;
             }
             case "武将名": {
+                new XPopup.Builder(this).asCustom(nameTextPopup)
+                        .show();
+                break;
+            }
+            case "插画": {
+                new XPopup.Builder(this)
+                        .asCustom(illustrationPopup).show();
                 break;
             }
             case "勾玉(身份)": {
@@ -386,9 +404,49 @@ public class FreeActivity extends AppCompatActivity
                 }).show();
                 break;
             }
-            case "插画": {
-                new XPopup.Builder(this)
-                        .asCustom(illustrationPopup).show();
+            case "勾玉x0.5(国战)": {
+                new XPopup.Builder(this).asCenterList("请选择一个势力:", groups, (position, t) -> {
+                    if (position >= 0) {
+                        String name = groups[position];
+                        addView(new ViewBean()
+                                .setView(new ImageView(this))
+                                .setWidth(Hawk.get(name + "·勾玉x0.5(国战)_width", 48))
+                                .setHeight(Hawk.get(name + "·勾玉x0.5(国战)_height", 42))
+                                .setUri(hpGuozhanHalfResIds[position])
+                                .setScaleType(ImageView.ScaleType.FIT_XY)
+                                .setName(name + "·勾玉x0.5(国战)"));
+                    }
+                }).show();
+                break;
+            }
+            case "技能名背板": {
+                new XPopup.Builder(this).asCenterList("请选择一个势力:", groups, (position, t) -> {
+                    if (position >= 0) {
+                        String name = groups[position];
+                        addView(new ViewBean()
+                                .setView(new ImageView(this))
+                                .setWidth(Hawk.get(name + "·技能名背板_width", 207))
+                                .setHeight(Hawk.get(name + "·技能名背板_height", 79))
+                                .setUri(skillBarResIds[position])
+                                .setScaleType(ImageView.ScaleType.FIT_XY)
+                                .setName(name + "·技能名背板"));
+                    }
+                }).show();
+                break;
+            }
+            case "技能描述背板": {
+                new XPopup.Builder(this).asCenterList("请选择一个势力:", groups, (position, t) -> {
+                    if (position >= 0) {
+                        String name = groups[position];
+                        addView(new ViewBean()
+                                .setView(new ImageView(this))
+                                .setWidth(Hawk.get(name + "·技能背板_width", 697))
+                                .setHeight(Hawk.get(name + "·技能背板_height", 245))
+                                .setScaleType(ImageView.ScaleType.FIT_XY)
+                                .setUri(skillBoardResIds[position])
+                                .setName(name + "·技能背板"));
+                    }
+                }).show();
                 break;
             }
         }
@@ -559,5 +617,13 @@ public class FreeActivity extends AppCompatActivity
             }
         }
         currentView.getView().requestLayout();
+    }
+
+    @Override
+    public void onColorSelected(int dialogId, int color) {
+    }
+
+    @Override
+    public void onDialogDismissed(int dialogId) {
     }
 }

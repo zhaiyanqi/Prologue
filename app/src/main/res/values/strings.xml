@@ -149,5 +149,7 @@
     <string name="action_layout_settings">主布局设置</string>
     <string name="add_title">添加称号</string>
     <string name="text">文字</string>
+    <string name="color">颜色</string>
+    <string name="add_name">添加武将名</string>
 
 </resources>

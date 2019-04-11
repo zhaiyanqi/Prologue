@@ -12,11 +12,14 @@ import com.orhanobut.hawk.Hawk;
 import org.litepal.LitePal;
 
 import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class App extends Application {
 
     public static HashMap<String, Typeface> fonts;
     public static String[] fontNameArray;
+    private static ExecutorService executor;
     @SuppressLint("StaticFieldLeak")
     private static Context context;
 
@@ -24,13 +27,8 @@ public class App extends Application {
         return context;
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        context = getApplicationContext();
-        LitePal.initialize(this);
-        loadFonts();
-        Hawk.init(context).build();
+    public static void executeTask(Runnable runnable) {
+        executor.execute(runnable);
     }
 
     private void loadFonts() {
@@ -44,5 +42,21 @@ public class App extends Application {
                 Log.e("font", e.getMessage());
             }
         }
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        context = getApplicationContext();
+        LitePal.initialize(this);
+        loadFonts();
+        Hawk.init(context).build();
+        executor = Executors.newFixedThreadPool(3);
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        executor.shutdown();
     }
 }

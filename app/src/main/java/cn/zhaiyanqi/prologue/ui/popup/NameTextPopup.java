@@ -17,10 +17,10 @@ import com.zqc.opencc.android.lib.ConversionType;
 import androidx.annotation.NonNull;
 import cn.zhaiyanqi.prologue.App;
 import cn.zhaiyanqi.prologue.R;
-import cn.zhaiyanqi.prologue.ui.widget.StrokeTextView;
+import cn.zhaiyanqi.prologue.ui.widget.RichStrokeTextView;
 import cn.zhaiyanqi.prologue.utils.HawkKey;
 
-public class TitleTextPopup extends CenterPopupView {
+public class NameTextPopup extends CenterPopupView {
 
     private TextView tvCancel, tvConfirm;
     private EditText etName, etFontSize;
@@ -29,7 +29,7 @@ public class TitleTextPopup extends CenterPopupView {
     private Switch switchTradition;
     private ConfirmListener confirmListener;
 
-    public TitleTextPopup(@NonNull Context context) {
+    public NameTextPopup(@NonNull Context context) {
         super(context);
     }
 
@@ -52,11 +52,11 @@ public class TitleTextPopup extends CenterPopupView {
     }
 
     private void initData() {
-        etName.setText(Hawk.get(HawkKey.TITLE_TEXT, ""));
-        fontSize = Hawk.get(HawkKey.TITLE_TEXT_FONT_SIZE, 100);
+        etName.setText(Hawk.get(HawkKey.NAME_TEXT, ""));
+        fontSize = Hawk.get(HawkKey.NAME_TEXT_FONT_SIZE, 180);
         etFontSize.setText(String.valueOf(fontSize));
-        fontColor = Color.parseColor("#f4f424");
-        switchTradition.setChecked(Hawk.get(HawkKey.TITLE_TEXT_SWITCH_TRADITION, true));
+        fontColor = Color.WHITE;
+        switchTradition.setChecked(Hawk.get(HawkKey.NAME_TEXT_SWITCH_TRADITION, true));
     }
 
     private void initListener() {
@@ -64,7 +64,9 @@ public class TitleTextPopup extends CenterPopupView {
             createTextView();
             dismiss();
         });
-        tvCancel.setOnClickListener(v -> dismiss());
+        tvCancel.setOnClickListener(v -> {
+            dismiss();
+        });
 
         ivReduce.setOnClickListener(v -> {
             String text = etFontSize.getText().toString();
@@ -91,34 +93,37 @@ public class TitleTextPopup extends CenterPopupView {
         App.executeTask(() -> {
             String title = etName.getText().toString();
             if (TextUtils.isEmpty(title)) return;
-            StrokeTextView textView = new StrokeTextView(getContext());
+            RichStrokeTextView textView =
+                    new RichStrokeTextView(getContext(), Color.BLACK, Color.WHITE);
             textView.setEms(1);
             textView.setTextColor(fontColor);
-            textView.setTypeface(App.fonts.get("称号"));
+            textView.setTypeface(App.fonts.get("武将名"));
             try {
                 int size = Integer.parseInt(etFontSize.getText().toString());
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
-                Hawk.put(HawkKey.TITLE_TEXT_FONT_SIZE, size);
+                Hawk.put(HawkKey.NAME_TEXT_FONT_SIZE, size);
             } catch (Exception e) {
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
             }
+            textView.setPadding(20, 20, 20, 20);
             String title1 = switchTradition.isChecked() ?
                     ChineseConverter.convert(title, ConversionType.S2T, getContext()) : title;
             textView.setText(title1);
-            Hawk.put(HawkKey.TITLE_TEXT, title1);
-            Hawk.put(HawkKey.TITLE_TEXT_SWITCH_TRADITION, switchTradition.isChecked());
+            Hawk.put(HawkKey.NAME_TEXT, title1);
+            Hawk.put(HawkKey.NAME_TEXT_SWITCH_TRADITION, switchTradition.isChecked());
             if (confirmListener != null) {
                 confirmListener.onConfirm(textView);
             }
         });
+
     }
 
     @Override
     protected int getImplLayoutId() {
-        return R.layout.popup_title_text;
+        return R.layout.popup_name_text;
     }
 
-    public TitleTextPopup setConfirmListener(ConfirmListener l) {
+    public NameTextPopup setConfirmListener(ConfirmListener l) {
         this.confirmListener = l;
         return this;
     }
