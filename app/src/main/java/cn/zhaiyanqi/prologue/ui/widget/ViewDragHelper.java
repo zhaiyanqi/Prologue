@@ -17,6 +17,8 @@ package cn.zhaiyanqi.prologue.ui.widget;
  */
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -24,6 +26,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
+import android.widget.ImageView;
 import android.widget.OverScroller;
 
 import java.util.Arrays;
@@ -1279,9 +1282,13 @@ public class ViewDragHelper {
         final int childCount = mParentView.getChildCount();
         for (int i = childCount - 1; i >= 0; i--) {
             final View child = mParentView.getChildAt(mCallback.getOrderedChildIndex(i));
+            if (child.getVisibility() != View.VISIBLE) continue;
             if (x >= child.getLeft() && x < child.getRight()
-                    && y >= child.getTop() && y < child.getBottom()
-                    && child.getVisibility() == View.VISIBLE) {
+                    && y >= child.getTop() && y < child.getBottom()) {
+                if (child instanceof ImageView) {
+                    Bitmap bitmap = ((BitmapDrawable) ((ImageView) child).getDrawable()).getBitmap();
+                    if (bitmap.getPixel(x - child.getLeft(), y - child.getTop()) == 0) continue;
+                }
                 return child;
             }
         }
