@@ -153,5 +153,9 @@
     <string name="add_name">添加武将名</string>
     <string name="font_content">文字内容</string>
     <string name="vertical">纵向显示</string>
+    <string name="word_spacing">字间距(左右间距)</string>
+    <string name="rich_text">富文本模式(支持html语法)</string>
+    <string name="font_guide">字间距：以em为单位设置文本间距，负值会收紧文字，建议取值范围-1.0~3.0。
+    \n行间距：上下两行字体间距，单位为px，负值会压缩间距，建议取值范围-20~100。</string>
 
 </resources>

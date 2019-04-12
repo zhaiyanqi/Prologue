@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/_xpopup_round3_bg"
@@ -125,7 +126,7 @@
                     android:layout_weight="1" />
 
                 <com.jaredrummler.android.colorpicker.ColorPanelView
-                    android:id="@+id/cpv_name_panel"
+                    android:id="@+id/cpv_color_panel"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     app:cpv_borderColor="@color/colorBlack"
@@ -136,7 +137,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -146,8 +147,24 @@
             android:text="@string/font" />
 
         <Spinner
+            android:id="@+id/spinner_font"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Switch
+            android:id="@+id/switch_vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="@string/vertical" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
@@ -155,21 +172,89 @@
             android:layout_weight="1">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_height"
+                android:id="@+id/et_word_spacing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/font_spacing"
-                android:inputType="number"
+                android:hint="@string/word_spacing"
+                android:inputType="numberSigned|numberDecimal"
                 android:maxLines="1"
                 android:textSize="12sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Switch
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/vertical" />
+            android:layout_weight="1">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_font_spacing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/font_spacing"
+                android:inputType="numberSigned|numberDecimal"
+                android:maxLines="1"
+                android:textSize="12sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/font_guide"
+        android:textSize="8sp"
+        tools:ignore="SmallSp" />
+
+    <Switch
+        android:id="@+id/switch_rich_text"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="@string/rich_text" />
+
+    <GridLayout
+        android:id="@+id/grid_rich_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:columnCount="3"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/btn_heart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/heart" />
+
+        <Button
+            android:id="@+id/btn_spade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/spade" />
+
+        <Button
+            android:id="@+id/btn_diamond"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/diamond" />
+
+        <Button
+            android:id="@+id/btn_club"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/club" />
+
+        <Button
+            android:id="@+id/btn_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bold" />
+
+        <Button
+            android:id="@+id/btn_new_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/new_line" />
+    </GridLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

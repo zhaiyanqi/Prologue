@@ -12,6 +12,7 @@ public class HawkKey {
     public static final String TITLE_TEXT_FONT_COLOR = "TITLE_TEXT_FONT_COLOR";
     public static final String TITLE_TEXT_SWITCH_TRADITION = "TITLE_TEXT_SWITCH_TRADITION";
     public static final int TITLE_TEXT_DIALOG_ID = 100;
+    public static final int TEXT_COLOR_DIALOG_ID = 101;
 
     public static final String NAME_TEXT = "NAME_TEXT";
     public static final String NAME_TEXT_FONT_SIZE = "NAME_TEXT_FONT_SIZE";

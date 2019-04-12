@@ -34,6 +34,7 @@ import cn.zhaiyanqi.prologue.ui.bean.IllustrationPopupBean;
 import cn.zhaiyanqi.prologue.ui.bean.PadSettingBean;
 import cn.zhaiyanqi.prologue.ui.bean.ViewBean;
 import cn.zhaiyanqi.prologue.ui.popup.ConfigImagePopup;
+import cn.zhaiyanqi.prologue.ui.popup.ConfigTextPopup;
 import cn.zhaiyanqi.prologue.ui.popup.IllustrationPopup;
 import cn.zhaiyanqi.prologue.ui.popup.ListViewPopup;
 import cn.zhaiyanqi.prologue.ui.popup.NameTextPopup;
@@ -89,6 +90,8 @@ public class FreeActivity extends AppCompatActivity
     private NameTextPopup nameTextPopup;
     private SkillNamePopup skillNamePopup;
     private SkillInfoPopup skillInfoPopup;
+    //non-inited
+    private ConfigTextPopup configTextPopup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,9 +213,10 @@ public class FreeActivity extends AppCompatActivity
             if (currentView.getView() instanceof ImageView) {
                 new XPopup.Builder(this)
                         .asCustom(new ConfigImagePopup(this, currentView)).show();
-//            } else if (currentView.getView() instanceof TextView) {
-//                new XPopup.Builder(this)
-//                        .asCustom(new ConfigTextPopup(this, currentView)).show();
+            } else if (currentView.getView() instanceof TextView) {
+                configTextPopup = new ConfigTextPopup(this, currentView);
+                new XPopup.Builder(this)
+                        .asCustom(configTextPopup).show();
             } else {
                 Toast.makeText(this, "除图片以外的其他控件暂时不支持修改", Toast.LENGTH_SHORT).show();
             }
@@ -284,6 +288,7 @@ public class FreeActivity extends AppCompatActivity
 
     private void addView(@NonNull ViewBean bean) {
         views.add(bean);
+        onViewBeanSelected(bean);
         adapter.notifyDataSetChanged();
         if (bean.getView() instanceof ImageView) {
             ImageView view = (ImageView) bean.getView();
@@ -505,7 +510,6 @@ public class FreeActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-//        super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             case R.id.action_about: {
                 break;
@@ -650,6 +654,14 @@ public class FreeActivity extends AppCompatActivity
 
     @Override
     public void onColorSelected(int dialogId, int color) {
+        switch (dialogId) {
+            case HawkKey.TEXT_COLOR_DIALOG_ID: {
+                if (configTextPopup != null) {
+                    configTextPopup.setColor(color);
+                }
+                break;
+            }
+        }
     }
 
     @Override

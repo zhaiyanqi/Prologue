@@ -106,7 +106,7 @@ public class NameTextPopup extends CenterPopupView {
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
             }
             textView.setLineSpacing(25, 1);
-            textView.setPadding(20, 20, 20, 20);
+            textView.setPadding(25, 20, 25, 20);
             String title1 = switchTradition.isChecked() ?
                     ChineseConverter.convert(title, ConversionType.S2T, getContext()) : title;
             textView.setText(title1);
