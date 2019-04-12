@@ -10,6 +10,7 @@ import com.lxj.xpopup.core.CenterPopupView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import butterknife.ButterKnife;
 import cn.zhaiyanqi.prologue.R;
 import cn.zhaiyanqi.prologue.ui.bean.ViewBean;
 
@@ -29,6 +30,7 @@ public class ConfigImagePopup extends CenterPopupView {
     @Override
     protected void onCreate() {
         super.onCreate();
+        ButterKnife.bind(this, this);
         initView();
         initData();
         initListener();

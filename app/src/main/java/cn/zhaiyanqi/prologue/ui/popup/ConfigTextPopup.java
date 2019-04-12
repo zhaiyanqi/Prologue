@@ -19,6 +19,8 @@ import android.widget.Toast;
 import com.jaredrummler.android.colorpicker.ColorPanelView;
 import com.jaredrummler.android.colorpicker.ColorPickerDialog;
 import com.lxj.xpopup.core.CenterPopupView;
+import com.zqc.opencc.android.lib.ChineseConverter;
+import com.zqc.opencc.android.lib.ConversionType;
 
 import java.util.Objects;
 
@@ -34,6 +36,7 @@ import butterknife.Unbinder;
 import cn.zhaiyanqi.prologue.App;
 import cn.zhaiyanqi.prologue.R;
 import cn.zhaiyanqi.prologue.ui.bean.ViewBean;
+import cn.zhaiyanqi.prologue.ui.widget.RichStrokeTextView;
 import cn.zhaiyanqi.prologue.utils.ColorUtil;
 import cn.zhaiyanqi.prologue.utils.HawkKey;
 
@@ -66,6 +69,10 @@ public class ConfigTextPopup extends CenterPopupView {
     GridLayout gridRichText;
     @BindView(R.id.spinner_font)
     Spinner spinnerFont;
+    @BindView(R.id.et_rotation)
+    EditText etRotaion;
+    @BindView(R.id.switch_traditional)
+    Switch switchTraditional;
     private Unbinder binder;
     private EditText curEdittext;
     private Typeface typeface;
@@ -102,6 +109,7 @@ public class ConfigTextPopup extends CenterPopupView {
             if (colorStr != null) {
                 tvFontColor.setText(colorStr);
             }
+            etRotaion.setText(String.valueOf(textView.getRotation()));
         }
     }
 
@@ -182,6 +190,8 @@ public class ConfigTextPopup extends CenterPopupView {
                 bean.setName(etName.getText().toString());
                 TextView textView = (TextView) bean.getView();
                 String content = etContent.getText().toString();
+                content = switchTraditional.isChecked() ?
+                        ChineseConverter.convert(content, ConversionType.S2T, getContext()) : content;
                 textView.setText(switchRichText.isChecked() ? Html.fromHtml(content) : content);
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                         Integer.parseInt(etFontSize.getText().toString()));
@@ -191,7 +201,12 @@ public class ConfigTextPopup extends CenterPopupView {
                 if (typeface != null) {
                     textView.setTypeface(typeface);
                 }
-                textView.setTextColor(color);
+                if (textView instanceof RichStrokeTextView) {
+                    ((RichStrokeTextView) textView).setInnerColor(color);
+                } else {
+                    textView.setTextColor(color);
+                }
+                textView.setRotation(Float.parseFloat(etRotaion.getText().toString()));
             } catch (Exception e) {
                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
             } finally {

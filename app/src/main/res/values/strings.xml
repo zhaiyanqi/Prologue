@@ -156,6 +156,8 @@
     <string name="word_spacing">字间距(左右间距)</string>
     <string name="rich_text">富文本模式(支持html语法)</string>
     <string name="font_guide">字间距：以em为单位设置文本间距，负值会收紧文字，建议取值范围-1.0~3.0。
-    \n行间距：上下两行字体间距，单位为px，负值会压缩间距，建议取值范围-20~100。</string>
+    \n行间距：上下两行字体间距，单位为px，负值会压缩间距，建议取值范围-20~100。
+    \n旋转：正数顺时针旋转，负数逆时针旋转</string>
+    <string name="rotation">旋转</string>
 
 </resources>
