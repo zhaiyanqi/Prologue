@@ -2,6 +2,7 @@ package cn.zhaiyanqi.prologue.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -614,42 +615,55 @@ public class FreeActivity extends AppCompatActivity
             R.id.iv_height_add, R.id.iv_height_reduce})
     void adjustCurView(View view) {
         if (currentView == null) return;
-        if (!(currentView.getView() instanceof ImageView)) {
-            Toast.makeText(this, "文字类型请通过修改字号调整大小", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        ConstraintLayout.LayoutParams layoutParams =
-                (ConstraintLayout.LayoutParams) currentView.getView().getLayoutParams();
-        switch (view.getId()) {
-            case R.id.iv_width_add: {
-                if (layoutParams.width < 0) {
-                    layoutParams.width = currentView.getView().getWidth() + sStep;
-                } else {
-                    layoutParams.width += sStep;
+        if (currentView.getView() instanceof TextView) {
+            TextView textView = (TextView) currentView.getView();
+            float size = textView.getTextSize();
+            switch (view.getId()) {
+                case R.id.iv_height_add:
+                case R.id.iv_width_add: {
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, size + sStep);
+                    break;
                 }
-                break;
-            }
-            case R.id.iv_width_reduce: {
-                if (layoutParams.width <= 0) return;
-                layoutParams.width -= sStep;
-                break;
-            }
-            case R.id.iv_height_add: {
-                if (layoutParams.height < 0) {
-                    layoutParams.height = currentView.getView().getHeight() + sStep;
-                } else {
-                    layoutParams.height += sStep;
+                case R.id.iv_height_reduce:
+                case R.id.iv_width_reduce: {
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, size - sStep);
+                    break;
                 }
+            }
+        } else {
+            ConstraintLayout.LayoutParams layoutParams =
+                    (ConstraintLayout.LayoutParams) currentView.getView().getLayoutParams();
+            switch (view.getId()) {
+                case R.id.iv_width_add: {
+                    if (layoutParams.width < 0) {
+                        layoutParams.width = currentView.getView().getWidth() + sStep;
+                    } else {
+                        layoutParams.width += sStep;
+                    }
+                    break;
+                }
+                case R.id.iv_width_reduce: {
+                    if (layoutParams.width <= 0) return;
+                    layoutParams.width -= sStep;
+                    break;
+                }
+                case R.id.iv_height_add: {
+                    if (layoutParams.height < 0) {
+                        layoutParams.height = currentView.getView().getHeight() + sStep;
+                    } else {
+                        layoutParams.height += sStep;
+                    }
 
-                break;
+                    break;
+                }
+                case R.id.iv_height_reduce: {
+                    if (layoutParams.height <= 0) return;
+                    layoutParams.height -= sStep;
+                    break;
+                }
             }
-            case R.id.iv_height_reduce: {
-                if (layoutParams.height <= 0) return;
-                layoutParams.height -= sStep;
-                break;
-            }
+            currentView.getView().requestLayout();
         }
-        currentView.getView().requestLayout();
     }
 
     @Override

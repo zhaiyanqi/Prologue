@@ -40,13 +40,13 @@ public class RichStrokeTextView extends AppCompatTextView {
     @Override
     protected void onDraw(Canvas canvas) {
         setTextColor(mInnerColor);
-        textPaint.setStrokeWidth(getWidth() / 25.f);
+        textPaint.setStrokeWidth(getTextSize() / 25.f);
         textPaint.setStyle(Paint.Style.STROKE);
-        textPaint.setShadowLayer(0.1f, 0, getHeight() / 65.f, Color.BLACK);
+        textPaint.setShadowLayer(0.1f, 0, getTextSize() / 65.f, Color.BLACK);
         super.onDraw(canvas);
 
         setTextColor(mOuterColor);
-        textPaint.setStrokeWidth(getWidth() / 30.f);
+        textPaint.setStrokeWidth(getTextSize() / 30.f);
         textPaint.setStyle(Paint.Style.STROKE);
         textPaint.setShadowLayer(0, 0, 0, 0);
         super.onDraw(canvas);
