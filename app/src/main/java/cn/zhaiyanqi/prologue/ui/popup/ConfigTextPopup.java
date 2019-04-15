@@ -195,7 +195,7 @@ public class ConfigTextPopup extends CenterPopupView {
                 textView.setText(switchRichText.isChecked() ? Html.fromHtml(content) : content);
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                         Integer.parseInt(etFontSize.getText().toString()));
-                textView.setEms(switchVertical.isChecked() ? 1 : 200);
+                textView.setEms(switchVertical.isChecked() ? 1 : textView.getText().length());
                 textView.setLetterSpacing(Float.parseFloat(etWordSpacing.getText().toString()));
                 textView.setLineSpacing(Float.parseFloat(etFontSpacing.getText().toString()), 1);
                 if (typeface != null) {
