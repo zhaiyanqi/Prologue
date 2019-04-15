@@ -158,11 +158,14 @@
     <string name="font_guide">字间距：以em为单位设置文本间距，负值会收紧文字，建议取值范围-1.0~3.0。
     \n行间距：上下两行字体间距，单位为px，负值会压缩间距，建议取值范围-20~100。
     \n旋转：正数顺时针旋转，负数逆时针旋转</string>
-    <string name="rotation">旋转</string>
+    <string name="rotation">旋转角度</string>
     <string name="fixed">固定宽高</string>
     <string name="fixed_width_fit_height">宽固定,高度自适应</string>
     <string name="fixed_height_fit_width">高固定,宽度自适应</string>
-    <string name="fit">自适应</string>
+    <string name="fit">原始尺寸</string>
     <string name="scale_type">缩放类型</string>
+    <string name="full_screen">充满屏幕</string>
+    <string name="left">左边距</string>
+    <string name="top">顶部边距</string>
 
 </resources>

@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.util.Log;
 
 import com.orhanobut.hawk.Hawk;
+import com.squareup.leakcanary.LeakCanary;
 
 import org.litepal.LitePal;
 
@@ -47,16 +48,21 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        context = getApplicationContext();
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
+        }
+        LeakCanary.install(this);
+        Hawk.init(this).build();
         LitePal.initialize(this);
-        loadFonts();
-        Hawk.init(context).build();
+        context = getApplicationContext();
         executor = Executors.newFixedThreadPool(3);
+        loadFonts();
     }
 
     @Override
     public void onTerminate() {
         super.onTerminate();
         executor.shutdown();
+        context = null;
     }
 }

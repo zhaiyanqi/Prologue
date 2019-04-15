@@ -83,7 +83,6 @@ public class DragableLayout extends ConstraintLayout {
                 );
                 setDown.start();
             }
-
             if (l != null) {
                 l.onSelect(capturedChild);
             }

@@ -616,55 +616,102 @@ public class FreeActivity extends AppCompatActivity
     void adjustCurView(View view) {
         if (currentView == null) return;
         if (currentView.getView() instanceof TextView) {
-            TextView textView = (TextView) currentView.getView();
-            float size = textView.getTextSize();
-            switch (view.getId()) {
-                case R.id.iv_height_add:
-                case R.id.iv_width_add: {
-                    textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, size + sStep);
-                    break;
-                }
-                case R.id.iv_height_reduce:
-                case R.id.iv_width_reduce: {
-                    textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, size - sStep);
-                    break;
-                }
-            }
+            adjustTextView(view.getId(), (TextView) currentView.getView());
         } else {
-            ConstraintLayout.LayoutParams layoutParams =
-                    (ConstraintLayout.LayoutParams) currentView.getView().getLayoutParams();
-            switch (view.getId()) {
-                case R.id.iv_width_add: {
-                    if (layoutParams.width < 0) {
-                        layoutParams.width = currentView.getView().getWidth() + sStep;
-                    } else {
-                        layoutParams.width += sStep;
-                    }
-                    break;
-                }
-                case R.id.iv_width_reduce: {
-                    if (layoutParams.width <= 0) return;
-                    layoutParams.width -= sStep;
-                    break;
-                }
-                case R.id.iv_height_add: {
-                    if (layoutParams.height < 0) {
-                        layoutParams.height = currentView.getView().getHeight() + sStep;
-                    } else {
-                        layoutParams.height += sStep;
-                    }
-
-                    break;
-                }
-                case R.id.iv_height_reduce: {
-                    if (layoutParams.height <= 0) return;
-                    layoutParams.height -= sStep;
-                    break;
-                }
-            }
-            currentView.getView().requestLayout();
+            adjustImageView(view.getId(), (ImageView) currentView.getView());
         }
     }
+
+    private void adjustTextView(int id, TextView textView) {
+        float size = textView.getTextSize();
+        switch (id) {
+            case R.id.iv_height_add:
+            case R.id.iv_width_add: {
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, size + sStep);
+                break;
+            }
+            case R.id.iv_height_reduce:
+            case R.id.iv_width_reduce: {
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, size - sStep);
+                break;
+            }
+        }
+    }
+
+    private void adjustImageView(int id, ImageView imageView) {
+        if (imageView == null) return;
+        ConstraintLayout.LayoutParams params =
+                (ConstraintLayout.LayoutParams) imageView.getLayoutParams();
+        boolean adjustViewBounds = imageView.getAdjustViewBounds();
+        if (adjustViewBounds) {
+            adjustImageViewSpecial(id, imageView);
+            return;
+        }
+        int matchParent = ConstraintLayout.LayoutParams.MATCH_PARENT;
+        if (matchParent == params.width || matchParent == params.height) {
+            Toast.makeText(this, "控件缩放类型不支持调整大小", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        switch (id) {
+            case R.id.iv_width_add: {
+                if (params.width < 0) {
+                    params.width = imageView.getWidth() + sStep;
+                    params.height = imageView.getHeight();
+                } else {
+                    params.width += sStep;
+                }
+                break;
+            }
+            case R.id.iv_width_reduce: {
+                if (params.width <= 0) return;
+                params.width -= sStep;
+                break;
+            }
+            case R.id.iv_height_add: {
+                if (params.height < 0) {
+                    params.height = imageView.getHeight() + sStep;
+                    params.width = imageView.getWidth();
+                } else {
+                    params.height += sStep;
+                }
+                break;
+            }
+            case R.id.iv_height_reduce: {
+                if (params.height <= 0) return;
+                params.height -= sStep;
+                break;
+            }
+        }
+        currentView.getView().requestLayout();
+    }
+
+    private void adjustImageViewSpecial(int id, ImageView imageView) {
+        if (imageView == null) return;
+        ConstraintLayout.LayoutParams params =
+                (ConstraintLayout.LayoutParams) imageView.getLayoutParams();
+        switch (id) {
+            case R.id.iv_height_add:
+            case R.id.iv_width_add: {
+                if (params.width == ConstraintLayout.LayoutParams.WRAP_CONTENT) {
+                    params.height += mStep;
+                } else {
+                    params.width += mStep;
+                }
+                break;
+            }
+            case R.id.iv_height_reduce:
+            case R.id.iv_width_reduce: {
+                if (params.width == ConstraintLayout.LayoutParams.WRAP_CONTENT) {
+                    params.height -= mStep;
+                } else {
+                    params.width -= mStep;
+                }
+                break;
+            }
+        }
+        currentView.getView().requestLayout();
+    }
+
 
     @Override
     public void onColorSelected(int dialogId, int color) {

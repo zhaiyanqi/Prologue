@@ -87,8 +87,8 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder>
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
-        ViewBean fBean = list.get(fromPosition);
-        ViewBean tBean = list.get(toPosition);
+//        ViewBean fBean = list.get(fromPosition);
+//        ViewBean tBean = list.get(toPosition);
         Collections.swap(list, fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
         if (l4 != null) {

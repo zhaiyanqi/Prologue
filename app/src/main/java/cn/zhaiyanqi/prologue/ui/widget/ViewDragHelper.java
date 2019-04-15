@@ -18,8 +18,6 @@ package cn.zhaiyanqi.prologue.ui.widget;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -1288,10 +1286,13 @@ public class ViewDragHelper {
             if (x >= child.getLeft() && x < child.getRight()
                     && y >= child.getTop() && y < child.getBottom()) {
                 if (child instanceof ImageView) {
-                    Drawable drawable = ((ImageView) child).getDrawable();
-                    if (drawable instanceof BitmapDrawable) {
-                        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-                        if (bitmap.getPixel(x - child.getLeft(), y - child.getTop()) == 0) continue;
+                    child.setDrawingCacheEnabled(true);
+                    Bitmap bitmap = Bitmap.createBitmap(child.getDrawingCache());
+                    child.setDrawingCacheEnabled(false);
+                    int pointX = x - child.getLeft();
+                    int pointY = y - child.getTop();
+                    if (bitmap.getPixel(pointX, pointY) == 0) {
+                        continue;
                     }
                 }
                 return child;
