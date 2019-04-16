@@ -25,6 +25,7 @@ import com.zqc.opencc.android.lib.ConversionType;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -70,9 +71,13 @@ public class ConfigTextPopup extends CenterPopupView {
     @BindView(R.id.spinner_font)
     Spinner spinnerFont;
     @BindView(R.id.et_rotation)
-    EditText etRotaion;
+    EditText etRotation;
     @BindView(R.id.switch_traditional)
     Switch switchTraditional;
+    @BindView(R.id.et_width)
+    EditText etWidth;
+    @BindView(R.id.switch_width_type)
+    Switch switchWidth;
     private Unbinder binder;
     private EditText curEdittext;
     private Typeface typeface;
@@ -109,7 +114,12 @@ public class ConfigTextPopup extends CenterPopupView {
             if (colorStr != null) {
                 tvFontColor.setText(colorStr);
             }
-            etRotaion.setText(String.valueOf(textView.getRotation()));
+            ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams)
+                    textView.getLayoutParams();
+            etWidth.setText(String.valueOf(params.width));
+            switchWidth.setChecked(params.width != ConstraintLayout.LayoutParams.WRAP_CONTENT);
+            etWidth.setEnabled(params.width != ConstraintLayout.LayoutParams.WRAP_CONTENT);
+            etRotation.setText(String.valueOf(textView.getRotation()));
         }
     }
 
@@ -206,11 +216,14 @@ public class ConfigTextPopup extends CenterPopupView {
                 } else {
                     textView.setTextColor(color);
                 }
-                textView.setRotation(Float.parseFloat(etRotaion.getText().toString()));
+                textView.setRotation(Float.parseFloat(etRotation.getText().toString()));
+                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams)
+                        textView.getLayoutParams();
+                params.width = Integer.parseInt(etWidth.getText().toString());
+                textView.requestLayout();
+                dismiss();
             } catch (Exception e) {
                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            } finally {
-                dismiss();
             }
         }
     }
@@ -218,6 +231,17 @@ public class ConfigTextPopup extends CenterPopupView {
     @OnCheckedChanged(R.id.switch_rich_text)
     void setRichText(boolean isChecked) {
         gridRichText.setVisibility(isChecked ? VISIBLE : GONE);
+    }
+
+    @OnCheckedChanged(R.id.switch_width_type)
+    void setWidthType(boolean isChecked) {
+        if (isChecked) {
+            etWidth.setText(String.valueOf(bean.getView().getWidth()));
+            etWidth.setEnabled(true);
+        } else {
+            etWidth.setText(String.valueOf(String.valueOf(ConstraintLayout.LayoutParams.WRAP_CONTENT)));
+            etWidth.setEnabled(false);
+        }
     }
 
     @OnFocusChange(R.id.et_content)

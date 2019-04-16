@@ -171,5 +171,7 @@
     <string name="image">图片</string>
     <string name="add_text">添加文本</string>
     <string name="text_content">文本内容</string>
+    <string name="fixed_width">固定宽度</string>
+    <string name="layout_width">布局宽度</string>
 
 </resources>
