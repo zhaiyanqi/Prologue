@@ -43,7 +43,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/custom_image" />
+            android:text="@string/image" />
 
         <TextView
             android:id="@+id/tv_image_path"
@@ -148,61 +148,6 @@
                 android:maxLines="1"
                 android:textSize="12sp" />
         </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:baselineAligned="false"
-        android:orientation="horizontal"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_left"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/left"
-                android:inputType="number"
-                android:maxLines="1"
-                android:textSize="12sp" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_top"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/top"
-                android:inputType="number"
-                android:maxLines="1"
-                android:textSize="12sp" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_rotation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/rotation"
-                android:inputType="numberSigned|numberDecimal"
-                android:maxLines="1"
-                android:textSize="12sp" />
-        </com.google.android.material.textfield.TextInputLayout>
-
     </LinearLayout>
 
     <LinearLayout

@@ -46,6 +46,8 @@ import cn.zhaiyanqi.prologue.ui.adapter.ViewAdapter;
 import cn.zhaiyanqi.prologue.ui.bean.IllustrationPopupBean;
 import cn.zhaiyanqi.prologue.ui.bean.PadSettingBean;
 import cn.zhaiyanqi.prologue.ui.bean.ViewBean;
+import cn.zhaiyanqi.prologue.ui.popup.AddImagePopup;
+import cn.zhaiyanqi.prologue.ui.popup.AddTextPopup;
 import cn.zhaiyanqi.prologue.ui.popup.ConfigImagePopup;
 import cn.zhaiyanqi.prologue.ui.popup.ConfigTextPopup;
 import cn.zhaiyanqi.prologue.ui.popup.IllustrationPopup;
@@ -74,8 +76,9 @@ public class FreeActivity extends AppCompatActivity
     private static final int[] skillBarResIds = {R.drawable.wei_skill_bar, R.drawable.shu_skill_bar, R.drawable.wu_skill_bar, R.drawable.qun_skill_bar, R.drawable.god_skill_bar};
 
 
-    private static final int SELECT_IMAGE_REQUEST_CODE = 1;
+    private static final int SELECT_ADD_IMAGE_REQUEST_CODE = 1;
     private static final int SELECT_ILLUSTRATION_IMAGE_REQUEST_CODE = 2;
+    private static final int SELECT_CONFIG_IMAGE_REQUEST_CODE = 3;
     @BindView(R.id.main_layout)
     DragableLayout mainLayout;
     @BindView(R.id.direct_control)
@@ -103,8 +106,11 @@ public class FreeActivity extends AppCompatActivity
     private NameTextPopup nameTextPopup;
     private SkillNamePopup skillNamePopup;
     private SkillInfoPopup skillInfoPopup;
+    private AddImagePopup addImagePopup;
+    private AddTextPopup addTextPopup;
     //non-inited
     private ConfigTextPopup configTextPopup;
+    private ConfigImagePopup configImagePopup;
     private RxPermissions rxPermissions;
 
     @Override
@@ -164,6 +170,17 @@ public class FreeActivity extends AppCompatActivity
                 .setConfirmListener(this::addTextView);
         skillInfoPopup = new SkillInfoPopup(this)
                 .setConfirmListener(this::addTextView);
+        addImagePopup = new AddImagePopup(this)
+                .setSelectImageListener(() -> {
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.setType("image/*");
+                    intent.putExtra("crop", true);
+                    intent.putExtra("return-data", true);
+                    startActivityForResult(intent, SELECT_ADD_IMAGE_REQUEST_CODE);
+                }).setConfirmListener(this::addView);
+        addTextPopup = new AddTextPopup(this)
+                .setConfirmListener(this::addView);
+
     }
 
     private void addTextView(TextView textView) {
@@ -226,8 +243,16 @@ public class FreeActivity extends AppCompatActivity
     private void showCurViewSettings() {
         if (currentView != null) {
             if (currentView.getView() instanceof ImageView) {
+                configImagePopup = new ConfigImagePopup(this, currentView)
+                        .setSelectImageListener(() -> {
+                            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                            intent.setType("image/*");
+                            intent.putExtra("crop", true);
+                            intent.putExtra("return-data", true);
+                            startActivityForResult(intent, SELECT_CONFIG_IMAGE_REQUEST_CODE);
+                        });
                 new XPopup.Builder(this)
-                        .asCustom(new ConfigImagePopup(this, currentView)).show();
+                        .asCustom(configImagePopup).show();
             } else if (currentView.getView() instanceof TextView) {
                 configTextPopup = new ConfigTextPopup(this, currentView);
                 new XPopup.Builder(this)
@@ -255,6 +280,15 @@ public class FreeActivity extends AppCompatActivity
     private void addCustomView(String text) {
         switch (text) {
             case "图片": {
+                new XPopup.Builder(this)
+                        .asCustom(addImagePopup)
+                        .show();
+                break;
+            }
+            case "文字": {
+                new XPopup.Builder(this)
+                        .asCustom(addTextPopup)
+                        .show();
                 break;
             }
         }
@@ -531,7 +565,7 @@ public class FreeActivity extends AppCompatActivity
             }
             case R.id.action_custom_view: {
                 customViewPopup = new XPopup.Builder(this)
-                        .asCenterList("请选择一个控件类型:", new String[]{"图片", "文字", "描边文字", "其他"},
+                        .asCenterList("请选择一个控件类型:", new String[]{"图片", "文字"},
                                 (position, text) -> {
                                     if (position >= 0) {
                                         customViewPopup.dismissWith(() -> addCustomView(text));
@@ -665,7 +699,7 @@ public class FreeActivity extends AppCompatActivity
         Canvas canvas = new Canvas(returnedBitmap);
         mainLayout.draw(canvas);
         try {
-            Thread.sleep(1000);
+            Thread.sleep(600);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -677,9 +711,21 @@ public class FreeActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && data != null) {
             switch (requestCode) {
+                case SELECT_ADD_IMAGE_REQUEST_CODE: {
+                    if (addImagePopup != null) {
+                        addImagePopup.setUri(data.getData());
+                    }
+                    break;
+                }
                 case SELECT_ILLUSTRATION_IMAGE_REQUEST_CODE: {
                     if (illustrationPopup != null) {
                         illustrationPopup.setUri(data.getData());
+                    }
+                    break;
+                }
+                case SELECT_CONFIG_IMAGE_REQUEST_CODE: {
+                    if (configImagePopup != null) {
+                        configImagePopup.setUri(data.getData());
                     }
                     break;
                 }

@@ -167,5 +167,9 @@
     <string name="full_screen">充满屏幕</string>
     <string name="left">左边距</string>
     <string name="top">顶部边距</string>
+    <string name="custom_image">自定义贴图</string>
+    <string name="image">图片</string>
+    <string name="add_text">添加文本</string>
+    <string name="text_content">文本内容</string>
 
 </resources>

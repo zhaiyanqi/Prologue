@@ -2,6 +2,7 @@ package cn.zhaiyanqi.prologue.ui.popup;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.Uri;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -10,6 +11,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.lxj.xpopup.core.CenterPopupView;
 
 import androidx.annotation.NonNull;
@@ -20,11 +22,15 @@ import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import cn.zhaiyanqi.prologue.R;
 import cn.zhaiyanqi.prologue.ui.bean.ViewBean;
+import cn.zhaiyanqi.prologue.ui.callback.Callable;
 
 @SuppressLint("ViewConstructor")
 public class ConfigImagePopup extends CenterPopupView {
 
     private ViewBean bean;
+    @BindView(R.id.tv_image_path)
+    TextView tvImagePath;
+    private Uri uri;
     @BindView(R.id.tv_title)
     TextView tvTitle;
     @BindView(R.id.et_name)
@@ -41,8 +47,8 @@ public class ConfigImagePopup extends CenterPopupView {
     EditText etRotation;
     @BindView(R.id.rg_scale_type)
     RadioGroup rgScaleType;
+    private Callable selectImageCallable;
 
-    private TextView tvCancel, tvConfirm;
 
     public ConfigImagePopup(@NonNull Context context, ViewBean bean) {
         super(context);
@@ -53,13 +59,7 @@ public class ConfigImagePopup extends CenterPopupView {
     protected void onCreate() {
         super.onCreate();
         ButterKnife.bind(this, this);
-        initView();
         initData();
-    }
-
-    private void initView() {
-        tvCancel = findViewById(R.id.tv_cancel);
-        tvConfirm = findViewById(R.id.tv_confirm);
     }
 
     private void initData() {
@@ -166,6 +166,9 @@ public class ConfigImagePopup extends CenterPopupView {
                 view.setRotation(Float.parseFloat(etRotation.getText().toString()));
                 view.requestLayout();
                 bean.setName(etName.getText().toString());
+                if (uri != null) {
+                    Glide.with(this).load(uri).into(view);
+                }
                 dismiss();
             }
         } catch (Exception e) {
@@ -176,6 +179,23 @@ public class ConfigImagePopup extends CenterPopupView {
     @OnClick(R.id.tv_cancel)
     void cancel() {
         dismiss();
+    }
+
+    @OnClick(R.id.iv_select_img)
+    void selectImage() {
+        if (selectImageCallable != null) {
+            selectImageCallable.call();
+        }
+    }
+
+    public void setUri(Uri uri) {
+        this.uri = uri;
+        tvImagePath.setText(uri.getPath());
+    }
+
+    public ConfigImagePopup setSelectImageListener(Callable callable) {
+        selectImageCallable = callable;
+        return this;
     }
 
     @Override
