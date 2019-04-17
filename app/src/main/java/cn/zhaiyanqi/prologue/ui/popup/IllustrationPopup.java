@@ -51,9 +51,7 @@ public class IllustrationPopup extends CenterPopupView {
             }
             dismiss();
         });
-        tvCancel.setOnClickListener(v -> {
-            dismiss();
-        });
+        tvCancel.setOnClickListener(v -> dismiss());
         ivSelectImage.setOnClickListener(v -> {
             if (selectImageCallable != null) {
                 selectImageCallable.call();

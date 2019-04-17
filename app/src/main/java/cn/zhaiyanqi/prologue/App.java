@@ -55,7 +55,7 @@ public class App extends Application {
         Hawk.init(this).build();
         LitePal.initialize(this);
         context = getApplicationContext();
-        executor = Executors.newFixedThreadPool(3);
+        executor = Executors.newCachedThreadPool();
         loadFonts();
     }
 

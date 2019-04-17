@@ -320,11 +320,29 @@ public class FreeActivity extends AppCompatActivity
     }
 
     private void showViewSettings(ViewBean bean) {
-        if (popupView != null) {
-            ConfigImagePopup popup = new ConfigImagePopup(this, bean);
-            BasePopupView basePopupView = new XPopup.Builder(this)
-                    .asCustom(popup);
-            popupView.dismissWith(basePopupView::show);
+        if (popupView != null && bean != null) {
+            if (bean.getView() instanceof ImageView) {
+                configImagePopup = new ConfigImagePopup(this, bean)
+                        .setSelectImageListener(() -> {
+                            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                            intent.setType("image/*");
+                            intent.putExtra("crop", true);
+                            intent.putExtra("return-data", true);
+                            startActivityForResult(intent, SELECT_CONFIG_IMAGE_REQUEST_CODE);
+                        });
+                BasePopupView basePopupView = new XPopup.Builder(this)
+                        .asCustom(configImagePopup);
+                popupView.dismissWith(basePopupView::show);
+            } else if (bean.getView() instanceof TextView) {
+                configTextPopup = new ConfigTextPopup(this, bean);
+                BasePopupView basePopupView = new XPopup.Builder(this)
+                        .asCustom(configTextPopup);
+                popupView.dismissWith(basePopupView::show);
+            } else {
+                Toast.makeText(this, "控件暂时不支持修改", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(this, "未选择控件", Toast.LENGTH_SHORT).show();
         }
     }
 

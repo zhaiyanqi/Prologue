@@ -9,7 +9,7 @@ public class Game {
     private boolean running;
 
     public Game(Activity activity) {
-        this.context = context;
+        this.context = activity;
         this.activity = activity;
     }
 

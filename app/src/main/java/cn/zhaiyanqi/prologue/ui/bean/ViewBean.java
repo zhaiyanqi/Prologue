@@ -4,8 +4,6 @@ import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
 
-import cn.zhaiyanqi.prologue.enums.ImportViewType;
-
 public class ViewBean {
 
     private View view;
@@ -16,7 +14,6 @@ public class ViewBean {
     private int height;
     private ImageView.ScaleType scaleType;
     private boolean selected;
-    private ImportViewType type;
 
     public ViewBean() {
         this.view = null;
