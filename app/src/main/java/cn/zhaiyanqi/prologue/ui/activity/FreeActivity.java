@@ -48,12 +48,12 @@ import cn.zhaiyanqi.prologue.ui.bean.PadSettingBean;
 import cn.zhaiyanqi.prologue.ui.bean.ViewBean;
 import cn.zhaiyanqi.prologue.ui.popup.AddImagePopup;
 import cn.zhaiyanqi.prologue.ui.popup.AddTextPopup;
+import cn.zhaiyanqi.prologue.ui.popup.BottomListPopup;
 import cn.zhaiyanqi.prologue.ui.popup.ConfigImagePopup;
 import cn.zhaiyanqi.prologue.ui.popup.ConfigTextPopup;
 import cn.zhaiyanqi.prologue.ui.popup.IllustrationPopup;
-import cn.zhaiyanqi.prologue.ui.popup.ListViewPopup;
+import cn.zhaiyanqi.prologue.ui.popup.LayoutSettingPopup;
 import cn.zhaiyanqi.prologue.ui.popup.NameTextPopup;
-import cn.zhaiyanqi.prologue.ui.popup.PadSettingPopup;
 import cn.zhaiyanqi.prologue.ui.popup.SkillInfoPopup;
 import cn.zhaiyanqi.prologue.ui.popup.SkillNamePopup;
 import cn.zhaiyanqi.prologue.ui.popup.TitleTextPopup;
@@ -97,8 +97,8 @@ public class FreeActivity extends AppCompatActivity
     private int sStep = 5;
 
     //popup view
-    private ListViewPopup popupView;
-    private PadSettingPopup padSettingPopup;
+    private BottomListPopup popupView;
+    private LayoutSettingPopup layoutSettingPopup;
     private CenterListPopupView groupSelectPopup;
     private CenterListPopupView customViewPopup;
     private IllustrationPopup illustrationPopup;
@@ -141,7 +141,7 @@ public class FreeActivity extends AppCompatActivity
     }
 
     private void initPopup() {
-        padSettingPopup = new PadSettingPopup(this)
+        layoutSettingPopup = new LayoutSettingPopup(this)
                 .setMoveStep(mStep)
                 .setScaleStep(sStep)
                 .setLayoutWidth(mainLayout.getWidth())
@@ -223,7 +223,7 @@ public class FreeActivity extends AppCompatActivity
     void onViewClick(View view) {
         switch (view.getId()) {
             case R.id.iv_show_list: {
-                popupView = new ListViewPopup(this, adapter);
+                popupView = new BottomListPopup(this, adapter);
                 popupView.setTitle("当前选中控件:" + (currentView == null ? "无" : currentView.getName()));
                 new XPopup.Builder(this)
                         .autoDismiss(true)
@@ -348,7 +348,7 @@ public class FreeActivity extends AppCompatActivity
 
     private void showPadSettings() {
         new XPopup.Builder(this)
-                .asCustom(padSettingPopup.setLayoutWidth(mainLayout.getWidth())
+                .asCustom(layoutSettingPopup.setLayoutWidth(mainLayout.getWidth())
                         .setLayoutHeight(mainLayout.getHeight()))
                 .show();
     }
@@ -603,7 +603,6 @@ public class FreeActivity extends AppCompatActivity
                 break;
             }
             case R.id.action_history: {
-                startActivity(new Intent(this, CardMakerActivity.class));
                 break;
             }
             case R.id.action_layout_setting: {

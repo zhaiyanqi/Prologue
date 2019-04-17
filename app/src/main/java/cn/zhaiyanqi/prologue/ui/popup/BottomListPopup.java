@@ -18,10 +18,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import cn.zhaiyanqi.prologue.R;
 import cn.zhaiyanqi.prologue.ui.adapter.ViewAdapter;
-import cn.zhaiyanqi.prologue.ui.callback.ViewItemHelperCallback;
 
 @SuppressLint("ViewConstructor")
-public class ListViewPopup extends BottomPopupView {
+public class BottomListPopup extends BottomPopupView {
 
     RecyclerView recyclerView;
     private ViewAdapter adapter;
@@ -30,7 +29,7 @@ public class ListViewPopup extends BottomPopupView {
     private String title;
     private ImageView ivHelp;
 
-    public ListViewPopup(@NonNull Context context, ViewAdapter adapter) {
+    public BottomListPopup(@NonNull Context context, ViewAdapter adapter) {
         super(context);
         this.adapter = adapter;
         mItemTouchHelper = new ItemTouchHelper(new ViewItemHelperCallback(adapter));
@@ -84,6 +83,44 @@ public class ListViewPopup extends BottomPopupView {
         if (!TextUtils.isEmpty(text) && tvTitle != null) {
             String string = "当前选中控件:" + text;
             tvTitle.setText(string);
+        }
+    }
+
+    public interface ItemMoveListener {
+        boolean onItemMove(int fromPosition, int toPosition);
+
+        void onItemRemove(int position);
+    }
+
+    public static class ViewItemHelperCallback extends ItemTouchHelper.Callback {
+
+
+        private ItemMoveListener mItemMoveListener;
+
+        private ViewItemHelperCallback(ItemMoveListener itemMoveListener) {
+            mItemMoveListener = itemMoveListener;
+        }
+
+        @Override
+        public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+            int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
+            int swipeFlags = ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
+            return makeMovementFlags(dragFlags, swipeFlags);
+        }
+
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return mItemMoveListener.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            mItemMoveListener.onItemRemove(viewHolder.getAdapterPosition());
+        }
+
+        @Override
+        public boolean isLongPressDragEnabled() {
+            return true;
         }
     }
 }

@@ -15,10 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import cn.zhaiyanqi.prologue.R;
 import cn.zhaiyanqi.prologue.ui.bean.ViewBean;
-import cn.zhaiyanqi.prologue.ui.callback.ItemMoveListener;
+import cn.zhaiyanqi.prologue.ui.popup.BottomListPopup;
 
 public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder>
-        implements ItemMoveListener {
+        implements BottomListPopup.ItemMoveListener {
 
     private List<ViewBean> list;
     private OnItemSelectedListener l1;
@@ -98,13 +98,12 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder>
     }
 
     @Override
-    public boolean onItemRemove(int position) {
+    public void onItemRemove(int position) {
         ViewBean bean = list.remove(position);
         notifyItemRemoved(position);
         if (l3 != null) {
             l3.onRemove(bean);
         }
-        return true;
     }
 
     public interface OnItemSelectedListener {

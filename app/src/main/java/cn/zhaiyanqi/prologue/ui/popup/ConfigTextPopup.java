@@ -25,7 +25,6 @@ import com.zqc.opencc.android.lib.ConversionType;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,10 +73,10 @@ public class ConfigTextPopup extends CenterPopupView {
     EditText etRotation;
     @BindView(R.id.switch_traditional)
     Switch switchTraditional;
-    @BindView(R.id.et_width)
-    EditText etWidth;
-    @BindView(R.id.switch_width_type)
-    Switch switchWidth;
+    @BindView(R.id.et_ems)
+    EditText etEms;
+    @BindView(R.id.switch_ems_enable)
+    Switch switchEms;
     private Unbinder binder;
     private EditText curEdittext;
     private Typeface typeface;
@@ -114,12 +113,11 @@ public class ConfigTextPopup extends CenterPopupView {
             if (colorStr != null) {
                 tvFontColor.setText(colorStr);
             }
-            ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams)
-                    textView.getLayoutParams();
-            etWidth.setText(String.valueOf(params.width));
-            switchWidth.setChecked(params.width != ConstraintLayout.LayoutParams.WRAP_CONTENT);
-            etWidth.setEnabled(params.width != ConstraintLayout.LayoutParams.WRAP_CONTENT);
+            etEms.setText(String.valueOf(textView.getMaxEms()));
+            switchEms.setChecked(false);
+            etEms.setEnabled(false);
             etRotation.setText(String.valueOf(textView.getRotation()));
+            switchRichText.setChecked(bean.isRichTextMode());
         }
     }
 
@@ -202,7 +200,7 @@ public class ConfigTextPopup extends CenterPopupView {
                 String content = etContent.getText().toString();
                 content = switchTraditional.isChecked() ?
                         ChineseConverter.convert(content, ConversionType.S2T, getContext()) : content;
-                textView.setText(switchRichText.isChecked() ? Html.fromHtml(content) : content);
+
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                         Integer.parseInt(etFontSize.getText().toString()));
                 textView.setEms(switchVertical.isChecked() ? 1 : textView.getText().length());
@@ -216,10 +214,12 @@ public class ConfigTextPopup extends CenterPopupView {
                 } else {
                     textView.setTextColor(color);
                 }
+                textView.setText(switchRichText.isChecked() ? Html.fromHtml(content) : content);
+                bean.setRichTextMode(switchRichText.isChecked());
                 textView.setRotation(Float.parseFloat(etRotation.getText().toString()));
-                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams)
-                        textView.getLayoutParams();
-                params.width = Integer.parseInt(etWidth.getText().toString());
+                if (switchEms.isChecked()) {
+                    textView.setEms(Integer.parseInt(etEms.getText().toString()));
+                }
                 textView.requestLayout();
                 dismiss();
             } catch (Exception e) {
@@ -233,15 +233,9 @@ public class ConfigTextPopup extends CenterPopupView {
         gridRichText.setVisibility(isChecked ? VISIBLE : GONE);
     }
 
-    @OnCheckedChanged(R.id.switch_width_type)
+    @OnCheckedChanged(R.id.switch_ems_enable)
     void setWidthType(boolean isChecked) {
-        if (isChecked) {
-            etWidth.setText(String.valueOf(bean.getView().getWidth()));
-            etWidth.setEnabled(true);
-        } else {
-            etWidth.setText(String.valueOf(String.valueOf(ConstraintLayout.LayoutParams.WRAP_CONTENT)));
-            etWidth.setEnabled(false);
-        }
+        etEms.setEnabled(isChecked);
     }
 
     @OnFocusChange(R.id.et_content)

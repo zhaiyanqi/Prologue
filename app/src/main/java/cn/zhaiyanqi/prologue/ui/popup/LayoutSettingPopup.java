@@ -16,7 +16,7 @@ import cn.zhaiyanqi.prologue.ui.adapter.SeekBarAdapter;
 import cn.zhaiyanqi.prologue.ui.bean.PadSettingBean;
 
 @SuppressLint("ViewConstructor")
-public class PadSettingPopup extends CenterPopupView {
+public class LayoutSettingPopup extends CenterPopupView {
 
     private int mStep, sStep, width, height;
     private PadSettingBean bean;
@@ -27,7 +27,7 @@ public class PadSettingPopup extends CenterPopupView {
     private TextView tvCancel, tvConfirm;
     private EditText etMainLayoutWidth, etMainLayoutHeight;
 
-    public PadSettingPopup(@NonNull Context context) {
+    public LayoutSettingPopup(@NonNull Context context) {
         super(context);
         bean = new PadSettingBean();
     }
@@ -106,32 +106,32 @@ public class PadSettingPopup extends CenterPopupView {
         return R.layout.popup_pad_setting;
     }
 
-    public PadSettingPopup setMoveStep(int moveStep) {
+    public LayoutSettingPopup setMoveStep(int moveStep) {
         bean.setMoveStep(moveStep);
         return this;
     }
 
-    public PadSettingPopup setScaleStep(int scaleStep) {
+    public LayoutSettingPopup setScaleStep(int scaleStep) {
         bean.setScaleStep(scaleStep);
         return this;
     }
 
-    public PadSettingPopup setLayoutWidth(int width) {
+    public LayoutSettingPopup setLayoutWidth(int width) {
         bean.setMainLayoutWidth(width);
         return this;
     }
 
-    public PadSettingPopup setLayoutHeight(int height) {
+    public LayoutSettingPopup setLayoutHeight(int height) {
         bean.setMainLayoutHeight(height);
         return this;
     }
 
-    public PadSettingPopup setConfirmListener(OnConfirmListener l) {
+    public LayoutSettingPopup setConfirmListener(OnConfirmListener l) {
         this.confirmListener = l;
         return this;
     }
 
-    public PadSettingPopup setCancelListener(OnCancelListener l) {
+    public LayoutSettingPopup setCancelListener(OnCancelListener l) {
         this.cancelListener = l;
         return this;
     }

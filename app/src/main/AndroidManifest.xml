@@ -17,10 +17,6 @@
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity android:name=".ui.activity.FreeActivity" />
         <activity
-            android:name=".ui.activity.CardMakerActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
             android:name=".ui.activity.HeroActivity"
             android:parentActivityName=".ui.activity.MainActivity" />
         <activity

@@ -14,6 +14,7 @@ public class ViewBean {
     private int height;
     private ImageView.ScaleType scaleType;
     private boolean selected;
+    private boolean richTextMode;
 
     public ViewBean() {
         this.view = null;
@@ -24,6 +25,14 @@ public class ViewBean {
         this.height = 0;
     }
 
+
+    public boolean isRichTextMode() {
+        return richTextMode;
+    }
+
+    public void setRichTextMode(boolean richTextMode) {
+        this.richTextMode = richTextMode;
+    }
 
     public ImageView.ScaleType getScaleType() {
         return scaleType;

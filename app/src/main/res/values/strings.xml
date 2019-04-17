@@ -173,5 +173,6 @@
     <string name="text_content">文本内容</string>
     <string name="fixed_width">固定宽度</string>
     <string name="layout_width">布局宽度</string>
+    <string name="ems">单行字数</string>
 
 </resources>
