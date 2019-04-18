@@ -25,6 +25,7 @@ import com.zqc.opencc.android.lib.ConversionType;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
@@ -72,10 +73,10 @@ public class ConfigTextPopup extends CenterPopupView {
     EditText etRotation;
     @BindView(R.id.switch_traditional)
     Switch switchTraditional;
-    @BindView(R.id.et_ems)
-    EditText etEms;
-    @BindView(R.id.switch_ems_enable)
-    Switch switchEms;
+    @BindView(R.id.et_width)
+    EditText etWidth;
+    @BindView(R.id.switch_fixed_width)
+    Switch switchWidth;
     private Unbinder binder;
     private EditText curEdittext;
     private Typeface typeface;
@@ -107,9 +108,10 @@ public class ConfigTextPopup extends CenterPopupView {
             etFontSize.setText(String.valueOf((int) textView.getTextSize()));
             int ems = textView.getMaxEms();
             switchVertical.setChecked(ems == 1);
-            etEms.setText(String.valueOf(ems));
-            etEms.setEnabled(bean.isFixedWidth());
-            switchEms.setChecked(bean.isFixedWidth());
+            ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) textView.getLayoutParams();
+            etWidth.setText(String.valueOf(params.width));
+            etWidth.setEnabled(bean.isFixedWidth());
+            switchWidth.setChecked(bean.isFixedWidth());
             etWordSpacing.setText(String.valueOf(textView.getLetterSpacing()));
             etFontSpacing.setText(String.valueOf(textView.getLineSpacingExtra()));
             initFontSpinner(textView);
@@ -220,9 +222,10 @@ public class ConfigTextPopup extends CenterPopupView {
                 bean.setRichTextMode(switchRichText.isChecked());
                 bean.setRichText(content);
                 textView.setRotation(Float.parseFloat(etRotation.getText().toString()));
-                bean.setFixedWidth(switchEms.isChecked());
-                if (switchEms.isChecked()) {
-                    textView.setEms(Integer.parseInt(etEms.getText().toString()));
+                bean.setFixedWidth(switchWidth.isChecked());
+                if (switchWidth.isChecked()) {
+                    ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) textView.getLayoutParams();
+                    params.width = Integer.parseInt(etWidth.getText().toString());
                 }
                 textView.requestLayout();
                 dismiss();
@@ -237,11 +240,11 @@ public class ConfigTextPopup extends CenterPopupView {
         gridRichText.setVisibility(isChecked ? VISIBLE : GONE);
     }
 
-    @OnCheckedChanged(R.id.switch_ems_enable)
+    @OnCheckedChanged(R.id.switch_fixed_width)
     void setWidthType(boolean isChecked) {
-        etEms.setEnabled(isChecked);
+        etWidth.setEnabled(isChecked);
         if (!isChecked) {
-            etEms.setText(String.valueOf(-1));
+            etWidth.setText(String.valueOf(ConstraintLayout.LayoutParams.MATCH_PARENT));
         }
     }
 
