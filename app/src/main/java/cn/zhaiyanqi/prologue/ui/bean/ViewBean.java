@@ -15,6 +15,8 @@ public class ViewBean {
     private ImageView.ScaleType scaleType;
     private boolean selected;
     private boolean richTextMode;
+    private String richText;
+    private boolean fixedWidth;
 
     public ViewBean() {
         this.view = null;
@@ -25,6 +27,21 @@ public class ViewBean {
         this.height = 0;
     }
 
+    public boolean isFixedWidth() {
+        return fixedWidth;
+    }
+
+    public void setFixedWidth(boolean fixedWidth) {
+        this.fixedWidth = fixedWidth;
+    }
+
+    public String getRichText() {
+        return richText;
+    }
+
+    public void setRichText(String richText) {
+        this.richText = richText;
+    }
 
     public boolean isRichTextMode() {
         return richTextMode;

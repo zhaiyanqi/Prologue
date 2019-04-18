@@ -100,10 +100,20 @@ public class ConfigTextPopup extends CenterPopupView {
             TextView textView = (TextView) bean.getView();
             tvTitle.setText(bean.getName());
             etName.setText(bean.getName());
-            etContent.setText(textView.getText());
+            if (bean.isRichTextMode()) {
+                etContent.setText(bean.getRichText());
+            } else {
+                etContent.setText(textView.getText());
+            }
+            int[] a = new int[3];
+            int[] b = {1, 3, 4};
+            int[] c = new int[]{1, 2, 3};
             etFontSize.setText(String.valueOf((int) textView.getTextSize()));
             int ems = textView.getMaxEms();
             switchVertical.setChecked(ems == 1);
+            etEms.setText(String.valueOf(ems));
+            etEms.setEnabled(bean.isFixedWidth());
+            switchEms.setChecked(bean.isFixedWidth());
             etWordSpacing.setText(String.valueOf(textView.getLetterSpacing()));
             etFontSpacing.setText(String.valueOf(textView.getLineSpacingExtra()));
             initFontSpinner(textView);
@@ -113,9 +123,7 @@ public class ConfigTextPopup extends CenterPopupView {
             if (colorStr != null) {
                 tvFontColor.setText(colorStr);
             }
-            etEms.setText(String.valueOf(textView.getMaxEms()));
-            switchEms.setChecked(false);
-            etEms.setEnabled(false);
+
             etRotation.setText(String.valueOf(textView.getRotation()));
             switchRichText.setChecked(bean.isRichTextMode());
         }
@@ -216,7 +224,9 @@ public class ConfigTextPopup extends CenterPopupView {
                 }
                 textView.setText(switchRichText.isChecked() ? Html.fromHtml(content) : content);
                 bean.setRichTextMode(switchRichText.isChecked());
+                bean.setRichText(content);
                 textView.setRotation(Float.parseFloat(etRotation.getText().toString()));
+                bean.setFixedWidth(switchEms.isChecked());
                 if (switchEms.isChecked()) {
                     textView.setEms(Integer.parseInt(etEms.getText().toString()));
                 }
@@ -236,6 +246,9 @@ public class ConfigTextPopup extends CenterPopupView {
     @OnCheckedChanged(R.id.switch_ems_enable)
     void setWidthType(boolean isChecked) {
         etEms.setEnabled(isChecked);
+        if (!isChecked) {
+            etEms.setText(String.valueOf(-1));
+        }
     }
 
     @OnFocusChange(R.id.et_content)
@@ -256,7 +269,7 @@ public class ConfigTextPopup extends CenterPopupView {
         }
     }
 
-    @OnClick({R.id.btn_bold, R.id.btn_new_line})
+    @OnClick({R.id.btn_bold, R.id.btn_new_line, R.id.btn_space})
     void insertRichText(View view) {
         if (curEdittext == null) return;
         int index = curEdittext.getSelectionStart();//获取光标所在位置
@@ -273,6 +286,15 @@ public class ConfigTextPopup extends CenterPopupView {
             }
             case R.id.btn_new_line: {
                 String text = "<br/>";
+                if (index < 0 || index >= edit.length()) {
+                    edit.append(text);
+                } else {
+                    edit.insert(index, text);
+                }
+                break;
+            }
+            case R.id.btn_space: {
+                String text = "&nbsp;";
                 if (index < 0 || index >= edit.length()) {
                     edit.append(text);
                 } else {

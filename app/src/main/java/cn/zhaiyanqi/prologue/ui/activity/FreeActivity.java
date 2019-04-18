@@ -184,8 +184,10 @@ public class FreeActivity extends AppCompatActivity
     }
 
     private void addTextView(TextView textView) {
+        String string = textView.getText().toString();
+        final String name = string.length() > 4 ? string.substring(0, 4) : string;
         runOnUiThread(() -> addView(new ViewBean()
-                .setName("文字:" + textView.getText().toString())
+                .setName("文字:" + name)
                 .setView(textView)));
     }
 
