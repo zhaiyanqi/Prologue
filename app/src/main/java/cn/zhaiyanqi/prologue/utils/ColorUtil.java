@@ -13,6 +13,11 @@ public class ColorUtil {
         } catch (Exception e) {
             return null;
         }
+//        if (showAlphaSlider) {
+//            hexEditText.setText(String.format("%08X", (color)));
+//        } else {
+//            hexEditText.setText(String.format("%06X", (0xFFFFFF & color)));
+//        }
     }
 
 }

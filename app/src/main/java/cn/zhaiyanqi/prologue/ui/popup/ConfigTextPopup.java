@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jaredrummler.android.colorpicker.ColorPanelView;
-import com.jaredrummler.android.colorpicker.ColorPickerDialog;
+import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.CenterPopupView;
 import com.zqc.opencc.android.lib.ChineseConverter;
 import com.zqc.opencc.android.lib.ConversionType;
@@ -25,7 +25,6 @@ import com.zqc.opencc.android.lib.ConversionType;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
@@ -36,9 +35,9 @@ import butterknife.Unbinder;
 import cn.zhaiyanqi.prologue.App;
 import cn.zhaiyanqi.prologue.R;
 import cn.zhaiyanqi.prologue.ui.bean.ViewBean;
+import cn.zhaiyanqi.prologue.ui.widget.ColorPickerPopup;
 import cn.zhaiyanqi.prologue.ui.widget.RichStrokeTextView;
 import cn.zhaiyanqi.prologue.utils.ColorUtil;
-import cn.zhaiyanqi.prologue.utils.HawkKey;
 
 
 @SuppressLint("ViewConstructor")
@@ -105,9 +104,6 @@ public class ConfigTextPopup extends CenterPopupView {
             } else {
                 etContent.setText(textView.getText());
             }
-            int[] a = new int[3];
-            int[] b = {1, 3, 4};
-            int[] c = new int[]{1, 2, 3};
             etFontSize.setText(String.valueOf((int) textView.getTextSize()));
             int ems = textView.getMaxEms();
             switchVertical.setChecked(ems == 1);
@@ -177,13 +173,11 @@ public class ConfigTextPopup extends CenterPopupView {
 
     @OnClick(R.id.ll_font_color)
     void setFontColor() {
-        if (getContext() instanceof FragmentActivity) {
-            ColorPickerDialog.newBuilder()
-                    .setColor(color)
-                    .setShowAlphaSlider(true)
-                    .setDialogId(HawkKey.TEXT_COLOR_DIALOG_ID)
-                    .show((FragmentActivity) getContext());
-        }
+        new XPopup.Builder(getContext())
+                .asCustom(new ColorPickerPopup(getContext())
+                        .setInitColor(color)
+                        .setColorSelectedListener(this::setColor))
+                .show();
     }
 
     @OnClick({R.id.tv_cancel, R.id.tv_confirm})

@@ -19,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.impl.CenterListPopupView;
@@ -63,7 +62,7 @@ import cn.zhaiyanqi.prologue.utils.HawkKey;
 import me.caibou.rockerview.DirectionView;
 
 public class FreeActivity extends AppCompatActivity
-        implements DirectionView.DirectionChangeListener, ColorPickerDialogListener {
+        implements DirectionView.DirectionChangeListener {
 
     private static final String[] groups = {"魏", "蜀", "吴", "群", "神"};
     private static final String[] perfabList = {"武将模板", "卡牌模板", "边框", "势力", "称号", "武将名", "插画", "勾玉(身份)", "勾玉x1(国战)", "勾玉x0.5(国战)", "技能名", "技能名背板", "技能描述", "技能描述背板"};
@@ -899,22 +898,5 @@ public class FreeActivity extends AppCompatActivity
             }
         }
         currentView.getView().requestLayout();
-    }
-
-
-    @Override
-    public void onColorSelected(int dialogId, int color) {
-        switch (dialogId) {
-            case HawkKey.TEXT_COLOR_DIALOG_ID: {
-                if (configTextPopup != null) {
-                    configTextPopup.setColor(color);
-                }
-                break;
-            }
-        }
-    }
-
-    @Override
-    public void onDialogDismissed(int dialogId) {
     }
 }
