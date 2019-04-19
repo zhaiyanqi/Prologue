@@ -2,6 +2,7 @@ package cn.zhaiyanqi.prologue.ui.popup;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.widget.EditText;
@@ -18,6 +19,8 @@ import androidx.annotation.NonNull;
 import cn.zhaiyanqi.prologue.App;
 import cn.zhaiyanqi.prologue.R;
 import cn.zhaiyanqi.prologue.utils.HawkKey;
+
+import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
 
 public class SkillInfoPopup extends CenterPopupView {
     private TextView tvCancel, tvConfirm;
@@ -103,6 +106,9 @@ public class SkillInfoPopup extends CenterPopupView {
             String title1 = switchTradition.isChecked() ?
                     ChineseConverter.convert(title, ConversionType.S2T, getContext()) : title;
             textView.setText(title1);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                textView.setJustificationMode(JUSTIFICATION_MODE_INTER_WORD);
+            }
             Hawk.put(HawkKey.SKILL_INFO_TEXT, title1);
             Hawk.put(HawkKey.SKILL_INFO_TEXT_SWITCH_TRADITION, switchTradition.isChecked());
             if (confirmListener != null) {
