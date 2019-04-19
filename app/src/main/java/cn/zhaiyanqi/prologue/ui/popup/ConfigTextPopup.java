@@ -39,6 +39,7 @@ import cn.zhaiyanqi.prologue.ui.bean.ViewBean;
 import cn.zhaiyanqi.prologue.ui.widget.ColorPickerPopup;
 import cn.zhaiyanqi.prologue.ui.widget.RichStrokeTextView;
 import cn.zhaiyanqi.prologue.utils.ColorUtil;
+import cn.zhaiyanqi.prologue.utils.TextJustification;
 
 
 @SuppressLint("ViewConstructor")
@@ -228,6 +229,9 @@ public class ConfigTextPopup extends CenterPopupView {
                     params.width = Integer.parseInt(etWidth.getText().toString());
                 }
                 textView.requestLayout();
+                if (switchWidth.isChecked()) {
+                    TextJustification.justify(textView);
+                }
                 dismiss();
             } catch (Exception e) {
                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
