@@ -1,9 +1,6 @@
 # 三国杀制图
     三国杀制图软件，支持多种自定义功能。
 
-## 截图
-<img src="https://github.com/zhaiyanqi/Prologue/blob/master/screenshot/Screenshot_1.png" width="150" height="300" alt="图片加载失败"/><img src="https://github.com/zhaiyanqi/Prologue/blob/master/screenshot/Screenshot_2.png" width="150" height="300" alt="图片加载失败"/><img src="https://github.com/zhaiyanqi/Prologue/blob/master/screenshot/Screenshot_3.png" width="150" height="300" alt="图片加载失败"/><img src="https://github.com/zhaiyanqi/Prologue/blob/master/screenshot/Screenshot_4.png" width="150" height="300" alt="图片加载失败"/><img src="https://github.com/zhaiyanqi/Prologue/blob/master/screenshot/Screenshot_5.png" width="150" height="300" alt="图片加载失败"/>
-
 ## 说明
 支持自定义组件：边框、势力、勾玉、技能背景等等，手动从程序中选择相册中的图片即可。<br>
 可手动调节势力、勾玉、称号、武将名、技能的位置与大小。<br>
